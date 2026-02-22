@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>宗彬的 Bar (單機派對版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bar-gold': '#d4af37',
+                        'bar-dark': '#1a1a1a',
+                        'bar-gray': '#2d2d2d',
+                        'bar-light': '#f3f4f6',
+                        'accent-orange': '#ea580c',
+                        'accent-blue': '#0ea5e9',
+                        'accent-green': '#10b981',
+                        'accent-purple': '#a855f7', 
+                    },
+                    fontFamily: {
+                        'sans': ['Noto Sans TC', 'sans-serif'],
+                        'serif': ['Noto Serif TC', 'serif'],
+                        'art': ['Ma Shan Zheng', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #121212;
+            color: #e5e5e5;
+            background-image: radial-gradient(circle at 50% 0%, #2a2a2a 0%, #121212 70%);
+            background-attachment: fixed; 
+            background-size: cover;
+            min-height: 100dvh; 
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-panel {
+            background: rgba(45, 45, 45, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .drink-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .drink-card:hover {
+            transform: translateY(-5px);
+            border-color: #d4af37;
+            box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.2);
+        }
+
+        .fab-main-btn {
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fab-main-btn.active {
+            transform: rotate(45deg);
+            background-color: #ef4444;
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+        
+        .fab-menu-item {
+            transform: scale(0) translateY(20px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            pointer-events: none;
+        }
+        .fab-menu-open .fab-menu-item {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .fab-menu-open .fab-menu-item:nth-child(1) { transition-delay: 0.1s; }  /* Order Btn */
+        .fab-menu-open .fab-menu-item:nth-child(2) { transition-delay: 0.05s; } /* Add Btn */
+
+        .tag-pill {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        .tag-simple { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .tag-shake { background: rgba(234, 88, 12, 0.2); color: #fdba74; border: 1px solid rgba(234, 88, 12, 0.3); }
+        .tag-stir { background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        
+        .animate-pop { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        .card-img-cover { width: 100%; height: 160px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem; }
+        
+        .form-input { width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 0.5rem 0.75rem; border-radius: 0.5rem; outline: none; transition: border-color 0.2s; }
+        .form-input:focus { border-color: #d4af37; }
+        .form-label { display: block; color: #d4af37; font-size: 0.875rem; margin-bottom: 0.25rem; font-weight: bold; }
+
+        .icon-option { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(255,255,255,0.05); cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
+        .icon-option:hover { background: rgba(255,255,255,0.1); transform: scale(1.1); }
+        .icon-option.selected { background: rgba(212, 175, 55, 0.2); border-color: #d4af37; color: #d4af37; }
+        
+        .color-option { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
+        .color-option:hover { transform: scale(1.2); }
+        .color-option.selected { border-color: white; box-shadow: 0 0 0 2px rgba(255,255,255,0.5); }
+
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: rgba(16, 185, 129, 0.9);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 100px;
+        }
+        
+        .content-safe-area { padding-bottom: 8rem; } 
+
+        .avatar-option {
+            width: 60px; height: 60px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; transition: all 0.2s; overflow: hidden;
+        }
+        .avatar-option img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-option:hover { transform: scale(1.1); }
+        .avatar-option.selected { border-color: #d4af37; box-shadow: 0 0 10px rgba(212,175,55,0.5); transform: scale(1.1); }
+    </style>
+</head>
+<body class="content-safe-area">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <!-- Creative Logo Section -->
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="location.reload()">
+                <!-- Logo Image with Fallback SVG -->
+                <div class="relative h-14 w-auto flex-shrink-0 py-1">
+                    <!-- 1. Try Image First -->
+                    <img src="logo.png" 
+                         alt="彬Bar Logo" 
+                         class="h-full w-auto object-contain hover:scale-105 transition-transform duration-300"
+                         onerror="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden');"> 
+                    
+                    <!-- 2. Fallback SVG (Hidden by default, shown if image fails) -->
+                    <svg id="fallback-logo" viewBox="0 0 140 100" class="h-full w-auto hidden transition-all duration-300 transform group-hover:scale-105">
+                        <defs>
+                            <linearGradient id="logo-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#fff7ed;stop-opacity:1" />
+                                <stop offset="30%" style="stop-color:#fde68a;stop-opacity:1" />
+                                <stop offset="60%" style="stop-color:#d4af37;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#92400e;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <g>
+                            <!-- Left Wood (T-Shape) -->
+                            <g transform="translate(10, 10)">
+                                <path d="M0,5 L40,5" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                                <path d="M20,5 L20,55" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                                <path d="M20,55 Q10,70 5,85" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
+                                <path d="M20,55 Q30,70 35,85" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
+                            </g>
+                            <!-- Middle Wood (T-Shape) -->
+                            <g transform="translate(55, 10)">
+                                <path d="M0,5 L40,5" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                                <path d="M20,5 L20,55" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                                <path d="M20,55 Q10,70 5,85" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
+                                <path d="M20,55 Q30,70 35,85" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
+                            </g>
+                            <!-- Right Shan -->
+                            <g transform="translate(100, 20)">
+                                <path d="M25,-5 C15,0 5,15 -20,30" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
+                                <path d="M30,20 C15,25 5,35 -20,55" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
+                                <path d="M10,55 C-20,75 -50,80 -100,65" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                
+                <!-- Subtitle Divider -->
+                <div class="h-8 border-l border-white/20"></div>
+
+                <!-- Subtitle -->
+                <div class="flex flex-col justify-center">
+                    <span class="text-[10px] text-bar-gold tracking-[0.3em] uppercase font-bold leading-none">Private</span>
+                    <span class="text-[10px] text-gray-400 tracking-[0.3em] uppercase leading-none mt-1 group-hover:text-white transition-colors">Bar</span>
+                </div>
+            </div>
+            
+            <!-- Top Random Button -->
+            <button onclick="pickRandom()" class="bg-bar-gold text-bar-dark px-3 py-1.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2 shadow-lg">
+                <i class="fas fa-dice"></i> <span class="hidden sm:inline">今晚喝什麼?</span><span class="sm:hidden">手氣</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="mt-24 mb-8 px-4 text-center">
+        <!-- New Bar Graphic Header -->
+        <div class="w-full max-w-md mx-auto mb-6 opacity-90 flex justify-center">
+            <svg viewBox="0 0 320 80" class="w-full h-auto filter drop-shadow-[0_0_15px_rgba(212,175,55,0.15)] max-w-[320px]">
+                <defs>
+                    <linearGradient id="header-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#d4af37;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <g transform="translate(160, 40)">
+                    <path d="M-15,-25 L15,-25 L12,25 L-12,25 Z" stroke="url(#header-gold)" stroke-width="1.5" fill="none" />
+                    <path d="M-12,25 L-10,35 L10,35 L12,25" stroke="url(#header-gold)" stroke-width="1.5" fill="none" />
+                    <path d="M-15,-25 C-15,-35 -5,-40 0,-40 C5,-40 15,-35 15,-25" stroke="url(#header-gold)" stroke-width="1.5" fill="none" />
+                    <path d="M-60,0 L-30,0" stroke="url(#header-gold)" stroke-width="1" opacity="0.4" />
+                    <path d="M30,0 L60,0" stroke="url(#header-gold)" stroke-width="1" opacity="0.4" />
+                </g>
+                <g transform="translate(80, 40)" opacity="0.6">
+                    <path d="M-8,35 L8,35 L8,-10 L4,-15 L4,-25 L-4,-25 L-4,-15 L-8,-10 Z" fill="none" stroke="url(#header-gold)" stroke-width="1" />
+                </g>
+                <g transform="translate(240, 40)" opacity="0.6">
+                    <path d="M-10,35 L10,35 L12,0 L-12,0 Z" fill="none" stroke="url(#header-gold)" stroke-width="1" />
+                    <rect x="-4" y="15" width="8" height="8" stroke="url(#header-gold)" stroke-width="0.8" fill="none" transform="rotate(15)" />
+                </g>
+                <text x="160" y="70" text-anchor="middle" font-family="serif" font-size="8" fill="#888" letter-spacing="4">SELECT YOUR DRINK</text>
+            </svg>
+        </div>
+        <p class="text-gray-500 text-xs tracking-widest uppercase">
+            <span id="welcome-msg">Welcome</span>
+        </p>
+        <div id="filter-container" class="flex flex-wrap justify-center gap-2 mt-4"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 mb-20">
+        <div id="drinks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </main>
+
+    <!-- FAB -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-4" id="fab-container">
+        <div id="fab-menu" class="flex flex-col items-end gap-3 mb-2">
+            <!-- Order List Btn -->
+            <div class="fab-menu-item flex items-center gap-3 cursor-pointer group" onclick="openOrdersList()">
+                <span class="bg-white text-gray-800 px-3 py-1 rounded-lg text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">已點清單</span>
+                <button class="w-12 h-12 bg-accent-blue text-white rounded-full shadow-lg hover:bg-blue-400 transition-colors flex items-center justify-center relative">
+                    <i class="fas fa-clipboard-list text-xl"></i>
+                    <span id="order-count-badge-menu" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold border-2 border-bar-dark">0</span>
+                </button>
+            </div>
+            <!-- Add Drink Btn -->
+            <div class="fab-menu-item flex items-center gap-3 cursor-pointer group" onclick="openEditor()">
+                <span class="bg-white text-gray-800 px-3 py-1 rounded-lg text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">新增調酒</span>
+                <button class="w-12 h-12 bg-white text-bar-dark rounded-full shadow-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
+                    <i class="fas fa-plus text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <button onclick="toggleFab()" id="fab-main-btn" class="w-16 h-16 bg-bar-gold text-bar-dark rounded-full shadow-lg fab-main-btn flex items-center justify-center relative">
+            <i class="fas fa-plus text-2xl" id="fab-icon"></i>
+            <span id="order-count-badge-main" class="hidden absolute top-0 right-0 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold border-2 border-bar-dark shadow-sm">0</span>
+        </button>
+    </div>
+
+    <!-- Modals -->
+    <div id="view-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="closeViewModal()">
+        <div id="view-modal-content" class="bg-bar-gray w-full max-w-lg rounded-2xl shadow-2xl border border-white/10 transform scale-95 transition-transform duration-300 max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
+            <div id="view-header" class="relative h-48 bg-gray-800 flex-shrink-0 bg-cover bg-center">
+                <div class="absolute inset-0 bg-gradient-to-t from-bar-gray via-transparent to-black/30"></div>
+                <button onclick="closeViewModal()" class="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full backdrop-blur-sm transition-colors z-20 w-8 h-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
+                <div class="absolute bottom-4 left-6 right-6 z-10"><span id="view-badge" class="tag-pill bg-bar-gold text-bar-dark mb-2 inline-block shadow-lg">Whiskey</span><h3 id="view-title" class="text-3xl font-bold text-white font-serif drop-shadow-md">Drink Name</h3></div>
+            </div>
+            <div class="p-6 space-y-6 overflow-y-auto flex-grow">
+                <div><h4 class="text-bar-gold text-sm font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><i class="fas fa-flask"></i> 黃金比例</h4><ul id="view-ingredients" class="space-y-2 text-gray-300 text-sm bg-black/20 p-4 rounded-lg"></ul></div>
+                <div><h4 class="text-bar-gold text-sm font-bold uppercase tracking-wider mb-2 flex items-center gap-2"><i class="fas fa-blender"></i> 調製心法</h4><p id="view-method" class="text-gray-300 leading-relaxed whitespace-pre-line"></p></div>
+                <div class="border-l-2 border-bar-gold pl-4 py-1"><h4 class="text-white text-sm font-bold mb-1">亮點筆記</h4><p id="view-highlight" class="text-gray-400 text-sm italic whitespace-pre-line"></p></div>
+            </div>
+            <div id="view-modal-footer" class="p-4 border-t border-white/10 bg-bar-gray/50"></div>
+        </div>
+    </div>
+
+    <div id="orders-modal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="closeOrdersList()">
+        <div class="bg-bar-gray w-full max-w-md rounded-2xl shadow-2xl border border-white/10 max-h-[80vh] flex flex-col" onclick="event.stopPropagation()">
+            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-gradient-to-r from-blue-900 to-bar-gray rounded-t-2xl">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white"><i class="fas fa-clipboard-check text-lg"></i></div><div><h3 class="text-xl font-bold text-white">已點清單</h3><p class="text-xs text-blue-200">點擊項目可查看做法並出單</p></div></div>
+                <button onclick="closeOrdersList()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="orders-list-container" class="p-4 overflow-y-auto custom-scroll space-y-2 min-h-[200px] flex-grow"></div>
+            <div id="orders-empty-state" class="hidden flex-col items-center justify-center py-10 text-gray-500 flex-grow"><i class="fas fa-glass-cheers text-4xl mb-3 opacity-30"></i><p>目前沒有等待中的訂單</p><p class="text-xs mt-1">快去點幾杯來喝吧！</p></div>
+            <div class="p-4 border-t border-white/10 bg-bar-gray rounded-b-2xl text-center"><p class="text-xs text-gray-500">單機版出杯管理系統</p></div>
+        </div>
+    </div>
+
+    <div id="editor-modal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="closeEditor()">
+        <div class="bg-bar-gray w-full max-w-2xl rounded-2xl shadow-2xl border border-white/10 max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
+            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-bar-gray rounded-t-2xl"><h3 id="editor-title" class="text-xl font-bold text-bar-gold">新增調酒</h3><button onclick="closeEditor()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button></div>
+            <div class="p-6 overflow-y-auto space-y-4 custom-scroll">
+                <input type="hidden" id="edit-id">
+                <div class="mb-4"><label class="form-label">調酒照片 (可選)</label><div class="flex items-center gap-4"><div id="preview-container" class="w-24 h-24 bg-black/30 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 relative"><img id="img-preview" src="" class="w-full h-full object-cover hidden z-10"><i id="preview-icon-display" class="fas fa-cocktail text-3xl text-gray-500 absolute z-0 transition-colors"></i></div><div class="flex-1"><input type="file" id="img-upload" accept="image/*" class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-bar-gold file:text-bar-dark hover:file:bg-yellow-400 cursor-pointer" onchange="handleImageUpload(this)"><p class="text-xs text-gray-500 mt-2">建議使用小於 500KB 的圖片以避免儲存失敗。</p><button onclick="clearImage()" class="text-xs text-red-400 mt-1 hover:text-red-300 underline hidden" id="clear-img-btn">移除照片</button></div></div></div>
+                <div class="grid grid-cols-2 gap-4"><div><label class="form-label">酒名</label><input type="text" id="inp-name" class="form-input" placeholder="例如：花生拿鐵"></div><div><label class="form-label">英文名</label><input type="text" id="inp-engname" class="form-input" placeholder="例如：Peanut Latte"></div></div>
+                <div class="grid grid-cols-2 gap-4"><div><label class="form-label">基酒種類</label><select id="inp-base" class="form-input appearance-none"><option value="威士忌">威士忌</option><option value="萊姆酒">萊姆酒</option><option value="琴酒">琴酒</option><option value="伏特加">伏特加</option><option value="龍舌蘭">龍舌蘭</option><option value="利口酒">利口酒</option><option value="其他">其他</option></select></div><div><label class="form-label">製作方式</label><select id="inp-type" class="form-input appearance-none"><option value="Simple Mix">直調</option><option value="Build">直注</option><option value="Stir">攪拌</option><option value="Shake">搖盪</option><option value="Blend">冰沙</option></select></div></div>
+                <div class="mb-4"><label class="form-label flex justify-between items-center">分類管理</label><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="flex gap-2 mb-3"><input type="text" id="new-cat-input" class="form-input text-sm py-1.5" placeholder="輸入新分類名稱..."><button onclick="addNewCategory()" class="bg-bar-gold text-bar-dark px-3 rounded text-sm font-bold whitespace-nowrap hover:bg-yellow-400"><i class="fas fa-plus"></i> 新增</button></div><div id="category-editor-list" class="space-y-1 max-h-32 overflow-y-auto custom-scroll pr-1"></div></div></div>
+                <div class="bg-black/20 p-4 rounded-lg border border-white/5"><label class="form-label mb-3">選擇卡片圖示</label><div id="icon-selector" class="flex flex-wrap gap-2 max-h-32 overflow-y-auto mb-4 custom-scroll"></div><label class="form-label mb-3">選擇主題顏色</label><div id="color-selector" class="flex flex-wrap gap-3"></div></div>
+                <div><label class="form-label">材料</label><textarea id="inp-ingredients" class="form-input h-24" placeholder="材料清單..."></textarea></div>
+                <div><label class="form-label">作法步驟</label><textarea id="inp-method" class="form-input h-20" placeholder="描述調製過程..."></textarea></div>
+                <div><label class="form-label">亮點</label><input type="text" id="inp-highlight" class="form-input" placeholder="口感描述"></div>
+                <div><label class="form-label">標籤</label><input type="text" id="inp-tags" class="form-input" placeholder="甜點酒, 女生最愛"></div>
+            </div>
+            <div class="p-4 border-t border-white/10 flex justify-end gap-3 bg-bar-gray rounded-b-2xl"><button onclick="closeEditor()" class="px-5 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-gray-300">取消</button><button onclick="saveDrink()" class="px-6 py-2 rounded-lg bg-bar-gold text-bar-dark font-bold hover:bg-yellow-400 shadow-lg">儲存</button></div>
+        </div>
+    </div>
+
+    <div id="login-modal" class="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-bar-gold/30 p-8 text-center">
+            <div class="mb-6"><div class="w-16 h-16 bg-bar-gold rounded-full flex items-center justify-center mx-auto mb-3 text-bar-dark text-2xl"><i class="fas fa-glass-cheers"></i></div><h2 class="text-2xl font-bold text-white mb-1">入座確認</h2><p class="text-gray-400 text-sm">請輸入您的稱呼，方便標記點單</p></div>
+            <div class="space-y-4"><div><label class="form-label text-left">您的暱稱</label><input type="text" id="login-name" class="form-input text-center text-lg py-3" placeholder="例如：宗彬" maxlength="8"></div><div><label class="form-label text-left mb-2">選擇頭像</label><div class="flex justify-center gap-3 mb-2"><div class="avatar-option selected" onclick="selectAvatar('🐱')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐱</div></div><div class="avatar-option" onclick="selectAvatar('🐶')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐶</div></div><div class="avatar-option" onclick="selectAvatar('🐻')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐻</div></div><div class="avatar-option" onclick="selectAvatar('🐯')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐯</div></div></div><div class="flex justify-center gap-3"><div class="avatar-option" onclick="selectAvatar('🐸')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐸</div></div><div class="avatar-option" onclick="selectAvatar('🐷')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐷</div></div><div class="avatar-option" onclick="selectAvatar('😎')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">😎</div></div><div class="avatar-option" onclick="selectAvatar('👻')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">👻</div></div></div></div><button onclick="joinGroup()" class="w-full bg-bar-gold text-bar-dark font-bold py-3 rounded-lg shadow-lg hover:bg-yellow-400 transition-transform active:scale-95 mt-4">確認入座</button></div>
+        </div>
+    </div>
+    <div id="toast">Order Added!</div>
+
+    <script>
+        const iconList = [
+            // Drinks & Bar
+            'fa-cocktail', 'fa-glass-martini-alt', 'fa-glass-whiskey', 'fa-wine-glass', 'fa-beer', 'fa-mug-hot', 'fa-coffee', 'fa-flask', 
+            'fa-wine-bottle', 'fa-champagne-glasses', 'fa-glass-water', 'fa-beer-mug-empty', 'fa-martini-glass', 'fa-martini-glass-citrus', 'fa-martini-glass-empty',
+            // Shots & Small
+            'fa-vial', 'fa-prescription-bottle', 'fa-jar', 
+            // Food
+            'fa-lemon', 'fa-carrot', 'fa-apple-alt', 'fa-pepper-hot', 'fa-ice-cream', 'fa-cookie', 'fa-burger', 'fa-pizza-slice', 'fa-bacon', 'fa-candy-cane', 'fa-cheese', 'fa-hotdog', 'fa-bread-slice', 'fa-bowl-rice', 'fa-drumstick-bite',
+            // Nature
+            'fa-leaf', 'fa-seedling', 'fa-holly-berry', 'fa-tree', 'fa-fire', 'fa-water', 'fa-snowflake', 'fa-wind', 'fa-cloud', 'fa-bolt', 'fa-sun', 'fa-moon', 'fa-cloud-moon', 'fa-volcano', 'fa-meteor',
+            // Animals
+            'fa-cat', 'fa-dog', 'fa-dragon', 'fa-fish', 'fa-crow', 'fa-dove', 'fa-frog', 'fa-hippo', 'fa-horse', 'fa-otter', 'fa-spider', 'fa-bug', 'fa-paw', 'fa-kiwi-bird', 'fa-shrimp', 'fa-worm', 'fa-locust', 'fa-mosquito',
+            // Symbols & Misc
+            'fa-heart', 'fa-star', 'fa-umbrella-beach', 'fa-music', 'fa-skull', 'fa-bomb', 'fa-gem', 'fa-crown', 'fa-rocket', 'fa-ghost', 'fa-robot', 'fa-gamepad', 'fa-dice', 'fa-puzzle-piece', 'fa-anchor', 'fa-plane', 'fa-bicycle', 'fa-car',
+            'fa-hat-cowboy', 'fa-hat-wizard', 'fa-mask', 'fa-user-ninja', 'fa-user-astronaut', 'fa-user-secret',
+            'fa-biohazard', 'fa-radiation', 'fa-yin-yang', 'fa-peace', 'fa-lightbulb', 'fa-stopwatch', 'fa-hourglass-half', 'fa-bell', 'fa-bullhorn', 'fa-trophy', 'fa-medal',
+            'fa-coins', 'fa-sack-dollar', 'fa-diamond', 'fa-ring', 'fa-key', 'fa-lock', 'fa-signature', 'fa-fingerprint'
+        ];
+
+        const colorList = [
+            // Reds
+            {c:'text-red-400',b:'#f87171'}, {c:'text-red-500',b:'#ef4444'}, {c:'text-red-600',b:'#dc2626'}, {c:'text-rose-400',b:'#fb7185'}, {c:'text-rose-500',b:'#f43f5e'}, {c:'text-rose-600',b:'#e11d48'},
+            // Oranges/Yellows
+            {c:'text-orange-400',b:'#fb923c'}, {c:'text-orange-500',b:'#f97316'}, {c:'text-orange-600',b:'#ea580c'}, {c:'text-amber-400',b:'#fbbf24'}, {c:'text-amber-500',b:'#f59e0b'}, {c:'text-amber-600',b:'#d97706'}, {c:'text-yellow-400',b:'#facc15'}, {c:'text-yellow-500',b:'#eab308'}, {c:'text-yellow-600',b:'#ca8a04'}, {c:'text-lime-400',b:'#a3e635'}, {c:'text-lime-500',b:'#84cc16'}, {c:'text-lime-600',b:'#65a30d'},
+            // Greens
+            {c:'text-green-400',b:'#4ade80'}, {c:'text-green-500',b:'#22c55e'}, {c:'text-green-600',b:'#16a34a'}, {c:'text-emerald-400',b:'#34d399'}, {c:'text-emerald-500',b:'#10b981'}, {c:'text-emerald-600',b:'#059669'}, {c:'text-teal-400',b:'#2dd4bf'}, {c:'text-teal-500',b:'#14b8a6'}, {c:'text-teal-600',b:'#0d9488'},
+            // Blues
+            {c:'text-cyan-400',b:'#22d3ee'}, {c:'text-cyan-500',b:'#06b6d4'}, {c:'text-cyan-600',b:'#0891b2'}, {c:'text-sky-400',b:'#38bdf8'}, {c:'text-sky-500',b:'#0ea5e9'}, {c:'text-sky-600',b:'#0284c7'}, {c:'text-blue-400',b:'#60a5fa'}, {c:'text-blue-500',b:'#3b82f6'}, {c:'text-blue-600',b:'#2563eb'}, {c:'text-indigo-400',b:'#818cf8'}, {c:'text-indigo-500',b:'#6366f1'}, {c:'text-indigo-600',b:'#4f46e5'},
+            // Purples/Pinks
+            {c:'text-violet-400',b:'#a78bfa'}, {c:'text-violet-500',b:'#8b5cf6'}, {c:'text-violet-600',b:'#7c3aed'}, {c:'text-purple-400',b:'#c084fc'}, {c:'text-purple-500',b:'#a855f7'}, {c:'text-purple-600',b:'#9333ea'}, {c:'text-fuchsia-400',b:'#e879f9'}, {c:'text-fuchsia-500',b:'#d946ef'}, {c:'text-fuchsia-600',b:'#c026d3'}, {c:'text-pink-400',b:'#f472b6'}, {c:'text-pink-500',b:'#ec4899'}, {c:'text-pink-600',b:'#db2777'},
+            // Neutrals/Gold/Others
+            {c:'text-bar-gold',b:'#d4af37'}, {c:'text-slate-400',b:'#94a3b8'}, {c:'text-slate-500',b:'#64748b'}, {c:'text-gray-400',b:'#9ca3af'}, {c:'text-gray-500',b:'#6b7280'}, {c:'text-zinc-400',b:'#a1a1aa'}, {c:'text-zinc-500',b:'#71717a'}, {c:'text-neutral-400',b:'#a3a3a3'}, {c:'text-neutral-500',b:'#737373'}, {c:'text-stone-400',b:'#a8a29e'}, {c:'text-stone-500',b:'#78716c'}, {c:'text-white',b:'#ffffff'}
+        ];
+
+        const defaultCategories = [{ id: 'simple', name: '派對輕鬆調' }, { id: 'advanced', name: '季節 & 進階' }, { id: 'creative', name: '創意實驗' }];
+        const fullDefaultDrinks = [{ id: 1, name: "花生拿鐵", category: "simple", base: "威士忌", type: "Simple Mix", tags: ["甜點酒", "女生最愛"], icon: "fa-mug-hot", color: "text-yellow-600", ingredients: ["花生威士忌 45ml", "冰鮮奶 120ml"], method: "杯中加入大冰塊，依序倒入威士忌與鮮奶，稍微攪拌即可。", highlight: "喝起來像極了液體版的「花生牛奶」。" }, { id: 2, name: "花生可樂", category: "simple", base: "威士忌", type: "Simple Mix", tags: ["實驗性"], icon: "fa-bottle-water", color: "text-red-800", ingredients: ["花生威士忌 45ml", "可樂 補滿", "檸檬片 擠汁"], method: "加入檸檬片擠汁進去，平衡甜膩感。", highlight: "可樂的焦糖感與花生意外地搭。" }, { id: 3, name: "經典自由古巴 2.0", engName: "Cuba Libre", category: "simple", base: "萊姆酒", type: "Build", tags: ["經典"], icon: "fa-glass-whiskey", color: "text-orange-700", ingredients: ["萊姆酒 50ml", "可樂 150ml", "新鮮檸檬角 1/4"], method: "先擠入檸檬汁，再丟檸檬角，最後倒冰塊飲料。", highlight: "大量檸檬是精髓。" }, { id: 4, name: "熱帶鳳梨雷擊", category: "simple", base: "萊姆酒", type: "Build", tags: ["度假風"], icon: "fa-umbrella-beach", color: "text-yellow-400", ingredients: ["萊姆酒 45ml", "鳳梨汁 90ml", "蘇打水"], method: "攪拌均勻即可。", highlight: "滿滿熱帶風情。" }, { id: 5, name: "伯爵琴通寧", engName: "Earl Grey G&T", category: "simple", base: "琴酒", type: "Infuse", tags: ["茶香"], icon: "fa-leaf", color: "text-green-600", ingredients: ["琴酒 45ml", "通寧水 120ml", "伯爵茶包"], method: "茶包浸泡琴酒3分鐘，取出後加冰與通寧水。", highlight: "茶香與杜松子完美結合。" }, { id: 6, name: "蜜蜂膝蓋 (簡易版)", engName: "Bee's Knees", category: "simple", base: "琴酒", type: "Stir", tags: ["酸甜"], icon: "fa-lemon", color: "text-yellow-300", ingredients: ["琴酒 50ml", "蜂蜜水 20ml", "檸檬汁 20ml"], method: "攪拌至蜂蜜融化。", highlight: "酸甜平衡經典調酒。" }, { id: 7, name: "清爽氣泡水蜜桃", category: "simple", base: "伏特加", type: "Build", tags: ["網紅"], icon: "fa-ice-cream", color: "text-pink-400", ingredients: ["伏特加 45ml", "氣泡水", "水蜜桃罐頭"], method: "搗碎果肉，加冰與酒水。", highlight: "視覺效果極佳。" }, { id: 8, name: "莫斯科驢子", engName: "Moscow Mule", category: "simple", base: "伏特加", type: "Build", tags: ["暖身"], icon: "fa-horse", color: "text-gray-400", ingredients: ["伏特加 45ml", "薑汁汽水 120ml", "檸檬半顆"], method: "加入大量冰塊與檸檬汁。", highlight: "薑汁微辣感。" }, { id: 9, name: "椪柑琴酒騷兒", category: "advanced", base: "琴酒", type: "Shake", tags: ["季節限定"], icon: "fa-carrot", color: "text-orange-500", ingredients: ["琴酒 60ml", "椪柑汁 30ml", "檸檬汁 15ml", "楓糖漿 15ml"], method: "加冰搖盪15秒。", highlight: "楓糖木質香氣。" }, { id: 10, name: "冬季柑橘萊姆酒", category: "advanced", base: "萊姆酒", type: "Stir", tags: ["季節限定"], icon: "fa-holly-berry", color: "text-red-500", ingredients: ["萊姆酒 50ml", "椪柑果肉", "焦糖漿 10ml"], method: "搗碎果肉糖漿，加酒攪拌。", highlight: "焦糖與萊姆酒絕配。" }, { id: 11, name: "楓林威士忌", category: "advanced", base: "威士忌", type: "Stir", tags: ["慢飲"], icon: "fa-tree", color: "text-amber-700", ingredients: ["花生威士忌 60ml", "楓糖漿 10ml", "檸檬皮"], method: "大冰塊攪拌30圈。", highlight: "花生鹹甜加楓糖焦香。" }, { id: 12, name: "蜂蜜伏特加騷兒", category: "advanced", base: "伏特加", type: "Shake", tags: ["柔順"], icon: "fa-cloud-meatball", color: "text-yellow-200", ingredients: ["伏特加 60ml", "蜂蜜水 20ml", "檸檬汁 20ml"], method: "加冰搖盪。", highlight: "口感極度柔順。" }, { id: 13, name: "焦糖拿鐵馬丁尼", category: "creative", base: "伏特加", type: "Shake", tags: ["提神"], icon: "fa-coffee", color: "text-amber-900", ingredients: ["伏特加 45ml", "焦糖漿 15ml", "黑咖啡 30ml"], method: "強力搖盪至起泡。", highlight: "派對尾聲提神專用。" }, { id: 14, name: "果糖莫希托", category: "creative", base: "萊姆酒", type: "Stir", tags: ["便利"], icon: "fa-leaf", color: "text-green-400", ingredients: ["萊姆酒 50ml", "果糖 15ml", "檸檬角", "氣泡水"], method: "擠壓檸檬果糖，加酒攪拌補水。", highlight: "快速出杯。" }];
+
+        let drinks = [], categories = [], orders = [], currentFilter = 'all', currentViewingId = null, tempImageBase64 = null, selectedIcon = 'fa-cocktail', selectedColor = 'text-white';
+        let isFabOpen = false;
+
+        // 🟢 Fix: Defined before use
+        function renderOrdersList() {
+            const container = document.getElementById('orders-list-container');
+            const emptyState = document.getElementById('orders-empty-state');
+            container.innerHTML = '';
+            
+            if(orders.length === 0) {
+                emptyState.classList.remove('hidden'); emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden'); emptyState.classList.remove('flex');
+                
+                // Grouping Logic
+                const grouped = {};
+                orders.forEach(o => {
+                    if (!grouped[o.drinkId]) {
+                        grouped[o.drinkId] = { 
+                            drinkId: o.drinkId, 
+                            drinkName: o.drinkName, 
+                            count: 0, 
+                            ids: [], // Track all order IDs in this group
+                            displayTime: o.displayTime
+                        };
+                    }
+                    grouped[o.drinkId].count++;
+                    grouped[o.drinkId].ids.push(o.orderId);
+                });
+
+                // Render Groups
+                Object.values(grouped).forEach(group => {
+                    const item = document.createElement('div');
+                    item.className = 'flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 cursor-pointer group transition-all mb-2';
+                    item.onclick = () => openGroupOrderCheck(group.drinkId); // Pass drinkId to find info
+                    
+                    item.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-bar-gray border border-white/10 flex items-center justify-center text-xl shadow-inner font-bold text-bar-gold">
+                                x${group.count}
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold flex items-center gap-2">
+                                    ${group.drinkName} 
+                                </h4>
+                                <p class="text-xs text-gray-500">最新點單: ${group.displayTime}</p>
+                            </div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full border border-gray-600 flex items-center justify-center group-hover:bg-green-500/20 group-hover:border-green-500 transition-all text-gray-500 group-hover:text-green-500">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
+        }
+
+        // 🟢 Fix: Defined before use
+        function updateOrderBadges() { 
+            const count = orders.length; 
+            const mainBadge = document.getElementById('order-count-badge-main'); 
+            const menuBadge = document.getElementById('order-count-badge-menu'); 
+            [mainBadge, menuBadge].forEach(b => { 
+                b.textContent = count; 
+                if(count > 0) { b.classList.remove('hidden'); b.classList.add('animate-bounce'); setTimeout(()=>b.classList.remove('animate-bounce'), 1000); } 
+                else b.classList.add('hidden'); 
+            }); 
+        }
+
+        const STORAGE_KEY_DRINKS = 'binbar_data_v1';
+        const STORAGE_KEY_CATS = 'binbar_categories_v1';
+        const STORAGE_KEY_ORDERS = 'binbar_orders_v1';
+
+        function init() {
+            let storedDrinks = localStorage.getItem(STORAGE_KEY_DRINKS);
+            if (!storedDrinks) {
+                const oldKeyData = localStorage.getItem('zongbin_drinks_local');
+                if (oldKeyData) { storedDrinks = oldKeyData; console.log("Migrating data from old version..."); }
+            }
+            if (storedDrinks) {
+                try {
+                    drinks = JSON.parse(storedDrinks);
+                    if (!Array.isArray(drinks)) throw new Error("Format error");
+                } catch(e) { console.error("Data load error", e); drinks = []; }
+            }
+            if (!drinks || drinks.length === 0) { drinks = JSON.parse(JSON.stringify(fullDefaultDrinks)); saveData(); }
+
+            const storedCats = localStorage.getItem(STORAGE_KEY_CATS);
+            if (storedCats) { categories = JSON.parse(storedCats); } 
+            else { categories = JSON.parse(JSON.stringify(defaultCategories)); saveCategories(); }
+
+            const storedOrders = localStorage.getItem(STORAGE_KEY_ORDERS);
+            if(storedOrders) { orders = JSON.parse(storedOrders); }
+
+            // Profile removed, no need to load
+            
+            renderFilters();
+            renderDrinks();
+            updateOrderBadges();
+        }
+
+        function saveData() {
+            try { localStorage.setItem(STORAGE_KEY_DRINKS, JSON.stringify(drinks)); renderDrinks(); showToast('已儲存！'); } 
+            catch(e) { if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { alert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); } else { console.error("Save error:", e); alert('儲存發生錯誤。'); } }
+        }
+        function saveCategories() { localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories)); renderFilters(); renderCategoryEditorList(); }
+        function saveOrders() { localStorage.setItem(STORAGE_KEY_ORDERS, JSON.stringify(orders)); updateOrderBadges(); renderOrdersList(); }
+
+        function renderFilters() {
+            const container = document.getElementById('filter-container');
+            if(!container) return;
+            let html = `<button onclick="filterDrinks('all')" class="filter-btn ${currentFilter === 'all' ? 'active bg-bar-gold text-bar-dark font-bold' : 'bg-bar-gray text-gray-400 border border-white/10'} px-4 py-2 rounded-lg hover:border-bar-gold transition-colors text-xs md:text-sm whitespace-nowrap">全部</button>`;
+            categories.forEach(cat => {
+                const activeClass = currentFilter === cat.id ? 'bg-bar-gold text-bar-dark font-bold' : 'bg-bar-gray text-gray-400 border border-white/10';
+                html += `<button onclick="filterDrinks('${cat.id}')" class="filter-btn ${activeClass} px-4 py-2 rounded-lg hover:border-bar-gold transition-colors text-xs md:text-sm whitespace-nowrap">${cat.name}</button>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderDrinks() {
+            const grid = document.getElementById('drinks-grid');
+            if(!grid) return;
+            grid.innerHTML = '';
+            let filtered = currentFilter === 'all' ? drinks : drinks.filter(d => d.category === currentFilter);
+            filtered.sort((a, b) => b.id - a.id);
+            if (filtered.length === 0) { grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 flex flex-col items-center"><i class="fas fa-glass-whiskey text-4xl mb-3 opacity-30"></i><p>這裡目前空空如也，快去點幾杯來喝吧！</p></div>'; return; }
+            filtered.forEach((drink, index) => {
+                const card = document.createElement('div');
+                card.className = `drink-card glass-panel rounded-xl cursor-pointer animate-pop overflow-hidden flex flex-col h-full relative group`;
+                card.style.animationDelay = `${Math.min(index * 50, 500)}ms`;
+                card.onclick = () => openMenuDetail(drink.id);
+                let badgeClass = drink.type === 'Shake' ? 'tag-shake' : (['Stir', 'Build'].includes(drink.type) ? 'tag-stir' : 'tag-simple');
+                let visualContent = drink.image ? `<img src="${drink.image}" class="card-img-cover" alt="${drink.name}">` : `<div class="flex justify-between items-start mb-3 pt-5 px-5"><span class="tag-pill ${badgeClass}">${drink.type}</span><i class="fas ${drink.icon || 'fa-cocktail'} ${drink.color || 'text-bar-gold'} text-2xl opacity-80"></i></div>`;
+                let pillOverlay = drink.image ? `<span class="absolute top-3 left-3 tag-pill ${badgeClass} shadow-md z-10">${drink.type}</span>` : '';
+                card.innerHTML = `<div class="relative">${pillOverlay}${visualContent}</div><div class="px-5 pb-5 flex-1 flex flex-col relative"><h3 class="text-xl font-bold text-white mb-1 pr-8">${drink.name}</h3><p class="text-xs text-bar-gold uppercase tracking-wider mb-4 truncate">${drink.engName || drink.base}</p><div class="flex flex-wrap gap-2 mt-auto">${(drink.tags || []).map(tag => `<span class="text-xs text-gray-400 bg-black/30 px-2 py-1 rounded border border-white/5">#${tag}</span>`).join('')}</div><button onclick="event.stopPropagation(); placeOrder(${drink.id}, '${drink.name}')" class="absolute bottom-3 right-3 w-10 h-10 bg-white/10 hover:bg-accent-blue hover:text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-lg z-20 active:scale-95" title="點這杯"><i class="fas fa-plus"></i></button></div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterDrinks(cat) { currentFilter = cat; renderFilters(); renderDrinks(); };
+        
+        function placeOrder(drinkId, drinkName) {
+            const order = {
+                orderId: Date.now(),
+                drinkId: drinkId,
+                drinkName: drinkName,
+                // Removed username logic
+                ts: Date.now(),
+                displayTime: new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
+            };
+            orders.push(order);
+            saveOrders();
+            showToast(`已點單：${drinkName}`);
+        }
+
+        function placeOrderFromModal() { if(!currentViewingId) return; const drink = drinks.find(d => d.id === currentViewingId); if(drink) { placeOrder(drink.id, drink.name); closeViewModal(); } }
+        
+        // Modified to handle single item removal from grouped list
+        function finishGroupOrder(drinkId) {
+            // Find the oldest order for this drinkId
+            const orderIndex = orders.findIndex(o => o.drinkId == drinkId);
+            
+            if (orderIndex !== -1) {
+                // Remove one instance
+                orders.splice(orderIndex, 1);
+                saveOrders();
+                
+                // Check if any remain
+                const remaining = orders.filter(o => o.drinkId == drinkId).length;
+                if (remaining === 0) {
+                    showToast('已全數出單！');
+                    closeViewModal(); // Close if no more
+                } else {
+                    showToast(`出單成功！剩餘 ${remaining} 杯`);
+                    // Don't close, user might want to finish more
+                }
+            } else {
+                closeViewModal();
+            }
+        }
+
+        function openMenuDetail(id) { currentViewingId = id; const drink = drinks.find(d => d.id === id); if(!drink) return; updateModalContent(drink); const footer = document.getElementById('view-modal-footer'); footer.innerHTML = `<div class="flex justify-between gap-3 items-center w-full"><div class="flex gap-2"><button onclick="confirmDelete()" class="px-3 py-2 rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 text-sm font-bold transition-colors"><i class="fas fa-trash-alt"></i></button><button onclick="editCurrentDrink()" class="px-3 py-2 rounded-lg border border-white/10 text-gray-300 hover:bg-white/10 text-sm font-bold transition-colors"><i class="fas fa-pen"></i></button></div><button onclick="placeOrderFromModal()" class="flex-1 ml-2 px-4 py-2 rounded-lg bg-accent-blue text-white font-bold hover:bg-blue-400 shadow-lg transition-colors flex items-center justify-center gap-2"><i class="fas fa-plus-circle"></i> 我要點這杯</button></div>`; const m = document.getElementById('view-modal'); m.classList.remove('hidden'); setTimeout(() => m.classList.remove('opacity-0'), 10); }
+        
+        function openGroupOrderCheck(drinkId) {
+             const drink = drinks.find(d => d.id == drinkId); // Loose equality for ID string/int match
+             if (!drink) {
+                 if(confirm("原始酒譜已刪除，是否清除此類訂單？")) {
+                     orders = orders.filter(o => o.drinkId != drinkId);
+                     saveOrders();
+                 }
+                 return;
+             }
+ 
+             updateModalContent(drink);
+ 
+             // Footer for Group Order Execution
+             const footer = document.getElementById('view-modal-footer');
+             footer.innerHTML = `
+                 <button onclick="finishGroupOrder('${drinkId}')" class="w-full px-4 py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-500 shadow-lg transition-colors flex items-center justify-center gap-2 text-lg animate-pulse">
+                     <i class="fas fa-check-circle"></i> 製作完成 / 出單 (1杯)
+                 </button>
+             `;
+ 
+             closeOrdersList(); 
+             const m = document.getElementById('view-modal');
+             m.classList.remove('hidden'); setTimeout(() => m.classList.remove('opacity-0'), 10);
+        }
+
+        function updateModalContent(drink) { document.getElementById('view-title').textContent = drink.name; const header = document.getElementById('view-header'); if (drink.image) { header.style.backgroundImage = `url('${drink.image}')`; header.classList.remove('bg-gray-800'); } else { header.style.backgroundImage = 'none'; header.classList.add('bg-gray-800'); } document.getElementById('view-ingredients').innerHTML = (drink.ingredients || []).map(ing => `<li class="flex justify-between border-b border-white/5 pb-1"><span>${ing}</span><i class="fas fa-check text-bar-gold/50 text-xs"></i></li>`).join(''); document.getElementById('view-method').textContent = drink.method || ''; document.getElementById('view-highlight').textContent = drink.highlight || ''; }
+        function closeViewModal() { const m = document.getElementById('view-modal'); m.classList.add('opacity-0'); setTimeout(() => m.classList.add('hidden'), 300); }
+
+        function saveDrink() { 
+            const name = document.getElementById('inp-name').value.trim(); 
+            if(!name) return alert('請輸入酒名'); 
+            const catEl = document.querySelector('input[name="cat"]:checked'); 
+            if(!catEl) return alert('請選擇分類'); 
+            const category = catEl.value; 
+            const editId = document.getElementById('edit-id').value; 
+            
+            let finalImage = tempImageBase64;
+            if (editId && !finalImage) {
+                const existing = drinks.find(d => d.id == editId);
+                if(existing) finalImage = existing.image;
+            }
+
+            const newDrink = { id: editId ? parseInt(editId) : Date.now(), name, engName: document.getElementById('inp-engname').value.trim(), base: document.getElementById('inp-base').value, type: document.getElementById('inp-type').value, category, ingredients: document.getElementById('inp-ingredients').value.split('\n').filter(l=>l.trim()), method: document.getElementById('inp-method').value, highlight: document.getElementById('inp-highlight').value, tags: document.getElementById('inp-tags').value.split(',').map(t=>t.trim()).filter(t=>t), icon: selectedIcon, color: selectedColor, image: finalImage }; 
+            
+            if(editId) { 
+                const idx = drinks.findIndex(d => d.id == editId); 
+                if(idx !== -1) drinks[idx] = newDrink; 
+            } else { 
+                drinks.push(newDrink); 
+            } 
+            saveData(); 
+            closeEditor(); 
+        }
+        
+        function confirmDelete() { if(confirm('確定要刪除這杯調酒嗎？')) { if(currentViewingId) { drinks = drinks.filter(d => d.id !== currentViewingId); saveData(); closeViewModal(); } } }
+        function addNewCategory() { const val = document.getElementById('new-cat-input').value.trim(); if(!val) return; categories.push({ id: 'cat_' + Date.now(), name: val, order: Date.now() }); saveCategories(); document.getElementById('new-cat-input').value = ''; }
+        function deleteCategory(id) { if(categories.length <= 1) return alert("請至少保留一個分類"); if(confirm('確定刪除分類？')) { categories = categories.filter(c => c.id !== id); saveCategories(); } }
+
+        function toggleFab() { const menu = document.getElementById('fab-menu'); const mainBtn = document.getElementById('fab-main-btn'); const icon = document.getElementById('fab-icon'); isFabOpen = !isFabOpen; if (isFabOpen) { menu.classList.add('fab-menu-open'); mainBtn.classList.add('active'); icon.classList.remove('fa-plus'); icon.classList.add('fa-times'); } else { menu.classList.remove('fab-menu-open'); mainBtn.classList.remove('active'); icon.classList.remove('fa-times'); icon.classList.add('fa-plus'); } }
+        function openOrdersList() { toggleFab(); document.getElementById('orders-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('orders-modal').classList.remove('opacity-0'), 10); renderOrdersList(); }
+        function closeOrdersList() { const m = document.getElementById('orders-modal'); m.classList.add('opacity-0'); setTimeout(() => m.classList.add('hidden'), 300); }
+        function openEditor(isEdit = false) { if(isFabOpen) toggleFab(); const titleEl = document.getElementById('editor-title'); const editIdInput = document.getElementById('edit-id'); const imgPreview = document.getElementById('img-preview'); const clearBtn = document.getElementById('clear-img-btn'); document.getElementById('inp-name').value = ''; document.getElementById('inp-engname').value = ''; document.getElementById('inp-ingredients').value = ''; document.getElementById('inp-method').value = ''; document.getElementById('inp-highlight').value = ''; document.getElementById('inp-tags').value = ''; document.getElementById('img-upload').value = ''; tempImageBase64 = null; imgPreview.src = ''; imgPreview.classList.add('hidden'); clearBtn.classList.add('hidden'); selectedIcon = 'fa-cocktail'; selectedColor = 'text-white'; renderCategoryEditorList(); if (isEdit && currentViewingId) { const drink = drinks.find(d => d.id === currentViewingId); closeViewModal(); titleEl.textContent = '編輯調酒'; editIdInput.value = drink.id; document.getElementById('inp-name').value = drink.name; document.getElementById('inp-engname').value = drink.engName || ''; document.getElementById('inp-base').value = drink.base; document.getElementById('inp-type').value = drink.type; document.getElementById('inp-ingredients').value = (drink.ingredients || []).join('\n'); document.getElementById('inp-method').value = drink.method; document.getElementById('inp-highlight').value = drink.highlight; document.getElementById('inp-tags').value = (drink.tags || []).join(', '); setTimeout(() => { const r = document.querySelector(`input[name="cat"][value="${drink.category}"]`); if(r) r.checked = true; }, 100); selectedIcon = drink.icon || 'fa-cocktail'; selectedColor = drink.color || 'text-white'; if (drink.image) { tempImageBase64 = drink.image; imgPreview.src = drink.image; imgPreview.classList.remove('hidden'); clearBtn.classList.remove('hidden'); } } else { titleEl.textContent = '新增調酒'; editIdInput.value = ''; setTimeout(() => { const r = document.querySelector('input[name="cat"]'); if(r) r.checked = true; }, 100); } renderIconSelector(); renderColorSelector(); updatePreviewIcon(); const m = document.getElementById('editor-modal'); m.classList.remove('hidden'); setTimeout(() => m.classList.remove('opacity-0'), 10); }
+        function closeEditor() { const m = document.getElementById('editor-modal'); m.classList.add('opacity-0'); setTimeout(() => m.classList.add('hidden'), 300); }
+        function editCurrentDrink() { openEditor(true); }
+        function pickRandom() { const d = drinks[Math.floor(Math.random() * drinks.length)]; if(d) openMenuDetail(d.id); }
+        function renderCategoryEditorList() { document.getElementById('category-editor-list').innerHTML = categories.map(cat => `<div class="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 group"><label class="flex items-center gap-2 cursor-pointer text-sm text-gray-300 flex-1"><input type="radio" name="cat" value="${cat.id}" class="accent-bar-gold"> ${cat.name}</label><button onclick="deleteCategory('${cat.id}')" class="text-gray-500 hover:text-red-400 opacity-30 group-hover:opacity-100 p-1"><i class="fas fa-times"></i></button></div>`).join(''); }
+        function renderIconSelector() { document.getElementById('icon-selector').innerHTML = iconList.map(i => `<div class="icon-option ${i === selectedIcon ? 'selected' : ''}" onclick="selectIcon('${i}')"><i class="fas ${i}"></i></div>`).join(''); }
+        function renderColorSelector() { document.getElementById('color-selector').innerHTML = colorList.map(c => `<div class="color-option ${c.c === selectedColor ? 'selected' : ''}" style="background-color: ${c.b}" onclick="selectColor('${c.c}')"></div>`).join(''); }
+        function selectIcon(i) { selectedIcon = i; renderIconSelector(); updatePreviewIcon(); }
+        function selectColor(c) { selectedColor = c; renderColorSelector(); updatePreviewIcon(); }
+        function updatePreviewIcon() { document.getElementById('preview-icon-display').className = `fas ${selectedIcon} text-3xl transition-colors ${selectedColor}`; }
+        
+        function handleImageUpload(input) { 
+            if(input.files[0]) { 
+                const file = input.files[0]; 
+                // Increased limit slightly, but still warn.
+                if(file.size > 800 * 1024) return alert("圖片太大囉！請使用小於 800KB 的圖片以免存檔失敗。"); 
+                const reader = new FileReader(); 
+                reader.onload = e => { 
+                    tempImageBase64 = e.target.result; 
+                    document.getElementById('img-preview').src = tempImageBase64; 
+                    document.getElementById('img-preview').classList.remove('hidden'); 
+                    document.getElementById('clear-img-btn').classList.remove('hidden'); 
+                }; 
+                reader.readAsDataURL(file); 
+            } 
+        }
+        function clearImage() { tempImageBase64 = null; document.getElementById('img-upload').value=''; document.getElementById('img-preview').classList.add('hidden'); document.getElementById('clear-img-btn').classList.add('hidden'); }
+        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'show'; setTimeout(() => t.className = '', 3000); }
+        function updateOrderBadges() { const count = orders.length; const mainBadge = document.getElementById('order-count-badge-main'); const menuBadge = document.getElementById('order-count-badge-menu'); [mainBadge, menuBadge].forEach(b => { b.textContent = count; if(count > 0) { b.classList.remove('hidden'); b.classList.add('animate-bounce'); setTimeout(()=>b.classList.remove('animate-bounce'), 1000); } else b.classList.add('hidden'); }); }
+
+        init();
+    </script>
+</body>
+</html>
