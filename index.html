@@ -161,13 +161,11 @@
             <div class="flex items-center gap-4 cursor-pointer group" onclick="location.reload()">
                 <!-- Logo Image with Fallback SVG -->
                 <div class="relative h-14 w-auto flex-shrink-0 py-1">
-                    <!-- 1. Try Image First -->
                     <img src="logo.png" 
                          alt="彬Bar Logo" 
                          class="h-full w-auto object-contain hover:scale-105 transition-transform duration-300"
                          onerror="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden');"> 
                     
-                    <!-- 2. Fallback SVG (Hidden by default, shown if image fails) -->
                     <svg id="fallback-logo" viewBox="0 0 140 100" class="h-full w-auto hidden transition-all duration-300 transform group-hover:scale-105">
                         <defs>
                             <linearGradient id="logo-gold" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -178,21 +176,18 @@
                             </linearGradient>
                         </defs>
                         <g>
-                            <!-- Left Wood (T-Shape) -->
                             <g transform="translate(10, 10)">
                                 <path d="M0,5 L40,5" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
                                 <path d="M20,5 L20,55" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
                                 <path d="M20,55 Q10,70 5,85" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
                                 <path d="M20,55 Q30,70 35,85" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
                             </g>
-                            <!-- Middle Wood (T-Shape) -->
                             <g transform="translate(55, 10)">
                                 <path d="M0,5 L40,5" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
                                 <path d="M20,5 L20,55" stroke="url(#logo-gold)" stroke-width="4.5" stroke-linecap="round" fill="none" />
                                 <path d="M20,55 Q10,70 5,85" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
                                 <path d="M20,55 Q30,70 35,85" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
                             </g>
-                            <!-- Right Shan -->
                             <g transform="translate(100, 20)">
                                 <path d="M25,-5 C15,0 5,15 -20,30" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
                                 <path d="M30,20 C15,25 5,35 -20,55" stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" fill="none" />
@@ -202,17 +197,14 @@
                     </svg>
                 </div>
                 
-                <!-- Subtitle Divider -->
                 <div class="h-8 border-l border-white/20"></div>
 
-                <!-- Subtitle -->
                 <div class="flex flex-col justify-center">
                     <span class="text-[10px] text-bar-gold tracking-[0.3em] uppercase font-bold leading-none">Private</span>
                     <span class="text-[10px] text-gray-400 tracking-[0.3em] uppercase leading-none mt-1 group-hover:text-white transition-colors">Bar</span>
                 </div>
             </div>
             
-            <!-- Top Random Button -->
             <button onclick="pickRandom()" class="bg-bar-gold text-bar-dark px-3 py-1.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2 shadow-lg">
                 <i class="fas fa-dice"></i> <span class="hidden sm:inline">今晚喝什麼?</span><span class="sm:hidden">手氣</span>
             </button>
@@ -221,7 +213,6 @@
 
     <!-- Hero Section -->
     <header class="mt-24 mb-8 px-4 text-center">
-        <!-- New Bar Graphic Header -->
         <div class="w-full max-w-md mx-auto mb-6 opacity-90 flex justify-center">
             <svg viewBox="0 0 320 80" class="w-full h-auto filter drop-shadow-[0_0_15px_rgba(212,175,55,0.15)] max-w-[320px]">
                 <defs>
@@ -261,7 +252,6 @@
     <!-- FAB -->
     <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-4" id="fab-container">
         <div id="fab-menu" class="flex flex-col items-end gap-3 mb-2">
-            <!-- Order List Btn -->
             <div class="fab-menu-item flex items-center gap-3 cursor-pointer group" onclick="openOrdersList()">
                 <span class="bg-white text-gray-800 px-3 py-1 rounded-lg text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">已點清單</span>
                 <button class="w-12 h-12 bg-accent-blue text-white rounded-full shadow-lg hover:bg-blue-400 transition-colors flex items-center justify-center relative">
@@ -269,7 +259,6 @@
                     <span id="order-count-badge-menu" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold border-2 border-bar-dark">0</span>
                 </button>
             </div>
-            <!-- Add Drink Btn -->
             <div class="fab-menu-item flex items-center gap-3 cursor-pointer group" onclick="openEditor()">
                 <span class="bg-white text-gray-800 px-3 py-1 rounded-lg text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">新增調酒</span>
                 <button class="w-12 h-12 bg-white text-bar-dark rounded-full shadow-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
@@ -330,13 +319,7 @@
             <div class="p-4 border-t border-white/10 flex justify-end gap-3 bg-bar-gray rounded-b-2xl"><button onclick="closeEditor()" class="px-5 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-gray-300">取消</button><button onclick="saveDrink()" class="px-6 py-2 rounded-lg bg-bar-gold text-bar-dark font-bold hover:bg-yellow-400 shadow-lg">儲存</button></div>
         </div>
     </div>
-
-    <div id="login-modal" class="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-bar-gold/30 p-8 text-center">
-            <div class="mb-6"><div class="w-16 h-16 bg-bar-gold rounded-full flex items-center justify-center mx-auto mb-3 text-bar-dark text-2xl"><i class="fas fa-glass-cheers"></i></div><h2 class="text-2xl font-bold text-white mb-1">入座確認</h2><p class="text-gray-400 text-sm">請輸入您的稱呼，方便標記點單</p></div>
-            <div class="space-y-4"><div><label class="form-label text-left">您的暱稱</label><input type="text" id="login-name" class="form-input text-center text-lg py-3" placeholder="例如：宗彬" maxlength="8"></div><div><label class="form-label text-left mb-2">選擇頭像</label><div class="flex justify-center gap-3 mb-2"><div class="avatar-option selected" onclick="selectAvatar('🐱')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐱</div></div><div class="avatar-option" onclick="selectAvatar('🐶')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐶</div></div><div class="avatar-option" onclick="selectAvatar('🐻')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐻</div></div><div class="avatar-option" onclick="selectAvatar('🐯')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐯</div></div></div><div class="flex justify-center gap-3"><div class="avatar-option" onclick="selectAvatar('🐸')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐸</div></div><div class="avatar-option" onclick="selectAvatar('🐷')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">🐷</div></div><div class="avatar-option" onclick="selectAvatar('😎')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">😎</div></div><div class="avatar-option" onclick="selectAvatar('👻')"><div class="flex items-center justify-center h-full text-3xl bg-gray-700">👻</div></div></div></div><button onclick="joinGroup()" class="w-full bg-bar-gold text-bar-dark font-bold py-3 rounded-lg shadow-lg hover:bg-yellow-400 transition-transform active:scale-95 mt-4">確認入座</button></div>
-        </div>
-    </div>
+    
     <div id="toast">Order Added!</div>
 
     <script>
@@ -374,13 +357,108 @@
             {c:'text-bar-gold',b:'#d4af37'}, {c:'text-slate-400',b:'#94a3b8'}, {c:'text-slate-500',b:'#64748b'}, {c:'text-gray-400',b:'#9ca3af'}, {c:'text-gray-500',b:'#6b7280'}, {c:'text-zinc-400',b:'#a1a1aa'}, {c:'text-zinc-500',b:'#71717a'}, {c:'text-neutral-400',b:'#a3a3a3'}, {c:'text-neutral-500',b:'#737373'}, {c:'text-stone-400',b:'#a8a29e'}, {c:'text-stone-500',b:'#78716c'}, {c:'text-white',b:'#ffffff'}
         ];
 
-        const defaultCategories = [{ id: 'simple', name: '派對輕鬆調' }, { id: 'advanced', name: '季節 & 進階' }, { id: 'creative', name: '創意實驗' }];
-        const fullDefaultDrinks = [{ id: 1, name: "花生拿鐵", category: "simple", base: "威士忌", type: "Simple Mix", tags: ["甜點酒", "女生最愛"], icon: "fa-mug-hot", color: "text-yellow-600", ingredients: ["花生威士忌 45ml", "冰鮮奶 120ml"], method: "杯中加入大冰塊，依序倒入威士忌與鮮奶，稍微攪拌即可。", highlight: "喝起來像極了液體版的「花生牛奶」。" }, { id: 2, name: "花生可樂", category: "simple", base: "威士忌", type: "Simple Mix", tags: ["實驗性"], icon: "fa-bottle-water", color: "text-red-800", ingredients: ["花生威士忌 45ml", "可樂 補滿", "檸檬片 擠汁"], method: "加入檸檬片擠汁進去，平衡甜膩感。", highlight: "可樂的焦糖感與花生意外地搭。" }, { id: 3, name: "經典自由古巴 2.0", engName: "Cuba Libre", category: "simple", base: "萊姆酒", type: "Build", tags: ["經典"], icon: "fa-glass-whiskey", color: "text-orange-700", ingredients: ["萊姆酒 50ml", "可樂 150ml", "新鮮檸檬角 1/4"], method: "先擠入檸檬汁，再丟檸檬角，最後倒冰塊飲料。", highlight: "大量檸檬是精髓。" }, { id: 4, name: "熱帶鳳梨雷擊", category: "simple", base: "萊姆酒", type: "Build", tags: ["度假風"], icon: "fa-umbrella-beach", color: "text-yellow-400", ingredients: ["萊姆酒 45ml", "鳳梨汁 90ml", "蘇打水"], method: "攪拌均勻即可。", highlight: "滿滿熱帶風情。" }, { id: 5, name: "伯爵琴通寧", engName: "Earl Grey G&T", category: "simple", base: "琴酒", type: "Infuse", tags: ["茶香"], icon: "fa-leaf", color: "text-green-600", ingredients: ["琴酒 45ml", "通寧水 120ml", "伯爵茶包"], method: "茶包浸泡琴酒3分鐘，取出後加冰與通寧水。", highlight: "茶香與杜松子完美結合。" }, { id: 6, name: "蜜蜂膝蓋 (簡易版)", engName: "Bee's Knees", category: "simple", base: "琴酒", type: "Stir", tags: ["酸甜"], icon: "fa-lemon", color: "text-yellow-300", ingredients: ["琴酒 50ml", "蜂蜜水 20ml", "檸檬汁 20ml"], method: "攪拌至蜂蜜融化。", highlight: "酸甜平衡經典調酒。" }, { id: 7, name: "清爽氣泡水蜜桃", category: "simple", base: "伏特加", type: "Build", tags: ["網紅"], icon: "fa-ice-cream", color: "text-pink-400", ingredients: ["伏特加 45ml", "氣泡水", "水蜜桃罐頭"], method: "搗碎果肉，加冰與酒水。", highlight: "視覺效果極佳。" }, { id: 8, name: "莫斯科驢子", engName: "Moscow Mule", category: "simple", base: "伏特加", type: "Build", tags: ["暖身"], icon: "fa-horse", color: "text-gray-400", ingredients: ["伏特加 45ml", "薑汁汽水 120ml", "檸檬半顆"], method: "加入大量冰塊與檸檬汁。", highlight: "薑汁微辣感。" }, { id: 9, name: "椪柑琴酒騷兒", category: "advanced", base: "琴酒", type: "Shake", tags: ["季節限定"], icon: "fa-carrot", color: "text-orange-500", ingredients: ["琴酒 60ml", "椪柑汁 30ml", "檸檬汁 15ml", "楓糖漿 15ml"], method: "加冰搖盪15秒。", highlight: "楓糖木質香氣。" }, { id: 10, name: "冬季柑橘萊姆酒", category: "advanced", base: "萊姆酒", type: "Stir", tags: ["季節限定"], icon: "fa-holly-berry", color: "text-red-500", ingredients: ["萊姆酒 50ml", "椪柑果肉", "焦糖漿 10ml"], method: "搗碎果肉糖漿，加酒攪拌。", highlight: "焦糖與萊姆酒絕配。" }, { id: 11, name: "楓林威士忌", category: "advanced", base: "威士忌", type: "Stir", tags: ["慢飲"], icon: "fa-tree", color: "text-amber-700", ingredients: ["花生威士忌 60ml", "楓糖漿 10ml", "檸檬皮"], method: "大冰塊攪拌30圈。", highlight: "花生鹹甜加楓糖焦香。" }, { id: 12, name: "蜂蜜伏特加騷兒", category: "advanced", base: "伏特加", type: "Shake", tags: ["柔順"], icon: "fa-cloud-meatball", color: "text-yellow-200", ingredients: ["伏特加 60ml", "蜂蜜水 20ml", "檸檬汁 20ml"], method: "加冰搖盪。", highlight: "口感極度柔順。" }, { id: 13, name: "焦糖拿鐵馬丁尼", category: "creative", base: "伏特加", type: "Shake", tags: ["提神"], icon: "fa-coffee", color: "text-amber-900", ingredients: ["伏特加 45ml", "焦糖漿 15ml", "黑咖啡 30ml"], method: "強力搖盪至起泡。", highlight: "派對尾聲提神專用。" }, { id: 14, name: "果糖莫希托", category: "creative", base: "萊姆酒", type: "Stir", tags: ["便利"], icon: "fa-leaf", color: "text-green-400", ingredients: ["萊姆酒 50ml", "果糖 15ml", "檸檬角", "氣泡水"], method: "擠壓檸檬果糖，加酒攪拌補水。", highlight: "快速出杯。" }];
+        const defaultCategories = [
+            { id: 'simple', name: '派對輕鬆調' }, 
+            { id: 'classic', name: '經典調酒' }, 
+            { id: 'advanced', name: '季節 & 進階' }, 
+            { id: 'creative', name: '創意實驗' }
+        ];
+        
+        const fullDefaultDrinks = [
+            // 原有的派對輕鬆調、季節進階等 14 杯
+            { id: 1, name: "花生拿鐵", category: "simple", base: "威士忌", type: "Simple Mix", tags: ["甜點酒", "女生最愛"], icon: "fa-mug-hot", color: "text-yellow-600", ingredients: ["花生威士忌 45ml", "冰鮮奶 120ml"], method: "杯中加入大冰塊，依序倒入威士忌與鮮奶，稍微攪拌即可。", highlight: "喝起來像極了液體版的「花生牛奶」。" },
+            { id: 2, name: "花生可樂", category: "simple", base: "威士忌", type: "Simple Mix", tags: ["實驗性"], icon: "fa-bottle-water", color: "text-red-800", ingredients: ["花生威士忌 45ml", "可樂 補滿", "檸檬片 擠汁"], method: "加入檸檬片擠汁進去，平衡甜膩感。", highlight: "可樂的焦糖感與花生意外地搭。" },
+            { id: 3, name: "經典自由古巴 2.0", engName: "Cuba Libre", category: "simple", base: "萊姆酒", type: "Build", tags: ["經典"], icon: "fa-glass-whiskey", color: "text-orange-700", ingredients: ["萊姆酒 50ml", "可樂 150ml", "新鮮檸檬角 1/4"], method: "先擠入檸檬汁，再丟檸檬角，最後倒冰塊飲料。", highlight: "大量檸檬是精髓。" },
+            { id: 4, name: "熱帶鳳梨雷擊", category: "simple", base: "萊姆酒", type: "Build", tags: ["度假風"], icon: "fa-umbrella-beach", color: "text-yellow-400", ingredients: ["萊姆酒 45ml", "鳳梨汁 90ml", "蘇打水"], method: "攪拌均勻即可。", highlight: "滿滿熱帶風情。" },
+            { id: 5, name: "伯爵琴通寧", engName: "Earl Grey G&T", category: "simple", base: "琴酒", type: "Infuse", tags: ["茶香"], icon: "fa-leaf", color: "text-green-600", ingredients: ["琴酒 45ml", "通寧水 120ml", "伯爵茶包"], method: "茶包浸泡琴酒3分鐘，取出後加冰與通寧水。", highlight: "茶香與杜松子完美結合。" },
+            { id: 6, name: "蜜蜂膝蓋 (簡易版)", engName: "Bee's Knees", category: "simple", base: "琴酒", type: "Stir", tags: ["酸甜"], icon: "fa-lemon", color: "text-yellow-300", ingredients: ["琴酒 50ml", "蜂蜜水 20ml", "檸檬汁 20ml"], method: "攪拌至蜂蜜融化。", highlight: "酸甜平衡經典調酒。" },
+            { id: 7, name: "清爽氣泡水蜜桃", category: "simple", base: "伏特加", type: "Build", tags: ["網紅"], icon: "fa-ice-cream", color: "text-pink-400", ingredients: ["伏特加 45ml", "氣泡水", "水蜜桃罐頭"], method: "搗碎果肉，加冰與酒水。", highlight: "視覺效果極佳。" },
+            { id: 8, name: "莫斯科驢子", engName: "Moscow Mule", category: "simple", base: "伏特加", type: "Build", tags: ["暖身"], icon: "fa-horse", color: "text-gray-400", ingredients: ["伏特加 45ml", "薑汁汽水 120ml", "檸檬半顆"], method: "加入大量冰塊與檸檬汁。", highlight: "薑汁微辣感。" },
+            { id: 9, name: "椪柑琴酒騷兒", category: "advanced", base: "琴酒", type: "Shake", tags: ["季節限定"], icon: "fa-carrot", color: "text-orange-500", ingredients: ["琴酒 60ml", "椪柑汁 30ml", "檸檬汁 15ml", "楓糖漿 15ml"], method: "加冰搖盪15秒。", highlight: "楓糖木質香氣。" },
+            { id: 10, name: "冬季柑橘萊姆酒", category: "advanced", base: "萊姆酒", type: "Stir", tags: ["季節限定"], icon: "fa-holly-berry", color: "text-red-500", ingredients: ["萊姆酒 50ml", "椪柑果肉", "焦糖漿 10ml"], method: "搗碎果肉糖漿，加酒攪拌。", highlight: "焦糖與萊姆酒絕配。" },
+            { id: 11, name: "楓林威士忌", category: "advanced", base: "威士忌", type: "Stir", tags: ["慢飲"], icon: "fa-tree", color: "text-amber-700", ingredients: ["花生威士忌 60ml", "楓糖漿 10ml", "檸檬皮"], method: "大冰塊攪拌30圈。", highlight: "花生鹹甜加楓糖焦香。" },
+            { id: 12, name: "蜂蜜伏特加騷兒", category: "advanced", base: "伏特加", type: "Shake", tags: ["柔順"], icon: "fa-cloud-meatball", color: "text-yellow-200", ingredients: ["伏特加 60ml", "蜂蜜水 20ml", "檸檬汁 20ml"], method: "加冰搖盪。", highlight: "口感極度柔順。" },
+            { id: 13, name: "焦糖拿鐵馬丁尼", category: "creative", base: "伏特加", type: "Shake", tags: ["提神"], icon: "fa-coffee", color: "text-amber-900", ingredients: ["伏特加 45ml", "焦糖漿 15ml", "黑咖啡 30ml"], method: "強力搖盪至起泡。", highlight: "派對尾聲提神專用。" },
+            { id: 14, name: "果糖莫希托", category: "creative", base: "萊姆酒", type: "Stir", tags: ["便利"], icon: "fa-leaf", color: "text-green-400", ingredients: ["萊姆酒 50ml", "果糖 15ml", "檸檬角", "氣泡水"], method: "擠壓檸檬果糖，加酒攪拌補水。", highlight: "快速出杯。" },
 
-        let drinks = [], categories = [], orders = [], currentFilter = 'all', currentViewingId = null, tempImageBase64 = null, selectedIcon = 'fa-cocktail', selectedColor = 'text-white';
+            // === 經典調酒 (琴酒系列 11杯) ===
+            { id: 101, name: "拉莫斯琴費茲", engName: "Ramos Gin Fizz", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "費工", "綿密"], icon: "fa-glass-water", color: "text-white", ingredients: ["琴酒 45ml", "檸檬汁 15ml", "萊姆汁 15ml", "糖漿 20ml", "鮮奶油 30ml", "蛋白 1顆", "橙花水 3滴", "蘇打水 補滿"], method: "除蘇打水外所有材料Dry Shake（不加冰搖盪）至起泡，再加冰塊Hard Shake（用力搖盪）至少3-5分鐘。過濾倒入高球杯，最後緩慢倒入蘇打水使泡沫升起。", highlight: "調酒師的夢魘，但有著如舒芙蕾般綿密的完美口感。" },
+            { id: 102, name: "馬丁尼", engName: "Martini", category: "classic", base: "琴酒", type: "Stir", tags: ["經典", "酒感重", "優雅"], icon: "fa-martini-glass", color: "text-white", ingredients: ["琴酒 60ml", "辛口苦艾酒 (Dry Vermouth) 15ml", "橄欖或檸檬皮"], method: "將琴酒與苦艾酒加入混酒杯，加滿冰塊攪拌均勻至冰冷。濾冰倒入馬丁尼杯，以橄欖裝飾。", highlight: "雞尾酒之王，越簡單的材料越考驗功力。" },
+            { id: 103, name: "琴蕾", engName: "Gimlet", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "酸甜", "清爽"], icon: "fa-martini-glass-citrus", color: "text-green-400", ingredients: ["琴酒 60ml", "鮮榨萊姆汁 20ml", "糖漿 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "早期英國水手用來防壞血病的經典配方。" },
+            { id: 104, name: "內格羅尼", engName: "Negroni", category: "classic", base: "琴酒", type: "Stir", tags: ["經典", "苦甜", "開胃"], icon: "fa-glass-whiskey", color: "text-red-500", ingredients: ["琴酒 30ml", "金巴利 (Campari) 30ml", "甜苦艾酒 30ml", "柳橙皮"], method: "將所有酒類倒入加有大冰塊的岩石杯中，均勻攪拌。最後噴灑柳橙皮油並投入杯中。", highlight: "苦中帶甜的成人風味，絕佳的餐前酒。" },
+            { id: 105, name: "湯姆柯林斯", engName: "Tom Collins", category: "classic", base: "琴酒", type: "Build", tags: ["經典", "清爽", "氣泡"], icon: "fa-glass-water", color: "text-yellow-300", ingredients: ["琴酒 45ml", "檸檬汁 30ml", "糖漿 15ml", "蘇打水 補滿"], method: "在高球杯中加入琴酒、檸檬汁與糖漿，加滿冰塊後攪拌，最後補滿蘇打水並輕輕拌勻。", highlight: "歷史悠久的解渴聖品，如同成人的氣泡檸檬水。" },
+            { id: 106, name: "飛行", engName: "Aviation", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "花香", "優雅"], icon: "fa-plane", color: "text-purple-400", ingredients: ["琴酒 45ml", "黑櫻桃利口酒 15ml", "紫羅蘭利口酒 5ml", "檸檬汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入馬丁尼杯。", highlight: "夢幻的淡紫色澤，帶著迷人的紫羅蘭花香。" },
+            { id: 107, name: "法式75", engName: "French 75", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "氣泡", "慶祝"], icon: "fa-champagne-glasses", color: "text-bar-gold", ingredients: ["琴酒 30ml", "檸檬汁 15ml", "糖漿 10ml", "香檳或氣泡酒 補滿"], method: "將琴酒、檸檬汁、糖漿加冰搖盪，濾入香檳杯中，最後補滿香檳，以檸檬皮裝飾。", highlight: "以一戰火炮命名，華麗的外表下藏著強勁的後座力。" },
+            { id: 108, name: "白佳人", engName: "White Lady", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "柑橘", "滑順"], icon: "fa-martini-glass", color: "text-gray-400", ingredients: ["琴酒 45ml", "橙酒 (Cointreau) 15ml", "檸檬汁 15ml", "蛋白 (選配)"], method: "所有材料加冰用力搖盪，若有加蛋白則需先 Dry Shake，濾冰倒入馬丁尼杯。", highlight: "口感輕盈滑順，帶有迷人的柑橘與杜松子香。" },
+            { id: 109, name: "三葉草俱樂部", engName: "Clover Club", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "果香", "綿密"], icon: "fa-leaf", color: "text-pink-500", ingredients: ["琴酒 45ml", "覆盆子糖漿 15ml", "檸檬汁 15ml", "蛋白 1顆"], method: "所有材料先 Dry Shake 起泡，再加入冰塊 Hard Shake，濾冰倒入淺碟香檳杯。", highlight: "迷人的粉紅色澤與濃郁覆盆子香，加上綿密的泡沫。" },
+            { id: 110, name: "新加坡司令", engName: "Singapore Sling", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "熱帶", "果香"], icon: "fa-cocktail", color: "text-rose-500", ingredients: ["琴酒 30ml", "櫻桃利口酒 15ml", "橙酒 7.5ml", "班尼迪克汀 7.5ml", "鳳梨汁 60ml", "檸檬汁 15ml", "石榴糖漿 10ml", "安格斯特拉苦精 1滴"], method: "所有材料加冰用力搖盪，倒入裝滿冰塊的高球杯，最後可補上少許蘇打水。", highlight: "萊佛士酒店的傳奇，層次極為豐富的熱帶經典。" },
+            { id: 111, name: "亡匣喚醒2號", engName: "Corpse Reviver No.2", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "醒酒", "草本"], icon: "fa-skull", color: "text-yellow-300", ingredients: ["琴酒 20ml", "麗葉酒 (Lillet Blanc) 20ml", "橙酒 20ml", "檸檬汁 20ml", "苦艾酒 (Absinthe) 洗杯"], method: "先用少許苦艾酒涮洗馬丁尼杯。其餘材料加冰搖盪均勻，濾入杯中。", highlight: "據說連死人都能喚醒的強烈風味，清爽卻充滿草本層次。" },
+
+            // === 經典調酒 (威士忌系列 11杯) ===
+            { id: 201, name: "老時髦", engName: "Old Fashioned", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "成熟"], icon: "fa-glass-whiskey", color: "text-amber-600", ingredients: ["波本或黑麥威士忌 60ml", "方糖 1顆 (或糖漿 5ml)", "安格斯特拉苦精 2-3滴", "少許水", "柳橙皮與櫻桃"], method: "在岩石杯中將方糖、苦精與少許水搗碎溶解。加入大冰塊與威士忌，攪拌 20-30 圈。噴灑柳橙皮油。", highlight: "最古老的雞尾酒形式，品味威士忌最優雅的姿態。" },
+            { id: 202, name: "曼哈頓", engName: "Manhattan", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "甜美"], icon: "fa-martini-glass", color: "text-red-600", ingredients: ["黑麥威士忌 60ml", "甜苦艾酒 30ml", "安格斯特拉苦精 2滴", "酒漬櫻桃"], method: "將威士忌、甜苦艾酒與苦精加入混酒杯，加滿冰塊攪拌均勻。濾入馬丁尼杯，以櫻桃裝飾。", highlight: "雞尾酒之后，甜苦艾酒的草藥甜味與威士忌完美交融。" },
+            { id: 203, name: "威士忌酸酒", engName: "Whiskey Sour", category: "classic", base: "威士忌", type: "Shake", tags: ["經典", "酸甜", "綿密"], icon: "fa-glass-whiskey", color: "text-yellow-500", ingredients: ["波本威士忌 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆", "安格斯特拉苦精 (裝飾)"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入裝有大冰塊的岩石杯，滴上苦精拉花。", highlight: "酸甜平衡的極致，加入蛋白讓口感如絲綢般滑順。" },
+            { id: 204, name: "薩澤拉克", engName: "Sazerac", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "草本"], icon: "fa-glass-whiskey", color: "text-orange-500", ingredients: ["黑麥威士忌 60ml", "方糖 1顆", "裴喬氏苦精 (Peychaud's) 3滴", "苦艾酒 洗杯", "檸檬皮"], method: "用苦艾酒涮洗一個冰鎮過的岩石杯並倒出。在另一杯中搗碎糖與苦精，加入威士忌與冰塊攪拌。濾入涮過苦艾酒的杯中。", highlight: "紐奧良的官方雞尾酒，帶有獨特的八角與苦艾香氣。" },
+            { id: 205, name: "薄荷茱莉普", engName: "Mint Julep", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "清涼", "薄荷"], icon: "fa-leaf", color: "text-green-500", ingredients: ["波本威士忌 60ml", "新鮮薄荷葉 8-10片", "糖漿 15ml", "大量碎冰"], method: "在杯底輕輕搗壓薄荷葉與糖漿釋放香氣。加入半杯碎冰，倒入波本攪拌。再加滿碎冰堆成雪錐狀。", highlight: "美國南方經典，炎炎夏日的最佳威士忌解藥。" },
+            { id: 206, name: "花花公子", engName: "Boulevardier", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "苦甜", "濃郁"], icon: "fa-glass-whiskey", color: "text-red-500", ingredients: ["波本威士忌 45ml", "金巴利 (Campari) 30ml", "甜苦艾酒 30ml", "柳橙皮"], method: "將所有酒類倒入加有大冰塊的岩石杯中，均勻攪拌。最後噴灑柳橙皮油並投入杯中。", highlight: "可以理解為「威士忌版的內格羅尼」，更具溫暖的木質調。" },
+            { id: 207, name: "生鏽釘", engName: "Rusty Nail", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "香甜", "酒感重"], icon: "fa-glass-whiskey", color: "text-amber-500", ingredients: ["蘇格蘭威士忌 45ml", "杜林標 (Drambuie) 15-20ml", "檸檬皮"], method: "在岩石杯中加入大冰塊，倒入威士忌與杜林標，簡單攪拌幾下即可。", highlight: "蘇格蘭威士忌與蜂蜜香草的完美結合，簡單卻雋永。" },
+            { id: 208, name: "血與沙", engName: "Blood and Sand", category: "classic", base: "威士忌", type: "Shake", tags: ["經典", "果香", "平衡"], icon: "fa-martini-glass", color: "text-rose-600", ingredients: ["蘇格蘭威士忌 20ml", "櫻桃利口酒 20ml", "甜苦艾酒 20ml", "鮮榨柳橙汁 20ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "以1922年同名電影命名，少見將蘇格蘭威士忌與果汁結合的佳作。" },
+            { id: 209, name: "羅伯羅伊", engName: "Rob Roy", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "木質"], icon: "fa-martini-glass", color: "text-amber-700", ingredients: ["蘇格蘭威士忌 60ml", "甜苦艾酒 30ml", "安格斯特拉苦精 2滴"], method: "將所有材料加入混酒杯，加滿冰塊攪拌均勻。濾入馬丁尼杯，以櫻桃裝飾。", highlight: "可以理解為「蘇格蘭威士忌版的曼哈頓」，帶有獨特煙燻泥煤味。" },
+            { id: 210, name: "教父", engName: "Godfather", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "甜美", "酒感重"], icon: "fa-glass-whiskey", color: "text-yellow-600", ingredients: ["蘇格蘭威士忌 45ml", "杏仁利口酒 (Amaretto) 15ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "充滿濃郁的杏仁與烤堅果香氣，如電影教父般沉穩迷人。" },
+            { id: 211, name: "愛爾蘭咖啡", engName: "Irish Coffee", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "熱飲", "咖啡"], icon: "fa-mug-hot", color: "text-stone-500", ingredients: ["愛爾蘭威士忌 45ml", "熱咖啡 120ml", "黑糖 1-2匙", "打發鮮奶油 (浮於表面)"], method: "在溫熱的高腳玻璃杯中加入糖與熱咖啡攪拌溶解，倒入威士忌。最後將打發但會流動的鮮奶油鋪在最上層。", highlight: "冷熱交替的口感，透過冰涼鮮奶油喝下溫熱的威士忌咖啡。" },
+
+            // === 經典調酒 (萊姆酒系列 10杯) ===
+            { id: 301, name: "莫西多", engName: "Mojito", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "清爽", "薄荷"], icon: "fa-leaf", color: "text-green-400", ingredients: ["白萊姆酒 60ml", "新鮮薄荷葉 10-12片", "萊姆半顆 (切塊)", "糖 2匙", "蘇打水 補滿"], method: "在杯底將萊姆塊與糖輕輕搗壓出汁，加入薄荷葉輕拍。加入碎冰與萊姆酒攪拌，最後補滿蘇打水。", highlight: "最著名的古巴調酒，充滿薄荷與萊姆的清涼感。" },
+            { id: 302, name: "黛綺麗", engName: "Daiquiri", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "酸甜", "清爽"], icon: "fa-martini-glass-citrus", color: "text-yellow-300", ingredients: ["白萊姆酒 60ml", "鮮榨萊姆汁 20ml", "糖漿 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "萊姆酒的終極試金石，最完美的酸甜平衡。" },
+            { id: 303, name: "邁泰", engName: "Mai Tai", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "熱帶"], icon: "fa-umbrella-beach", color: "text-orange-400", ingredients: ["陳年萊姆酒 60ml", "橙酒 (乾橘香甜酒) 15ml", "杏仁糖漿 (Orgeat) 15ml", "萊姆汁 20ml", "薄荷葉裝飾"], method: "所有材料加冰用力搖盪，連同冰塊一起倒入岩石杯或 Tiki 杯中。以大把薄荷與萊姆皮裝飾。", highlight: "Tiki 調酒的王者，濃郁的杏仁與萊姆酒香交織。" },
+            { id: 304, name: "鳳梨可樂達", engName: "Pina Colada", category: "classic", base: "萊姆酒", type: "Blend", tags: ["經典", "熱帶", "濃郁"], icon: "fa-ice-cream", color: "text-yellow-200", ingredients: ["白萊姆酒 45ml", "椰漿 45ml", "鳳梨汁 90ml"], method: "將所有材料與適量冰塊放入果汁機打成冰沙（或用力搖盪），倒入高球杯，以鳳梨片裝飾。", highlight: "波多黎各的國酒，充滿度假風情的椰香與鳳梨味。" },
+            { id: 305, name: "月黑風高", engName: "Dark 'n' Stormy", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "辛辣", "氣泡"], icon: "fa-bolt", color: "text-amber-700", ingredients: ["深色萊姆酒 (如 Goslings) 60ml", "薑汁啤酒 120ml", "萊姆角"], method: "在高球杯中加滿冰塊，先倒入薑汁啤酒，再將深色萊姆酒輕輕浮在最上層，擠入萊姆角。", highlight: "加勒比海的風暴，薑汁的辛辣與深色萊姆酒的糖蜜香絕配。" },
+            { id: 306, name: "殭屍", engName: "Zombie", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "超重酒感"], icon: "fa-skull", color: "text-green-600", ingredients: ["多種萊姆酒混合 (白/金/黑) 共 60ml", "高濃度萊姆酒 (151) 15ml", "百香果糖漿 15ml", "萊姆汁 15ml", "鳳梨汁 15ml", "安格斯特拉苦精 1滴"], method: "除 151 外所有材料加冰搖盪，倒入杯中。最後將 151 萊姆酒淋在最上方。", highlight: "傳說中喝兩杯就會變成殭屍的超強 Tiki 調酒。" },
+            { id: 307, name: "海明威特調", engName: "Hemingway Daiquiri", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "酸爽", "無糖"], icon: "fa-martini-glass", color: "text-rose-400", ingredients: ["白萊姆酒 60ml", "黑櫻桃利口酒 (Maraschino) 15ml", "葡萄柚汁 20ml", "萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "大文豪海明威的最愛，以黑櫻桃與葡萄柚取代糖漿的硬派風味。" },
+            { id: 308, name: "叢林鳥", engName: "Jungle Bird", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "微苦"], icon: "fa-kiwi-bird", color: "text-red-500", ingredients: ["深色萊姆酒 45ml", "金巴利 (Campari) 20ml", "鳳梨汁 45ml", "萊姆汁 15ml", "糖漿 15ml"], method: "所有材料加冰用力搖盪，過濾倒入加有大冰塊的岩石杯中。", highlight: "少數帶有明顯苦味的 Tiki 調酒，金巴利與鳳梨出乎意料的合拍。" },
+            { id: 309, name: "總統", engName: "El Presidente", category: "classic", base: "萊姆酒", type: "Stir", tags: ["經典", "優雅", "酒感重"], icon: "fa-martini-glass", color: "text-orange-500", ingredients: ["白萊姆酒 45ml", "麗葉酒 (Lillet Blanc) 20ml", "橙酒 10ml", "石榴糖漿 一吧匙"], method: "將所有材料加入混酒杯，加滿冰塊攪拌均勻。濾入馬丁尼杯，以櫻桃裝飾。", highlight: "禁酒令時期在古巴大放異彩的優雅萊姆酒特調。" },
+            { id: 310, name: "瑪麗畢克馥", engName: "Mary Pickford", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "甜美", "果香"], icon: "fa-martini-glass", color: "text-pink-400", ingredients: ["白萊姆酒 45ml", "鳳梨汁 45ml", "黑櫻桃利口酒 5ml", "石榴糖漿 5ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "以默片時代女星命名，甜美且充滿少女心的熱帶粉紅。" },
+
+            // === 經典調酒 (伏特加系列 10杯) ===
+            { id: 401, name: "柯夢波丹", engName: "Cosmopolitan", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "都會"], icon: "fa-martini-glass-citrus", color: "text-pink-500", ingredients: ["檸檬伏特加 45ml", "橙酒 (Cointreau) 15ml", "蔓越莓汁 30ml", "鮮榨萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入馬丁尼杯，可稍微火烤橙皮擠出精油。", highlight: "慾望城市帶起的都會粉紅旋風，酸甜莓果香極度討喜。" },
+            { id: 402, name: "血腥瑪麗", engName: "Bloody Mary", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "鹹鮮", "醒酒"], icon: "fa-pepper-hot", color: "text-red-600", ingredients: ["伏特加 45ml", "番茄汁 120ml", "檸檬汁 15ml", "辣醬 (Tabasco) 數滴", "烏斯特醬 數滴", "胡椒、鹽巴適量", "西芹條裝飾"], method: "在高球杯中加入調味料與檸檬汁拌勻，加入冰塊、伏特加與番茄汁，用西芹條攪拌。", highlight: "傳說中的解宿醉聖品，喝起來像是一碗冷湯的高湯調酒。" },
+            { id: 403, name: "白色俄羅斯", engName: "White Russian", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "甜美", "奶香"], icon: "fa-glass-whiskey", color: "text-white", ingredients: ["伏特加 45ml", "咖啡利口酒 (Kahlua) 30ml", "鮮奶油或全脂牛奶 30ml"], method: "在岩石杯中加冰，倒入伏特加與咖啡利口酒稍微攪拌。最後將鮮奶油輕輕倒在表面形成漸層。", highlight: "電影《謀殺綠腳趾》主角的最愛，像是微醺的成人版冰拿鐵。" },
+            { id: 404, name: "黑色俄羅斯", engName: "Black Russian", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "甜烈", "咖啡"], icon: "fa-glass-whiskey", color: "text-amber-900", ingredients: ["伏特加 45ml", "咖啡利口酒 (Kahlua) 20ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "去除了鮮奶油的掩護，更直接、強烈的咖啡酒香衝擊。" },
+            { id: 405, name: "濃縮咖啡馬丁尼", engName: "Espresso Martini", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "提神", "濃郁"], icon: "fa-coffee", color: "text-amber-900", ingredients: ["伏特加 45ml", "咖啡利口酒 15ml", "Espresso (放涼) 30ml", "糖漿 (選配)"], method: "所有材料加冰用力搖盪 (需搖久一點打出泡沫)，濾冰倒入馬丁尼杯，以三顆咖啡豆裝飾。", highlight: "「Wake me up, and then f**k me up.」最受歡迎的派對提神神飲。" },
+            { id: 406, name: "伏特加馬丁尼", engName: "Vodka Martini", category: "classic", base: "伏特加", type: "Stir", tags: ["經典", "純粹", "特務"], icon: "fa-martini-glass", color: "text-gray-300", ingredients: ["伏特加 60ml", "辛口苦艾酒 15ml", "檸檬皮或橄欖"], method: "與傳統馬丁尼相同，加入混酒杯中加冰攪拌至極冷，濾入馬丁尼杯。(龐德喜歡用搖的)", highlight: "007 詹姆士龐德的最愛，比琴酒版本更加乾淨、純粹。" },
+            { id: 407, name: "神風特攻隊", engName: "Kamikaze", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "俐落"], icon: "fa-plane", color: "text-yellow-300", ingredients: ["伏特加 30ml", "橙酒 (Cointreau) 30ml", "萊姆汁 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入岩石杯或 Shot 杯。", highlight: "伏特加版的瑪格麗特，清爽俐落卻能讓人迅速醉倒。" },
+            { id: 408, name: "檸檬滴", engName: "Lemon Drop", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "順口"], icon: "fa-lemon", color: "text-yellow-400", ingredients: ["伏特加 45ml", "橙酒 15ml", "檸檬汁 20ml", "糖漿 10ml", "杯口沾一圈砂糖"], method: "準備糖口杯。將所有材料加冰搖盪，濾冰倒入馬丁尼杯。", highlight: "喝起來就像是融化的檸檬糖，酸甜討喜極易入口。" },
+            { id: 409, name: "海風", engName: "Sea Breeze", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "果香", "清爽"], icon: "fa-water", color: "text-rose-400", ingredients: ["伏特加 45ml", "蔓越莓汁 90ml", "葡萄柚汁 30ml"], method: "在高球杯中加滿冰塊，倒入所有材料，攪拌均勻即可。", highlight: "蔓越莓的酸甜與葡萄柚的微苦完美交織，如海風般沁涼。" },
+            { id: 410, name: "哈維撞牆", engName: "Harvey Wallbanger", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "果香", "草本"], icon: "fa-glass-water", color: "text-orange-400", ingredients: ["伏特加 45ml", "柳橙汁 120ml", "加里安諾 (Galliano) 利口酒 15ml"], method: "在高球杯加冰，倒入伏特加與柳橙汁攪拌。最後將加里安諾利口酒浮在最上層。", highlight: "螺絲起子的華麗升級版，頂層的香草草本香氣畫龍點睛。" },
+
+            // === 經典調酒 (龍舌蘭系列 10杯) ===
+            { id: 501, name: "瑪格麗特", engName: "Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "鹽口"], icon: "fa-martini-glass-citrus", color: "text-green-300", ingredients: ["龍舌蘭 (Tequila) 45ml", "橙酒 (Cointreau) 15ml", "萊姆汁 20ml", "半圈鹽口杯"], method: "用萊姆抹過杯緣沾上鹽巴。其餘材料加冰搖盪均勻，濾入杯中。", highlight: "無人不知的龍舌蘭經典，鹽巴帶出了酒液的甜與柑橘的香。" },
+            { id: 502, name: "帕洛瑪", engName: "Paloma", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "氣泡", "微苦"], icon: "fa-glass-water", color: "text-pink-300", ingredients: ["龍舌蘭 45ml", "鮮榨萊姆汁 15ml", "少許鹽巴", "葡萄柚蘇打 補滿"], method: "在高球杯加冰，倒入龍舌蘭、萊姆汁與一小撮鹽巴，最後補滿葡萄柚蘇打輕拌。", highlight: "在墨西哥當地甚至比瑪格麗特更受歡迎的國民調酒。" },
+            { id: 503, name: "龍舌蘭日出", engName: "Tequila Sunrise", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "果香", "漸層"], icon: "fa-sun", color: "text-orange-500", ingredients: ["龍舌蘭 45ml", "柳橙汁 120ml", "石榴糖漿 10ml"], method: "在高球杯加冰，倒入龍舌蘭與柳橙汁拌勻。最後緩慢倒入石榴糖漿使其沉底形成漸層。", highlight: "搖滾樂團滾石的最愛，杯中的美麗日出漸層是其標誌。" },
+            { id: 504, name: "湯米瑪格麗特", engName: "Tommy's Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "現代", "純粹"], icon: "fa-glass-whiskey", color: "text-yellow-300", ingredients: ["100% 藍龍舌蘭 60ml", "鮮榨萊姆汁 30ml", "龍舌蘭糖漿 (Agave Nectar) 15ml"], method: "將所有材料加冰搖盪，濾入加有大冰塊的岩石杯中。(通常不沾鹽)", highlight: "捨棄了橙酒，完全展現出優質龍舌蘭酒原始風味的現代經典。" },
+            { id: 505, name: "惡魔", engName: "El Diablo", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "莓果", "薑味"], icon: "fa-ghost", color: "text-purple-600", ingredients: ["龍舌蘭 45ml", "黑醋栗利口酒 (Creme de Cassis) 15ml", "萊姆汁 15ml", "薑汁啤酒 補滿"], method: "在高球杯加冰，加入前三樣材料拌勻，最後補滿薑汁啤酒。", highlight: "名字聽起來嚇人，但其實是一杯酸甜討喜的莓果薑汁氣泡酒。" },
+            { id: 506, name: "巴坦加", engName: "Batanga", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "可樂", "墨西哥"], icon: "fa-glass-water", color: "text-amber-900", ingredients: ["龍舌蘭 45ml", "萊姆汁 15ml", "可樂 補滿", "鹽口杯"], method: "準備鹽口杯，加滿冰塊。倒入龍舌蘭與萊姆汁，補滿可樂。傳統上需用切萊姆的那把刀來攪拌。", highlight: "墨西哥版的自由古巴，杯緣的鹽巴是不可或缺的靈魂。" },
+            { id: 507, name: "鬥牛士", engName: "Matador", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "熱帶", "果香"], icon: "fa-wine-glass", color: "text-yellow-400", ingredients: ["龍舌蘭 45ml", "鳳梨汁 60ml", "萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入香檳杯或高球杯。", highlight: "鳳梨的甜味完美中和了龍舌蘭的嗆辣，非常適合夏天。" },
+            { id: 508, name: "羅西塔", engName: "Rosita", category: "classic", base: "龍舌蘭", type: "Stir", tags: ["經典", "苦甜", "層次"], icon: "fa-glass-whiskey", color: "text-red-500", ingredients: ["龍舌蘭 (Reposado) 45ml", "金巴利 (Campari) 15ml", "甜苦艾酒 15ml", "辛口苦艾酒 15ml", "安格斯特拉苦精 1滴"], method: "將所有材料加入混酒杯，加滿冰塊攪拌均勻。濾入岩石杯。", highlight: "龍舌蘭版本的完美內格羅尼，四種酒的比例達到奇妙的平衡。" },
+            { id: 509, name: "龍舌蘭酸酒", engName: "Tequila Sour", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "綿密"], icon: "fa-martini-glass-citrus", color: "text-yellow-200", ingredients: ["龍舌蘭 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆", "苦精裝飾"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入杯中。", highlight: "將威士忌換成龍舌蘭，帶來截然不同的草本與土壤氣息。" },
+            { id: 510, name: "墨西哥行刑隊", engName: "Mexican Firing Squad", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "香料"], icon: "fa-skull", color: "text-rose-600", ingredients: ["龍舌蘭 60ml", "萊姆汁 20ml", "石榴糖漿 20ml", "安格斯特拉苦精 4-5滴"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入加有冰塊的岩石杯。", highlight: "大量苦精與石榴糖漿的碰撞，風味強烈且極具記憶點。" },
+
+            // === 經典調酒 (利口酒/白蘭地/其他系列 10杯) ===
+            { id: 601, name: "杏仁酸酒", engName: "Amaretto Sour", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "堅果", "甜點"], icon: "fa-glass-whiskey", color: "text-yellow-600", ingredients: ["杏仁利口酒 (Amaretto) 45ml", "波本威士忌 (選配, 增添酒感) 15ml", "檸檬汁 30ml", "糖漿 5ml", "蛋白 1顆"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入岩石杯中。", highlight: "充滿杏仁蛋白霜與櫻桃香氣，像是在吃液態的義大利甜點。" },
+            { id: 602, name: "阿佩羅氣泡", engName: "Aperol Spritz", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "氣泡", "餐前"], icon: "fa-wine-glass", color: "text-orange-500", ingredients: ["阿佩羅 (Aperol) 60ml", "普羅賽克氣泡酒 (Prosecco) 90ml", "蘇打水 30ml", "柳橙片"], method: "在酒杯中加滿冰塊，依序倒入阿佩羅、氣泡酒與蘇打水，輕輕攪拌，放上柳橙片。", highlight: "義大利最受歡迎的國民餐前酒，明亮的橘色是夏日的代名詞。" },
+            { id: 603, name: "側車", engName: "Sidecar", category: "classic", base: "其他", type: "Shake", tags: ["經典", "白蘭地", "酸甜"], icon: "fa-martini-glass-citrus", color: "text-amber-500", ingredients: ["干邑白蘭地 45ml", "橙酒 (Cointreau) 20ml", "檸檬汁 20ml", "糖口杯"], method: "準備半圈糖口杯。所有材料加冰搖盪均勻，濾入馬丁尼杯。", highlight: "白蘭地最經典的三合一調酒，葡萄果香與柑橘完美結合。" },
+            { id: 604, name: "皮斯可酸酒", engName: "Pisco Sour", category: "classic", base: "其他", type: "Shake", tags: ["經典", "白蘭地", "綿密"], icon: "fa-wine-glass", color: "text-lime-300", ingredients: ["皮斯可酒 (Pisco) 60ml", "萊姆汁 30ml", "糖漿 20ml", "蛋白 1顆", "安格斯特拉苦精 3滴"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入高腳杯中，將苦精滴在泡沫上。", highlight: "秘魯與智利的國酒之爭，充滿麝香葡萄香氣的南美風情。" },
+            { id: 605, name: "皮姆杯", engName: "Pimm's Cup", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "水果", "消暑"], icon: "fa-glass-water", color: "text-red-800", ingredients: ["皮姆一號 (Pimm's No.1) 60ml", "檸檬汽水或薑汁汽水 補滿", "黃瓜片、草莓、柳橙、薄荷"], method: "在高球杯或紅酒杯中塞滿各式切片水果與黃瓜，加冰塊，倒入皮姆酒，補滿汽水。", highlight: "英國溫布頓網球賽的傳統飲品，像是豐富的水果沙拉調酒。" },
+            { id: 606, name: "綠石蜢", engName: "Grasshopper", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "甜點", "薄荷巧克力"], icon: "fa-martini-glass", color: "text-green-300", ingredients: ["綠薄荷利口酒 30ml", "白可可利口酒 30ml", "鮮奶油 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入馬丁尼杯。", highlight: "翠綠討喜的顏色，喝起來完全就是「薄荷巧克力冰淇淋」。" },
+            { id: 607, name: "白蘭地亞歷山大", engName: "Brandy Alexander", category: "classic", base: "其他", type: "Shake", tags: ["經典", "甜點", "奶香"], icon: "fa-martini-glass", color: "text-stone-300", ingredients: ["干邑白蘭地 30ml", "黑可可利口酒 30ml", "鮮奶油 30ml", "肉豆蔻粉"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入馬丁尼杯，表面撒上現磨肉豆蔻粉。", highlight: "約翰藍儂的最愛，白蘭地與巧克力牛奶交織的華麗甜點酒。" },
+            { id: 608, name: "B-52轟炸機", engName: "B-52", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "Shot", "視覺系"], icon: "fa-vial", color: "text-amber-800", ingredients: ["咖啡利口酒 (Kahlua) 15ml", "愛爾蘭奶酒 (Baileys) 15ml", "柑橘利口酒 (Grand Marnier) 15ml"], method: "在 Shot 杯中，利用吧匙背緩慢引流，依序倒入咖啡酒、奶酒、柑橘酒，形成完美的三層漸層。可點火飲用。", highlight: "最著名的分層 Shot，一口喝下感受三種香甜風味的衝擊。" },
+            { id: 609, name: "日本拖鞋", engName: "Japanese Slipper", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "哈密瓜", "果香"], icon: "fa-martini-glass", color: "text-lime-400", ingredients: ["蜜多麗哈密瓜利口酒 30ml", "橙酒 (Cointreau) 30ml", "檸檬汁 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入馬丁尼杯，以糖漬櫻桃裝飾。", highlight: "發源於澳洲的經典，鮮豔螢光綠與濃郁哈密瓜香氣十分迷人。" },
+            { id: 610, name: "絕對誘惑", engName: "Orgasm", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "甜烈", "奶香"], icon: "fa-glass-whiskey", color: "text-stone-400", ingredients: ["咖啡利口酒 20ml", "杏仁利口酒 20ml", "愛爾蘭奶酒 20ml", "鮮奶油 20ml"], method: "所有材料加冰用力搖盪，濾冰倒入岩石杯中。", highlight: "如同其名，四種濃郁香甜的材料混合出令人難以抗拒的罪惡感。" }
+        ];
+
+        let drinks = [], categories = [], orders = [], madeDrinks = [], currentFilter = 'all', currentViewingId = null, tempImageBase64 = null, selectedIcon = 'fa-cocktail', selectedColor = 'text-white';
         let isFabOpen = false;
 
-        // 🟢 Fix: Defined before use
         function renderOrdersList() {
             const container = document.getElementById('orders-list-container');
             const emptyState = document.getElementById('orders-empty-state');
@@ -391,27 +469,19 @@
             } else {
                 emptyState.classList.add('hidden'); emptyState.classList.remove('flex');
                 
-                // Grouping Logic
                 const grouped = {};
                 orders.forEach(o => {
                     if (!grouped[o.drinkId]) {
-                        grouped[o.drinkId] = { 
-                            drinkId: o.drinkId, 
-                            drinkName: o.drinkName, 
-                            count: 0, 
-                            ids: [], // Track all order IDs in this group
-                            displayTime: o.displayTime
-                        };
+                        grouped[o.drinkId] = { drinkId: o.drinkId, drinkName: o.drinkName, count: 0, ids: [], displayTime: o.displayTime };
                     }
                     grouped[o.drinkId].count++;
                     grouped[o.drinkId].ids.push(o.orderId);
                 });
 
-                // Render Groups
                 Object.values(grouped).forEach(group => {
                     const item = document.createElement('div');
                     item.className = 'flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 cursor-pointer group transition-all mb-2';
-                    item.onclick = () => openGroupOrderCheck(group.drinkId); // Pass drinkId to find info
+                    item.onclick = () => openGroupOrderCheck(group.drinkId); 
                     
                     item.innerHTML = `
                         <div class="flex items-center gap-3">
@@ -434,7 +504,6 @@
             }
         }
 
-        // 🟢 Fix: Defined before use
         function updateOrderBadges() { 
             const count = orders.length; 
             const mainBadge = document.getElementById('order-count-badge-main'); 
@@ -449,6 +518,7 @@
         const STORAGE_KEY_DRINKS = 'binbar_data_v1';
         const STORAGE_KEY_CATS = 'binbar_categories_v1';
         const STORAGE_KEY_ORDERS = 'binbar_orders_v1';
+        const STORAGE_KEY_MADE = 'binbar_made_v1'; // 新增：用於記錄已調製過的酒單
 
         function init() {
             let storedDrinks = localStorage.getItem(STORAGE_KEY_DRINKS);
@@ -468,11 +538,24 @@
             if (storedCats) { categories = JSON.parse(storedCats); } 
             else { categories = JSON.parse(JSON.stringify(defaultCategories)); saveCategories(); }
 
+            // 自動遷移機制：如果還沒有「經典調酒」分類，自動補齊並推入所有經典酒單
+            if (!categories.some(c => c.id === 'classic')) {
+                categories.splice(1, 0, { id: 'classic', name: '經典調酒' });
+                saveCategories();
+                const newClassics = fullDefaultDrinks.filter(d => d.category === 'classic');
+                drinks = [...drinks, ...newClassics];
+                saveData();
+            }
+
             const storedOrders = localStorage.getItem(STORAGE_KEY_ORDERS);
             if(storedOrders) { orders = JSON.parse(storedOrders); }
 
-            // Profile removed, no need to load
-            
+            // 讀取已調製過的紀錄
+            const storedMade = localStorage.getItem(STORAGE_KEY_MADE);
+            if (storedMade) {
+                try { madeDrinks = JSON.parse(storedMade); } catch(e) { madeDrinks = []; }
+            }
+
             renderFilters();
             renderDrinks();
             updateOrderBadges();
@@ -484,6 +567,7 @@
         }
         function saveCategories() { localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories)); renderFilters(); renderCategoryEditorList(); }
         function saveOrders() { localStorage.setItem(STORAGE_KEY_ORDERS, JSON.stringify(orders)); updateOrderBadges(); renderOrdersList(); }
+        function saveMadeDrinks() { localStorage.setItem(STORAGE_KEY_MADE, JSON.stringify(madeDrinks)); }
 
         function renderFilters() {
             const container = document.getElementById('filter-container');
@@ -505,13 +589,39 @@
             if (filtered.length === 0) { grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 flex flex-col items-center"><i class="fas fa-glass-whiskey text-4xl mb-3 opacity-30"></i><p>這裡目前空空如也，快去點幾杯來喝吧！</p></div>'; return; }
             filtered.forEach((drink, index) => {
                 const card = document.createElement('div');
-                card.className = `drink-card glass-panel rounded-xl cursor-pointer animate-pop overflow-hidden flex flex-col h-full relative group`;
+                
+                // 檢查是否已調製過，改變卡片背景樣式
+                const isMade = madeDrinks.some(id => id == drink.id);
+                let cardClass = `drink-card rounded-xl cursor-pointer animate-pop overflow-hidden flex flex-col h-full relative group transition-all duration-300 `;
+                if (isMade) {
+                    cardClass += `bg-gradient-to-br from-[rgba(212,175,55,0.2)] to-[rgba(0,0,0,0.6)] backdrop-blur-md border border-bar-gold/50 shadow-[0_0_15px_rgba(212,175,55,0.15)]`;
+                } else {
+                    cardClass += `glass-panel`;
+                }
+                card.className = cardClass;
                 card.style.animationDelay = `${Math.min(index * 50, 500)}ms`;
                 card.onclick = () => openMenuDetail(drink.id);
+                
                 let badgeClass = drink.type === 'Shake' ? 'tag-shake' : (['Stir', 'Build'].includes(drink.type) ? 'tag-stir' : 'tag-simple');
                 let visualContent = drink.image ? `<img src="${drink.image}" class="card-img-cover" alt="${drink.name}">` : `<div class="flex justify-between items-start mb-3 pt-5 px-5"><span class="tag-pill ${badgeClass}">${drink.type}</span><i class="fas ${drink.icon || 'fa-cocktail'} ${drink.color || 'text-bar-gold'} text-2xl opacity-80"></i></div>`;
                 let pillOverlay = drink.image ? `<span class="absolute top-3 left-3 tag-pill ${badgeClass} shadow-md z-10">${drink.type}</span>` : '';
-                card.innerHTML = `<div class="relative">${pillOverlay}${visualContent}</div><div class="px-5 pb-5 flex-1 flex flex-col relative"><h3 class="text-xl font-bold text-white mb-1 pr-8">${drink.name}</h3><p class="text-xs text-bar-gold uppercase tracking-wider mb-4 truncate">${drink.engName || drink.base}</p><div class="flex flex-wrap gap-2 mt-auto">${(drink.tags || []).map(tag => `<span class="text-xs text-gray-400 bg-black/30 px-2 py-1 rounded border border-white/5">#${tag}</span>`).join('')}</div><button onclick="event.stopPropagation(); placeOrder(${drink.id}, '${drink.name}')" class="absolute bottom-3 right-3 w-10 h-10 bg-white/10 hover:bg-accent-blue hover:text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-lg z-20 active:scale-95" title="點這杯"><i class="fas fa-plus"></i></button></div>`;
+                
+                card.innerHTML = `
+                    <div class="relative">${pillOverlay}${visualContent}</div>
+                    <div class="px-5 pb-5 flex-1 flex flex-col relative">
+                        <h3 class="text-xl font-bold text-white mb-1 pr-8 flex items-center">
+                            ${drink.name} 
+                            ${isMade ? '<i class="fas fa-check-circle text-bar-gold ml-2 text-sm drop-shadow-md" title="已調製"></i>' : ''}
+                        </h3>
+                        <p class="text-xs text-bar-gold uppercase tracking-wider mb-4 truncate">${drink.engName || drink.base}</p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            ${(drink.tags || []).map(tag => `<span class="text-xs text-gray-400 bg-black/30 px-2 py-1 rounded border border-white/5">#${tag}</span>`).join('')}
+                        </div>
+                        <button onclick="event.stopPropagation(); placeOrder(${drink.id}, '${drink.name}')" class="absolute bottom-3 right-3 w-10 h-10 bg-white/10 hover:bg-accent-blue hover:text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-lg z-20 active:scale-95" title="點這杯">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                `;
                 grid.appendChild(card);
             });
         }
@@ -523,7 +633,6 @@
                 orderId: Date.now(),
                 drinkId: drinkId,
                 drinkName: drinkName,
-                // Removed username logic
                 ts: Date.now(),
                 displayTime: new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
             };
@@ -534,24 +643,30 @@
 
         function placeOrderFromModal() { if(!currentViewingId) return; const drink = drinks.find(d => d.id === currentViewingId); if(drink) { placeOrder(drink.id, drink.name); closeViewModal(); } }
         
-        // Modified to handle single item removal from grouped list
         function finishGroupOrder(drinkId) {
-            // Find the oldest order for this drinkId
             const orderIndex = orders.findIndex(o => o.drinkId == drinkId);
             
             if (orderIndex !== -1) {
-                // Remove one instance
+                // 扣除一杯
                 orders.splice(orderIndex, 1);
                 saveOrders();
                 
-                // Check if any remain
+                // 標記為已調製，並更新畫面
+                if (!madeDrinks.some(id => id == drinkId)) {
+                    madeDrinks.push(drinkId);
+                    saveMadeDrinks();
+                    renderDrinks(); // 重新渲染酒單，改變卡片顏色
+                }
+                
                 const remaining = orders.filter(o => o.drinkId == drinkId).length;
                 if (remaining === 0) {
                     showToast('已全數出單！');
-                    closeViewModal(); // Close if no more
+                    closeViewModal(); 
                 } else {
                     showToast(`出單成功！剩餘 ${remaining} 杯`);
-                    // Don't close, user might want to finish more
+                    // 即時更新按鈕文字
+                    const btn = document.querySelector('#view-modal-footer button');
+                    if (btn) btn.innerHTML = `<i class="fas fa-check-circle"></i> 製作完成 / 出單 (剩 ${remaining} 杯)`;
                 }
             } else {
                 closeViewModal();
@@ -561,7 +676,7 @@
         function openMenuDetail(id) { currentViewingId = id; const drink = drinks.find(d => d.id === id); if(!drink) return; updateModalContent(drink); const footer = document.getElementById('view-modal-footer'); footer.innerHTML = `<div class="flex justify-between gap-3 items-center w-full"><div class="flex gap-2"><button onclick="confirmDelete()" class="px-3 py-2 rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 text-sm font-bold transition-colors"><i class="fas fa-trash-alt"></i></button><button onclick="editCurrentDrink()" class="px-3 py-2 rounded-lg border border-white/10 text-gray-300 hover:bg-white/10 text-sm font-bold transition-colors"><i class="fas fa-pen"></i></button></div><button onclick="placeOrderFromModal()" class="flex-1 ml-2 px-4 py-2 rounded-lg bg-accent-blue text-white font-bold hover:bg-blue-400 shadow-lg transition-colors flex items-center justify-center gap-2"><i class="fas fa-plus-circle"></i> 我要點這杯</button></div>`; const m = document.getElementById('view-modal'); m.classList.remove('hidden'); setTimeout(() => m.classList.remove('opacity-0'), 10); }
         
         function openGroupOrderCheck(drinkId) {
-             const drink = drinks.find(d => d.id == drinkId); // Loose equality for ID string/int match
+             const drink = drinks.find(d => d.id == drinkId); 
              if (!drink) {
                  if(confirm("原始酒譜已刪除，是否清除此類訂單？")) {
                      orders = orders.filter(o => o.drinkId != drinkId);
@@ -572,11 +687,12 @@
  
              updateModalContent(drink);
  
-             // Footer for Group Order Execution
+             // 計算剩餘數量並顯示在按鈕上
+             const remaining = orders.filter(o => o.drinkId == drinkId).length;
              const footer = document.getElementById('view-modal-footer');
              footer.innerHTML = `
                  <button onclick="finishGroupOrder('${drinkId}')" class="w-full px-4 py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-500 shadow-lg transition-colors flex items-center justify-center gap-2 text-lg animate-pulse">
-                     <i class="fas fa-check-circle"></i> 製作完成 / 出單 (1杯)
+                     <i class="fas fa-check-circle"></i> 製作完成 / 出單 (剩 ${remaining} 杯)
                  </button>
              `;
  
@@ -635,7 +751,6 @@
         function handleImageUpload(input) { 
             if(input.files[0]) { 
                 const file = input.files[0]; 
-                // Increased limit slightly, but still warn.
                 if(file.size > 800 * 1024) return alert("圖片太大囉！請使用小於 800KB 的圖片以免存檔失敗。"); 
                 const reader = new FileReader(); 
                 reader.onload = e => { 
@@ -649,8 +764,7 @@
         }
         function clearImage() { tempImageBase64 = null; document.getElementById('img-upload').value=''; document.getElementById('img-preview').classList.add('hidden'); document.getElementById('clear-img-btn').classList.add('hidden'); }
         function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'show'; setTimeout(() => t.className = '', 3000); }
-        function updateOrderBadges() { const count = orders.length; const mainBadge = document.getElementById('order-count-badge-main'); const menuBadge = document.getElementById('order-count-badge-menu'); [mainBadge, menuBadge].forEach(b => { b.textContent = count; if(count > 0) { b.classList.remove('hidden'); b.classList.add('animate-bounce'); setTimeout(()=>b.classList.remove('animate-bounce'), 1000); } else b.classList.add('hidden'); }); }
-
+        
         init();
     </script>
 </body>
