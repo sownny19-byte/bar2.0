@@ -157,7 +157,6 @@
     <!-- Navbar -->
     <nav class="fixed top-0 w-full z-50 glass-panel border-b border-white/10">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <!-- Creative Logo Section -->
             <div class="flex items-center gap-4 cursor-pointer group" onclick="location.reload()">
                 <!-- Logo Image with Fallback SVG -->
                 <div class="relative h-14 w-auto flex-shrink-0 py-1">
@@ -232,7 +231,7 @@
                     <path d="M-8,35 L8,35 L8,-10 L4,-15 L4,-25 L-4,-25 L-4,-15 L-8,-10 Z" fill="none" stroke="url(#header-gold)" stroke-width="1" />
                 </g>
                 <g transform="translate(240, 40)" opacity="0.6">
-                    <path d="M-10,35 L10,35 L12,0 L-12,0 Z" fill="none" stroke="url(#header-gold)" stroke-width="1" />
+                    <path d="M-10,35 L10,35 L10,0 L-10,0 Z" fill="none" stroke="url(#header-gold)" stroke-width="1" />
                     <rect x="-4" y="15" width="8" height="8" stroke="url(#header-gold)" stroke-width="0.8" fill="none" transform="rotate(15)" />
                 </g>
                 <text x="160" y="70" text-anchor="middle" font-family="serif" font-size="8" fill="#888" letter-spacing="4">SELECT YOUR DRINK</text>
@@ -381,78 +380,78 @@
             { id: 13, name: "焦糖拿鐵馬丁尼", category: "creative", base: "伏特加", type: "Shake", tags: ["提神"], icon: "fa-coffee", color: "text-amber-900", ingredients: ["伏特加 45ml", "焦糖漿 15ml", "黑咖啡 30ml"], method: "強力搖盪至起泡。", highlight: "派對尾聲提神專用。" },
             { id: 14, name: "果糖莫希托", category: "creative", base: "萊姆酒", type: "Stir", tags: ["便利"], icon: "fa-leaf", color: "text-green-400", ingredients: ["萊姆酒 50ml", "果糖 15ml", "檸檬角", "氣泡水"], method: "擠壓檸檬果糖，加酒攪拌補水。", highlight: "快速出杯。" },
 
-            // === 經典調酒 (琴酒系列 11杯) ===
-            { id: 101, name: "拉莫斯琴費茲", engName: "Ramos Gin Fizz", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "費工", "綿密"], icon: "fa-glass-water", color: "text-white", ingredients: ["琴酒 45ml", "檸檬汁 15ml", "萊姆汁 15ml", "糖漿 20ml", "鮮奶油 30ml", "蛋白 1顆", "橙花水 3滴", "蘇打水 補滿"], method: "除蘇打水外所有材料Dry Shake（不加冰搖盪）至起泡，再加冰塊Hard Shake（用力搖盪）至少3-5分鐘。過濾倒入高球杯，最後緩慢倒入蘇打水使泡沫升起。", highlight: "調酒師的夢魘，但有著如舒芙蕾般綿密的完美口感。" },
-            { id: 102, name: "馬丁尼", engName: "Martini", category: "classic", base: "琴酒", type: "Stir", tags: ["經典", "酒感重", "優雅"], icon: "fa-martini-glass", color: "text-white", ingredients: ["琴酒 60ml", "辛口苦艾酒 (Dry Vermouth) 15ml", "橄欖或檸檬皮"], method: "將琴酒與苦艾酒加入混酒杯，加滿冰塊攪拌均勻至冰冷。濾冰倒入馬丁尼杯，以橄欖裝飾。", highlight: "雞尾酒之王，越簡單的材料越考驗功力。" },
-            { id: 103, name: "琴蕾", engName: "Gimlet", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "酸甜", "清爽"], icon: "fa-martini-glass-citrus", color: "text-green-400", ingredients: ["琴酒 60ml", "鮮榨萊姆汁 20ml", "糖漿 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "早期英國水手用來防壞血病的經典配方。" },
-            { id: 104, name: "內格羅尼", engName: "Negroni", category: "classic", base: "琴酒", type: "Stir", tags: ["經典", "苦甜", "開胃"], icon: "fa-glass-whiskey", color: "text-red-500", ingredients: ["琴酒 30ml", "金巴利 (Campari) 30ml", "甜苦艾酒 30ml", "柳橙皮"], method: "將所有酒類倒入加有大冰塊的岩石杯中，均勻攪拌。最後噴灑柳橙皮油並投入杯中。", highlight: "苦中帶甜的成人風味，絕佳的餐前酒。" },
+            // === 更新版 經典調酒 (完全聚焦六大常見基酒) ===
+            // 琴酒系列 (Gin)
+            { id: 101, name: "拉莫斯琴費茲", engName: "Ramos Gin Fizz", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "費工", "綿密"], icon: "fa-glass-water", color: "text-white", ingredients: ["琴酒 45ml", "檸檬汁 15ml", "萊姆汁 15ml", "糖漿 20ml", "鮮奶油 30ml", "蛋白 1顆", "橙花水 3滴", "蘇打水 補滿"], method: "除蘇打水外所有材料Dry Shake至起泡，再加冰塊Hard Shake至少3-5分鐘。過濾倒入高球杯，最後緩慢倒入蘇打水使泡沫升起。", highlight: "調酒師的夢魘，但有著如舒芙蕾般綿密的完美口感。" },
+            { id: 102, name: "馬丁尼", engName: "Martini", category: "classic", base: "琴酒", type: "Stir", tags: ["經典", "酒感重", "優雅"], icon: "fa-martini-glass", color: "text-white", ingredients: ["琴酒 60ml", "不甜苦艾酒 (Dry Vermouth) 15ml", "橄欖或檸檬皮"], method: "將琴酒與苦艾酒加入混酒杯，加滿冰塊攪拌均勻至極度冰冷。濾冰倒入馬丁尼杯，以橄欖裝飾。", highlight: "雞尾酒之王，越簡單的材料越考驗功力。" },
+            { id: 103, name: "琴蕾", engName: "Gimlet", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "酸甜", "清爽"], icon: "fa-martini-glass-citrus", color: "text-green-400", ingredients: ["琴酒 60ml", "鮮榨萊姆汁 20ml", "糖漿 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯或馬丁尼杯。", highlight: "早期英國水手用來防壞血病的經典配方。" },
+            { id: 104, name: "內格羅尼", engName: "Negroni", category: "classic", base: "琴酒", type: "Stir", tags: ["經典", "苦甜", "開胃"], icon: "fa-glass-whiskey", color: "text-red-500", ingredients: ["琴酒 30ml", "金巴利 (Campari) 30ml", "甜苦艾酒 (Sweet Vermouth) 30ml", "柳橙皮"], method: "將所有酒類倒入加有大冰塊的岩石杯中，均勻攪拌。最後噴灑柳橙皮油並投入杯中。", highlight: "苦中帶甜的成人風味，絕佳的餐前酒。" },
             { id: 105, name: "湯姆柯林斯", engName: "Tom Collins", category: "classic", base: "琴酒", type: "Build", tags: ["經典", "清爽", "氣泡"], icon: "fa-glass-water", color: "text-yellow-300", ingredients: ["琴酒 45ml", "檸檬汁 30ml", "糖漿 15ml", "蘇打水 補滿"], method: "在高球杯中加入琴酒、檸檬汁與糖漿，加滿冰塊後攪拌，最後補滿蘇打水並輕輕拌勻。", highlight: "歷史悠久的解渴聖品，如同成人的氣泡檸檬水。" },
-            { id: 106, name: "飛行", engName: "Aviation", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "花香", "優雅"], icon: "fa-plane", color: "text-purple-400", ingredients: ["琴酒 45ml", "黑櫻桃利口酒 15ml", "紫羅蘭利口酒 5ml", "檸檬汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入馬丁尼杯。", highlight: "夢幻的淡紫色澤，帶著迷人的紫羅蘭花香。" },
-            { id: 107, name: "法式75", engName: "French 75", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "氣泡", "慶祝"], icon: "fa-champagne-glasses", color: "text-bar-gold", ingredients: ["琴酒 30ml", "檸檬汁 15ml", "糖漿 10ml", "香檳或氣泡酒 補滿"], method: "將琴酒、檸檬汁、糖漿加冰搖盪，濾入香檳杯中，最後補滿香檳，以檸檬皮裝飾。", highlight: "以一戰火炮命名，華麗的外表下藏著強勁的後座力。" },
-            { id: 108, name: "白佳人", engName: "White Lady", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "柑橘", "滑順"], icon: "fa-martini-glass", color: "text-gray-400", ingredients: ["琴酒 45ml", "橙酒 (Cointreau) 15ml", "檸檬汁 15ml", "蛋白 (選配)"], method: "所有材料加冰用力搖盪，若有加蛋白則需先 Dry Shake，濾冰倒入馬丁尼杯。", highlight: "口感輕盈滑順，帶有迷人的柑橘與杜松子香。" },
-            { id: 109, name: "三葉草俱樂部", engName: "Clover Club", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "果香", "綿密"], icon: "fa-leaf", color: "text-pink-500", ingredients: ["琴酒 45ml", "覆盆子糖漿 15ml", "檸檬汁 15ml", "蛋白 1顆"], method: "所有材料先 Dry Shake 起泡，再加入冰塊 Hard Shake，濾冰倒入淺碟香檳杯。", highlight: "迷人的粉紅色澤與濃郁覆盆子香，加上綿密的泡沫。" },
-            { id: 110, name: "新加坡司令", engName: "Singapore Sling", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "熱帶", "果香"], icon: "fa-cocktail", color: "text-rose-500", ingredients: ["琴酒 30ml", "櫻桃利口酒 15ml", "橙酒 7.5ml", "班尼迪克汀 7.5ml", "鳳梨汁 60ml", "檸檬汁 15ml", "石榴糖漿 10ml", "安格斯特拉苦精 1滴"], method: "所有材料加冰用力搖盪，倒入裝滿冰塊的高球杯，最後可補上少許蘇打水。", highlight: "萊佛士酒店的傳奇，層次極為豐富的熱帶經典。" },
-            { id: 111, name: "亡匣喚醒2號", engName: "Corpse Reviver No.2", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "醒酒", "草本"], icon: "fa-skull", color: "text-yellow-300", ingredients: ["琴酒 20ml", "麗葉酒 (Lillet Blanc) 20ml", "橙酒 20ml", "檸檬汁 20ml", "苦艾酒 (Absinthe) 洗杯"], method: "先用少許苦艾酒涮洗馬丁尼杯。其餘材料加冰搖盪均勻，濾入杯中。", highlight: "據說連死人都能喚醒的強烈風味，清爽卻充滿草本層次。" },
+            { id: 106, name: "琴通寧", engName: "Gin & Tonic", category: "classic", base: "琴酒", type: "Build", tags: ["經典", "氣泡", "清爽"], icon: "fa-glass-water", color: "text-blue-300", ingredients: ["琴酒 45ml", "通寧水 補滿", "萊姆角 1-2塊"], method: "高球杯加滿冰塊，倒入琴酒，輕輕擠入萊姆汁並將萊姆角投入，最後補滿通寧水稍作攪拌。", highlight: "最純粹的琴酒飲法，微苦的通寧水完美襯托杜松子香氣。" },
+            { id: 107, name: "白佳人", engName: "White Lady", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "柑橘", "滑順"], icon: "fa-martini-glass", color: "text-gray-200", ingredients: ["琴酒 45ml", "橙酒 (Cointreau) 15ml", "檸檬汁 15ml"], method: "所有材料加冰用力搖盪，濾冰倒入馬丁尼杯中。", highlight: "口感輕盈滑順，帶有迷人的柑橘與杜松子香。" },
+            { id: 108, name: "三葉草俱樂部", engName: "Clover Club", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "果香", "綿密"], icon: "fa-leaf", color: "text-pink-500", ingredients: ["琴酒 45ml", "覆盆子糖漿 15ml", "檸檬汁 15ml", "蛋白 1顆"], method: "所有材料先 Dry Shake 起泡，再加入冰塊 Hard Shake，濾冰倒入淺碟香檳杯。", highlight: "迷人的粉紅色澤與濃郁覆盆子香，加上綿密的泡沫。" },
+            { id: 109, name: "琴費茲", engName: "Gin Fizz", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "氣泡", "清爽"], icon: "fa-glass-water", color: "text-white", ingredients: ["琴酒 45ml", "檸檬汁 20ml", "糖漿 15ml", "蘇打水 補滿"], method: "將琴酒、檸檬、糖漿加冰搖盪均勻，濾入高球杯中，補滿冰塊與蘇打水。", highlight: "拉莫斯琴費茲的基礎原型，清爽酸甜且容易製作。" },
+            { id: 110, name: "南方", engName: "Southside", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "薄荷", "清涼"], icon: "fa-leaf", color: "text-green-400", ingredients: ["琴酒 60ml", "萊姆汁 20ml", "糖漿 15ml", "薄荷葉 6-8片"], method: "薄荷葉輕拍後與所有材料放入搖酒器，加冰搖盪，濾入馬丁尼杯中。", highlight: "可以理解為「琴酒版的莫西多」，但通常不加氣泡水，非常清涼。" },
+            { id: 111, name: "粉紅佳人", engName: "Pink Lady", category: "classic", base: "琴酒", type: "Shake", tags: ["經典", "石榴", "綿密"], icon: "fa-martini-glass", color: "text-rose-400", ingredients: ["琴酒 45ml", "石榴糖漿 15ml", "檸檬汁 15ml", "蛋白 1顆"], method: "所有材料先 Dry Shake 起泡，再加入冰塊 Hard Shake，濾冰倒入淺碟香檳杯。", highlight: "早年專為女性設計的經典，鮮豔的粉紅色與綿密口感。" },
 
-            // === 經典調酒 (威士忌系列 11杯) ===
+            // 威士忌系列 (Whiskey)
             { id: 201, name: "老時髦", engName: "Old Fashioned", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "成熟"], icon: "fa-glass-whiskey", color: "text-amber-600", ingredients: ["波本或黑麥威士忌 60ml", "方糖 1顆 (或糖漿 5ml)", "安格斯特拉苦精 2-3滴", "少許水", "柳橙皮與櫻桃"], method: "在岩石杯中將方糖、苦精與少許水搗碎溶解。加入大冰塊與威士忌，攪拌 20-30 圈。噴灑柳橙皮油。", highlight: "最古老的雞尾酒形式，品味威士忌最優雅的姿態。" },
             { id: 202, name: "曼哈頓", engName: "Manhattan", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "甜美"], icon: "fa-martini-glass", color: "text-red-600", ingredients: ["黑麥威士忌 60ml", "甜苦艾酒 30ml", "安格斯特拉苦精 2滴", "酒漬櫻桃"], method: "將威士忌、甜苦艾酒與苦精加入混酒杯，加滿冰塊攪拌均勻。濾入馬丁尼杯，以櫻桃裝飾。", highlight: "雞尾酒之后，甜苦艾酒的草藥甜味與威士忌完美交融。" },
             { id: 203, name: "威士忌酸酒", engName: "Whiskey Sour", category: "classic", base: "威士忌", type: "Shake", tags: ["經典", "酸甜", "綿密"], icon: "fa-glass-whiskey", color: "text-yellow-500", ingredients: ["波本威士忌 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆", "安格斯特拉苦精 (裝飾)"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入裝有大冰塊的岩石杯，滴上苦精拉花。", highlight: "酸甜平衡的極致，加入蛋白讓口感如絲綢般滑順。" },
-            { id: 204, name: "薩澤拉克", engName: "Sazerac", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "草本"], icon: "fa-glass-whiskey", color: "text-orange-500", ingredients: ["黑麥威士忌 60ml", "方糖 1顆", "裴喬氏苦精 (Peychaud's) 3滴", "苦艾酒 洗杯", "檸檬皮"], method: "用苦艾酒涮洗一個冰鎮過的岩石杯並倒出。在另一杯中搗碎糖與苦精，加入威士忌與冰塊攪拌。濾入涮過苦艾酒的杯中。", highlight: "紐奧良的官方雞尾酒，帶有獨特的八角與苦艾香氣。" },
+            { id: 204, name: "高球", engName: "Highball", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "氣泡", "解渴"], icon: "fa-glass-water", color: "text-amber-400", ingredients: ["威士忌 45ml", "蘇打水 補滿", "檸檬角 (選配)"], method: "高球杯加滿冰塊，倒入威士忌攪拌降溫，緩慢倒入蘇打水，最後輕拉一圈混合。", highlight: "日式酒吧的靈魂，考驗冰塊、溫度與氣泡保存的極簡調酒。" },
             { id: 205, name: "薄荷茱莉普", engName: "Mint Julep", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "清涼", "薄荷"], icon: "fa-leaf", color: "text-green-500", ingredients: ["波本威士忌 60ml", "新鮮薄荷葉 8-10片", "糖漿 15ml", "大量碎冰"], method: "在杯底輕輕搗壓薄荷葉與糖漿釋放香氣。加入半杯碎冰，倒入波本攪拌。再加滿碎冰堆成雪錐狀。", highlight: "美國南方經典，炎炎夏日的最佳威士忌解藥。" },
             { id: 206, name: "花花公子", engName: "Boulevardier", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "苦甜", "濃郁"], icon: "fa-glass-whiskey", color: "text-red-500", ingredients: ["波本威士忌 45ml", "金巴利 (Campari) 30ml", "甜苦艾酒 30ml", "柳橙皮"], method: "將所有酒類倒入加有大冰塊的岩石杯中，均勻攪拌。最後噴灑柳橙皮油並投入杯中。", highlight: "可以理解為「威士忌版的內格羅尼」，更具溫暖的木質調。" },
-            { id: 207, name: "生鏽釘", engName: "Rusty Nail", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "香甜", "酒感重"], icon: "fa-glass-whiskey", color: "text-amber-500", ingredients: ["蘇格蘭威士忌 45ml", "杜林標 (Drambuie) 15-20ml", "檸檬皮"], method: "在岩石杯中加入大冰塊，倒入威士忌與杜林標，簡單攪拌幾下即可。", highlight: "蘇格蘭威士忌與蜂蜜香草的完美結合，簡單卻雋永。" },
-            { id: 208, name: "血與沙", engName: "Blood and Sand", category: "classic", base: "威士忌", type: "Shake", tags: ["經典", "果香", "平衡"], icon: "fa-martini-glass", color: "text-rose-600", ingredients: ["蘇格蘭威士忌 20ml", "櫻桃利口酒 20ml", "甜苦艾酒 20ml", "鮮榨柳橙汁 20ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "以1922年同名電影命名，少見將蘇格蘭威士忌與果汁結合的佳作。" },
-            { id: 209, name: "羅伯羅伊", engName: "Rob Roy", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "木質"], icon: "fa-martini-glass", color: "text-amber-700", ingredients: ["蘇格蘭威士忌 60ml", "甜苦艾酒 30ml", "安格斯特拉苦精 2滴"], method: "將所有材料加入混酒杯，加滿冰塊攪拌均勻。濾入馬丁尼杯，以櫻桃裝飾。", highlight: "可以理解為「蘇格蘭威士忌版的曼哈頓」，帶有獨特煙燻泥煤味。" },
-            { id: 210, name: "教父", engName: "Godfather", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "甜美", "酒感重"], icon: "fa-glass-whiskey", color: "text-yellow-600", ingredients: ["蘇格蘭威士忌 45ml", "杏仁利口酒 (Amaretto) 15ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "充滿濃郁的杏仁與烤堅果香氣，如電影教父般沉穩迷人。" },
-            { id: 211, name: "愛爾蘭咖啡", engName: "Irish Coffee", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "熱飲", "咖啡"], icon: "fa-mug-hot", color: "text-stone-500", ingredients: ["愛爾蘭威士忌 45ml", "熱咖啡 120ml", "黑糖 1-2匙", "打發鮮奶油 (浮於表面)"], method: "在溫熱的高腳玻璃杯中加入糖與熱咖啡攪拌溶解，倒入威士忌。最後將打發但會流動的鮮奶油鋪在最上層。", highlight: "冷熱交替的口感，透過冰涼鮮奶油喝下溫熱的威士忌咖啡。" },
+            { id: 207, name: "教父", engName: "Godfather", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "甜美", "酒感重"], icon: "fa-glass-whiskey", color: "text-yellow-600", ingredients: ["威士忌 45ml", "杏仁利口酒 (Amaretto) 15ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "充滿濃郁的杏仁與烤堅果香氣，如電影教父般沉穩迷人。" },
+            { id: 208, name: "紐約", engName: "New York", category: "classic", base: "威士忌", type: "Shake", tags: ["經典", "果香", "酸甜"], icon: "fa-martini-glass", color: "text-rose-500", ingredients: ["波本或黑麥威士忌 45ml", "檸檬汁 15ml", "石榴糖漿 10ml", "糖漿 少許"], method: "所有材料加冰塊搖盪均勻，濾冰倒入馬丁尼杯中。", highlight: "美麗的橘紅色澤，威士忌與石榴糖漿碰撞出的迷人果香。" },
+            { id: 209, name: "威士忌可樂", engName: "Jack & Coke", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "派對", "氣泡"], icon: "fa-glass-water", color: "text-amber-900", ingredients: ["威士忌 (通常為 Jack Daniel's) 45ml", "可樂 補滿", "檸檬角 1塊"], method: "高球杯加冰塊，倒入威士忌，補滿可樂，擠入檸檬角。", highlight: "全世界派對上最常見的威士忌飲法，簡單暴力。" },
+            { id: 210, name: "約翰柯林斯", engName: "John Collins", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "清爽", "解渴"], icon: "fa-glass-water", color: "text-yellow-400", ingredients: ["波本威士忌 45ml", "檸檬汁 30ml", "糖漿 15ml", "蘇打水 補滿"], method: "在高球杯中加入威士忌、檸檬汁與糖漿，加滿冰塊攪拌，最後補滿蘇打水。", highlight: "也就是威士忌版本的 Tom Collins，清爽暢快。" },
 
-            // === 經典調酒 (萊姆酒系列 10杯) ===
+            // 萊姆酒系列 (Rum)
             { id: 301, name: "莫西多", engName: "Mojito", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "清爽", "薄荷"], icon: "fa-leaf", color: "text-green-400", ingredients: ["白萊姆酒 60ml", "新鮮薄荷葉 10-12片", "萊姆半顆 (切塊)", "糖 2匙", "蘇打水 補滿"], method: "在杯底將萊姆塊與糖輕輕搗壓出汁，加入薄荷葉輕拍。加入碎冰與萊姆酒攪拌，最後補滿蘇打水。", highlight: "最著名的古巴調酒，充滿薄荷與萊姆的清涼感。" },
             { id: 302, name: "黛綺麗", engName: "Daiquiri", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "酸甜", "清爽"], icon: "fa-martini-glass-citrus", color: "text-yellow-300", ingredients: ["白萊姆酒 60ml", "鮮榨萊姆汁 20ml", "糖漿 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "萊姆酒的終極試金石，最完美的酸甜平衡。" },
-            { id: 303, name: "邁泰", engName: "Mai Tai", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "熱帶"], icon: "fa-umbrella-beach", color: "text-orange-400", ingredients: ["陳年萊姆酒 60ml", "橙酒 (乾橘香甜酒) 15ml", "杏仁糖漿 (Orgeat) 15ml", "萊姆汁 20ml", "薄荷葉裝飾"], method: "所有材料加冰用力搖盪，連同冰塊一起倒入岩石杯或 Tiki 杯中。以大把薄荷與萊姆皮裝飾。", highlight: "Tiki 調酒的王者，濃郁的杏仁與萊姆酒香交織。" },
+            { id: 303, name: "邁泰", engName: "Mai Tai", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "熱帶"], icon: "fa-umbrella-beach", color: "text-orange-400", ingredients: ["萊姆酒 (一黑一白佳) 共 60ml", "橙酒 (Cointreau) 15ml", "杏仁糖漿 (Orgeat) 15ml", "萊姆汁 20ml", "薄荷葉裝飾"], method: "所有材料加冰用力搖盪，連同冰塊一起倒入岩石杯或 Tiki 杯中。以大把薄荷與萊姆皮裝飾。", highlight: "Tiki 調酒的王者，濃郁的杏仁與萊姆酒香交織。" },
             { id: 304, name: "鳳梨可樂達", engName: "Pina Colada", category: "classic", base: "萊姆酒", type: "Blend", tags: ["經典", "熱帶", "濃郁"], icon: "fa-ice-cream", color: "text-yellow-200", ingredients: ["白萊姆酒 45ml", "椰漿 45ml", "鳳梨汁 90ml"], method: "將所有材料與適量冰塊放入果汁機打成冰沙（或用力搖盪），倒入高球杯，以鳳梨片裝飾。", highlight: "波多黎各的國酒，充滿度假風情的椰香與鳳梨味。" },
-            { id: 305, name: "月黑風高", engName: "Dark 'n' Stormy", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "辛辣", "氣泡"], icon: "fa-bolt", color: "text-amber-700", ingredients: ["深色萊姆酒 (如 Goslings) 60ml", "薑汁啤酒 120ml", "萊姆角"], method: "在高球杯中加滿冰塊，先倒入薑汁啤酒，再將深色萊姆酒輕輕浮在最上層，擠入萊姆角。", highlight: "加勒比海的風暴，薑汁的辛辣與深色萊姆酒的糖蜜香絕配。" },
-            { id: 306, name: "殭屍", engName: "Zombie", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "超重酒感"], icon: "fa-skull", color: "text-green-600", ingredients: ["多種萊姆酒混合 (白/金/黑) 共 60ml", "高濃度萊姆酒 (151) 15ml", "百香果糖漿 15ml", "萊姆汁 15ml", "鳳梨汁 15ml", "安格斯特拉苦精 1滴"], method: "除 151 外所有材料加冰搖盪，倒入杯中。最後將 151 萊姆酒淋在最上方。", highlight: "傳說中喝兩杯就會變成殭屍的超強 Tiki 調酒。" },
-            { id: 307, name: "海明威特調", engName: "Hemingway Daiquiri", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "酸爽", "無糖"], icon: "fa-martini-glass", color: "text-rose-400", ingredients: ["白萊姆酒 60ml", "黑櫻桃利口酒 (Maraschino) 15ml", "葡萄柚汁 20ml", "萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "大文豪海明威的最愛，以黑櫻桃與葡萄柚取代糖漿的硬派風味。" },
-            { id: 308, name: "叢林鳥", engName: "Jungle Bird", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "微苦"], icon: "fa-kiwi-bird", color: "text-red-500", ingredients: ["深色萊姆酒 45ml", "金巴利 (Campari) 20ml", "鳳梨汁 45ml", "萊姆汁 15ml", "糖漿 15ml"], method: "所有材料加冰用力搖盪，過濾倒入加有大冰塊的岩石杯中。", highlight: "少數帶有明顯苦味的 Tiki 調酒，金巴利與鳳梨出乎意料的合拍。" },
-            { id: 309, name: "總統", engName: "El Presidente", category: "classic", base: "萊姆酒", type: "Stir", tags: ["經典", "優雅", "酒感重"], icon: "fa-martini-glass", color: "text-orange-500", ingredients: ["白萊姆酒 45ml", "麗葉酒 (Lillet Blanc) 20ml", "橙酒 10ml", "石榴糖漿 一吧匙"], method: "將所有材料加入混酒杯，加滿冰塊攪拌均勻。濾入馬丁尼杯，以櫻桃裝飾。", highlight: "禁酒令時期在古巴大放異彩的優雅萊姆酒特調。" },
-            { id: 310, name: "瑪麗畢克馥", engName: "Mary Pickford", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "甜美", "果香"], icon: "fa-martini-glass", color: "text-pink-400", ingredients: ["白萊姆酒 45ml", "鳳梨汁 45ml", "黑櫻桃利口酒 5ml", "石榴糖漿 5ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "以默片時代女星命名，甜美且充滿少女心的熱帶粉紅。" },
+            { id: 305, name: "自由古巴", engName: "Cuba Libre", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "可樂", "解渴"], icon: "fa-glass-water", color: "text-amber-900", ingredients: ["萊姆酒 45ml", "可樂 補滿", "檸檬角 1-2塊"], method: "高球杯加冰塊，擠入檸檬汁並投入檸檬角，倒入萊姆酒，最後補滿可樂。", highlight: "慶祝古巴獨立的經典飲品，檸檬是不可或缺的靈魂。" },
+            { id: 306, name: "月黑風高", engName: "Dark 'n' Stormy", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "辛辣", "氣泡"], icon: "fa-bolt", color: "text-amber-700", ingredients: ["深色萊姆酒 45ml", "薑汁啤酒 120ml", "萊姆角"], method: "在高球杯中加滿冰塊，先倒入薑汁啤酒，再將深色萊姆酒輕輕浮在最上層，擠入萊姆角。", highlight: "加勒比海的風暴，薑汁的辛辣與深色萊姆酒的糖蜜香絕配。" },
+            { id: 307, name: "萊姆酒酸酒", engName: "Rum Sour", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "酸甜", "滑順"], icon: "fa-martini-glass", color: "text-yellow-200", ingredients: ["萊姆酒 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆 (選配)"], method: "若加蛋白則先 Dry Shake，再加冰 Hard Shake 濾入杯中。", highlight: "把戴綺麗的萊姆換成檸檬，更能突顯萊姆酒的甘蔗甜味。" },
+            { id: 308, name: "藍色夏威夷", engName: "Blue Hawaiian", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "視覺系", "椰香"], icon: "fa-umbrella-beach", color: "text-blue-400", ingredients: ["白萊姆酒 30ml", "藍柑橘酒 15ml", "椰子香甜酒 (Malibu或椰漿) 15ml", "鳳梨汁 60ml"], method: "所有材料加冰塊搖盪均勻，倒入裝有冰塊的高球杯中。", highlight: "鮮豔亮眼的湛藍色澤，充滿熱帶海島風情的味道。" },
+            { id: 309, name: "叢林鳥", engName: "Jungle Bird", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "微苦"], icon: "fa-kiwi-bird", color: "text-red-500", ingredients: ["深色萊姆酒 45ml", "金巴利 (Campari) 20ml", "鳳梨汁 45ml", "萊姆汁 15ml", "糖漿 15ml"], method: "所有材料加冰用力搖盪，過濾倒入加有大冰塊的岩石杯中。", highlight: "少數帶有明顯苦味的 Tiki 調酒，金巴利與鳳梨出乎意料的合拍。" },
+            { id: 310, name: "殖民者潘趣", engName: "Planter's Punch", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "果香", "重酒感"], icon: "fa-cocktail", color: "text-orange-500", ingredients: ["深色萊姆酒 60ml", "柳橙汁 30ml", "鳳梨汁 30ml", "檸檬汁 15ml", "石榴糖漿 10ml", "安格斯特拉苦精 2滴"], method: "所有材料加冰搖盪，濾入加滿碎冰的颶風杯或高球杯中。", highlight: "加勒比海地區的經典潘趣酒，果汁豐富但酒感意外扎實。" },
 
-            // === 經典調酒 (伏特加系列 10杯) ===
-            { id: 401, name: "柯夢波丹", engName: "Cosmopolitan", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "都會"], icon: "fa-martini-glass-citrus", color: "text-pink-500", ingredients: ["檸檬伏特加 45ml", "橙酒 (Cointreau) 15ml", "蔓越莓汁 30ml", "鮮榨萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入馬丁尼杯，可稍微火烤橙皮擠出精油。", highlight: "慾望城市帶起的都會粉紅旋風，酸甜莓果香極度討喜。" },
+            // 伏特加系列 (Vodka)
+            { id: 401, name: "柯夢波丹", engName: "Cosmopolitan", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "都會"], icon: "fa-martini-glass-citrus", color: "text-pink-500", ingredients: ["檸檬或原味伏特加 45ml", "橙酒 (Cointreau) 15ml", "蔓越莓汁 30ml", "鮮榨萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入馬丁尼杯，可稍微火烤橙皮擠出精油。", highlight: "慾望城市帶起的都會粉紅旋風，酸甜莓果香極度討喜。" },
             { id: 402, name: "血腥瑪麗", engName: "Bloody Mary", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "鹹鮮", "醒酒"], icon: "fa-pepper-hot", color: "text-red-600", ingredients: ["伏特加 45ml", "番茄汁 120ml", "檸檬汁 15ml", "辣醬 (Tabasco) 數滴", "烏斯特醬 數滴", "胡椒、鹽巴適量", "西芹條裝飾"], method: "在高球杯中加入調味料與檸檬汁拌勻，加入冰塊、伏特加與番茄汁，用西芹條攪拌。", highlight: "傳說中的解宿醉聖品，喝起來像是一碗冷湯的高湯調酒。" },
             { id: 403, name: "白色俄羅斯", engName: "White Russian", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "甜美", "奶香"], icon: "fa-glass-whiskey", color: "text-white", ingredients: ["伏特加 45ml", "咖啡利口酒 (Kahlua) 30ml", "鮮奶油或全脂牛奶 30ml"], method: "在岩石杯中加冰，倒入伏特加與咖啡利口酒稍微攪拌。最後將鮮奶油輕輕倒在表面形成漸層。", highlight: "電影《謀殺綠腳趾》主角的最愛，像是微醺的成人版冰拿鐵。" },
             { id: 404, name: "黑色俄羅斯", engName: "Black Russian", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "甜烈", "咖啡"], icon: "fa-glass-whiskey", color: "text-amber-900", ingredients: ["伏特加 45ml", "咖啡利口酒 (Kahlua) 20ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "去除了鮮奶油的掩護，更直接、強烈的咖啡酒香衝擊。" },
             { id: 405, name: "濃縮咖啡馬丁尼", engName: "Espresso Martini", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "提神", "濃郁"], icon: "fa-coffee", color: "text-amber-900", ingredients: ["伏特加 45ml", "咖啡利口酒 15ml", "Espresso (放涼) 30ml", "糖漿 (選配)"], method: "所有材料加冰用力搖盪 (需搖久一點打出泡沫)，濾冰倒入馬丁尼杯，以三顆咖啡豆裝飾。", highlight: "「Wake me up, and then f**k me up.」最受歡迎的派對提神神飲。" },
-            { id: 406, name: "伏特加馬丁尼", engName: "Vodka Martini", category: "classic", base: "伏特加", type: "Stir", tags: ["經典", "純粹", "特務"], icon: "fa-martini-glass", color: "text-gray-300", ingredients: ["伏特加 60ml", "辛口苦艾酒 15ml", "檸檬皮或橄欖"], method: "與傳統馬丁尼相同，加入混酒杯中加冰攪拌至極冷，濾入馬丁尼杯。(龐德喜歡用搖的)", highlight: "007 詹姆士龐德的最愛，比琴酒版本更加乾淨、純粹。" },
+            { id: 406, name: "莫斯科驢子", engName: "Moscow Mule", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "薑味", "清爽"], icon: "fa-horse", color: "text-amber-300", ingredients: ["伏特加 45ml", "薑汁汽水或啤酒 120ml", "萊姆汁 15ml"], method: "在銅杯或高球杯中加滿冰塊，倒入伏特加與萊姆汁，最後補滿薑汁汽水。", highlight: "帶有清爽薑味與萊姆酸香的經典，傳統上必須使用銅杯裝盛。" },
             { id: 407, name: "神風特攻隊", engName: "Kamikaze", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "俐落"], icon: "fa-plane", color: "text-yellow-300", ingredients: ["伏特加 30ml", "橙酒 (Cointreau) 30ml", "萊姆汁 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入岩石杯或 Shot 杯。", highlight: "伏特加版的瑪格麗特，清爽俐落卻能讓人迅速醉倒。" },
             { id: 408, name: "檸檬滴", engName: "Lemon Drop", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "順口"], icon: "fa-lemon", color: "text-yellow-400", ingredients: ["伏特加 45ml", "橙酒 15ml", "檸檬汁 20ml", "糖漿 10ml", "杯口沾一圈砂糖"], method: "準備糖口杯。將所有材料加冰搖盪，濾冰倒入馬丁尼杯。", highlight: "喝起來就像是融化的檸檬糖，酸甜討喜極易入口。" },
-            { id: 409, name: "海風", engName: "Sea Breeze", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "果香", "清爽"], icon: "fa-water", color: "text-rose-400", ingredients: ["伏特加 45ml", "蔓越莓汁 90ml", "葡萄柚汁 30ml"], method: "在高球杯中加滿冰塊，倒入所有材料，攪拌均勻即可。", highlight: "蔓越莓的酸甜與葡萄柚的微苦完美交織，如海風般沁涼。" },
-            { id: 410, name: "哈維撞牆", engName: "Harvey Wallbanger", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "果香", "草本"], icon: "fa-glass-water", color: "text-orange-400", ingredients: ["伏特加 45ml", "柳橙汁 120ml", "加里安諾 (Galliano) 利口酒 15ml"], method: "在高球杯加冰，倒入伏特加與柳橙汁攪拌。最後將加里安諾利口酒浮在最上層。", highlight: "螺絲起子的華麗升級版，頂層的香草草本香氣畫龍點睛。" },
+            { id: 409, name: "螺絲起子", engName: "Screwdriver", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "果香", "極簡"], icon: "fa-glass-water", color: "text-orange-400", ingredients: ["伏特加 45ml", "柳橙汁 補滿"], method: "高球杯加滿冰塊，倒入伏特加，補滿柳橙汁，攪拌均勻即可。", highlight: "最純粹的伏特加調酒，傳說中工人們用螺絲起子攪拌而得名。" },
+            { id: 410, name: "鹹狗", engName: "Salty Dog", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "果香", "鹽口"], icon: "fa-dog", color: "text-rose-300", ingredients: ["伏特加 45ml", "葡萄柚汁 補滿", "杯口半圈鹽巴"], method: "準備鹽口杯，加冰塊。倒入伏特加，補滿葡萄柚汁並輕輕攪拌。", highlight: "葡萄柚的微苦與杯緣的鹹味，讓伏特加變得無比順口。" },
 
-            // === 經典調酒 (龍舌蘭系列 10杯) ===
+            // 龍舌蘭系列 (Tequila)
             { id: 501, name: "瑪格麗特", engName: "Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "鹽口"], icon: "fa-martini-glass-citrus", color: "text-green-300", ingredients: ["龍舌蘭 (Tequila) 45ml", "橙酒 (Cointreau) 15ml", "萊姆汁 20ml", "半圈鹽口杯"], method: "用萊姆抹過杯緣沾上鹽巴。其餘材料加冰搖盪均勻，濾入杯中。", highlight: "無人不知的龍舌蘭經典，鹽巴帶出了酒液的甜與柑橘的香。" },
             { id: 502, name: "帕洛瑪", engName: "Paloma", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "氣泡", "微苦"], icon: "fa-glass-water", color: "text-pink-300", ingredients: ["龍舌蘭 45ml", "鮮榨萊姆汁 15ml", "少許鹽巴", "葡萄柚蘇打 補滿"], method: "在高球杯加冰，倒入龍舌蘭、萊姆汁與一小撮鹽巴，最後補滿葡萄柚蘇打輕拌。", highlight: "在墨西哥當地甚至比瑪格麗特更受歡迎的國民調酒。" },
             { id: 503, name: "龍舌蘭日出", engName: "Tequila Sunrise", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "果香", "漸層"], icon: "fa-sun", color: "text-orange-500", ingredients: ["龍舌蘭 45ml", "柳橙汁 120ml", "石榴糖漿 10ml"], method: "在高球杯加冰，倒入龍舌蘭與柳橙汁拌勻。最後緩慢倒入石榴糖漿使其沉底形成漸層。", highlight: "搖滾樂團滾石的最愛，杯中的美麗日出漸層是其標誌。" },
             { id: 504, name: "湯米瑪格麗特", engName: "Tommy's Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "現代", "純粹"], icon: "fa-glass-whiskey", color: "text-yellow-300", ingredients: ["100% 藍龍舌蘭 60ml", "鮮榨萊姆汁 30ml", "龍舌蘭糖漿 (Agave Nectar) 15ml"], method: "將所有材料加冰搖盪，濾入加有大冰塊的岩石杯中。(通常不沾鹽)", highlight: "捨棄了橙酒，完全展現出優質龍舌蘭酒原始風味的現代經典。" },
-            { id: 505, name: "惡魔", engName: "El Diablo", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "莓果", "薑味"], icon: "fa-ghost", color: "text-purple-600", ingredients: ["龍舌蘭 45ml", "黑醋栗利口酒 (Creme de Cassis) 15ml", "萊姆汁 15ml", "薑汁啤酒 補滿"], method: "在高球杯加冰，加入前三樣材料拌勻，最後補滿薑汁啤酒。", highlight: "名字聽起來嚇人，但其實是一杯酸甜討喜的莓果薑汁氣泡酒。" },
+            { id: 505, name: "龍舌蘭酸酒", engName: "Tequila Sour", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "綿密"], icon: "fa-martini-glass-citrus", color: "text-yellow-200", ingredients: ["龍舌蘭 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆", "苦精裝飾"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入杯中。", highlight: "將威士忌換成龍舌蘭，帶來截然不同的草本與土壤氣息。" },
             { id: 506, name: "巴坦加", engName: "Batanga", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "可樂", "墨西哥"], icon: "fa-glass-water", color: "text-amber-900", ingredients: ["龍舌蘭 45ml", "萊姆汁 15ml", "可樂 補滿", "鹽口杯"], method: "準備鹽口杯，加滿冰塊。倒入龍舌蘭與萊姆汁，補滿可樂。傳統上需用切萊姆的那把刀來攪拌。", highlight: "墨西哥版的自由古巴，杯緣的鹽巴是不可或缺的靈魂。" },
             { id: 507, name: "鬥牛士", engName: "Matador", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "熱帶", "果香"], icon: "fa-wine-glass", color: "text-yellow-400", ingredients: ["龍舌蘭 45ml", "鳳梨汁 60ml", "萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入香檳杯或高球杯。", highlight: "鳳梨的甜味完美中和了龍舌蘭的嗆辣，非常適合夏天。" },
-            { id: 508, name: "羅西塔", engName: "Rosita", category: "classic", base: "龍舌蘭", type: "Stir", tags: ["經典", "苦甜", "層次"], icon: "fa-glass-whiskey", color: "text-red-500", ingredients: ["龍舌蘭 (Reposado) 45ml", "金巴利 (Campari) 15ml", "甜苦艾酒 15ml", "辛口苦艾酒 15ml", "安格斯特拉苦精 1滴"], method: "將所有材料加入混酒杯，加滿冰塊攪拌均勻。濾入岩石杯。", highlight: "龍舌蘭版本的完美內格羅尼，四種酒的比例達到奇妙的平衡。" },
-            { id: 509, name: "龍舌蘭酸酒", engName: "Tequila Sour", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "綿密"], icon: "fa-martini-glass-citrus", color: "text-yellow-200", ingredients: ["龍舌蘭 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆", "苦精裝飾"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入杯中。", highlight: "將威士忌換成龍舌蘭，帶來截然不同的草本與土壤氣息。" },
-            { id: 510, name: "墨西哥行刑隊", engName: "Mexican Firing Squad", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "香料"], icon: "fa-skull", color: "text-rose-600", ingredients: ["龍舌蘭 60ml", "萊姆汁 20ml", "石榴糖漿 20ml", "安格斯特拉苦精 4-5滴"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入加有冰塊的岩石杯。", highlight: "大量苦精與石榴糖漿的碰撞，風味強烈且極具記憶點。" },
+            { id: 508, name: "藍色瑪格麗特", engName: "Blue Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "視覺系", "酸甜"], icon: "fa-martini-glass", color: "text-blue-400", ingredients: ["龍舌蘭 45ml", "藍柑橘酒 15ml", "萊姆汁 20ml", "鹽口杯"], method: "準備鹽口杯。所有材料加冰搖盪均勻，濾入馬丁尼杯中。", highlight: "把一般的橙酒換成藍柑橘酒，創造出迷人的湛藍海洋色。" },
+            { id: 509, name: "勇敢公牛", engName: "Brave Bull", category: "classic", base: "龍舌蘭", type: "Stir", tags: ["經典", "咖啡", "強烈"], icon: "fa-glass-whiskey", color: "text-stone-600", ingredients: ["龍舌蘭 45ml", "咖啡利口酒 (Kahlua) 20ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "龍舌蘭版本的黑色俄羅斯，草本味與咖啡交織的獨特強烈口感。" },
+            { id: 510, name: "龍舌蘭通寧", engName: "T&T", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "氣泡", "清爽"], icon: "fa-glass-water", color: "text-blue-200", ingredients: ["龍舌蘭 45ml", "通寧水 補滿", "檸檬或萊姆角"], method: "高球杯加滿冰塊，倒入龍舌蘭，補滿通寧水並輕輕攪拌，擠入檸檬汁。", highlight: "快速且極度清爽的選擇，通寧水的微苦能很好的修飾龍舌蘭。" },
 
-            // === 經典調酒 (利口酒/白蘭地/其他系列 10杯) ===
+            // 利口酒/其他 系列 (Liqueur/Other - focusing on highly accessible liqueurs)
             { id: 601, name: "杏仁酸酒", engName: "Amaretto Sour", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "堅果", "甜點"], icon: "fa-glass-whiskey", color: "text-yellow-600", ingredients: ["杏仁利口酒 (Amaretto) 45ml", "波本威士忌 (選配, 增添酒感) 15ml", "檸檬汁 30ml", "糖漿 5ml", "蛋白 1顆"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入岩石杯中。", highlight: "充滿杏仁蛋白霜與櫻桃香氣，像是在吃液態的義大利甜點。" },
-            { id: 602, name: "阿佩羅氣泡", engName: "Aperol Spritz", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "氣泡", "餐前"], icon: "fa-wine-glass", color: "text-orange-500", ingredients: ["阿佩羅 (Aperol) 60ml", "普羅賽克氣泡酒 (Prosecco) 90ml", "蘇打水 30ml", "柳橙片"], method: "在酒杯中加滿冰塊，依序倒入阿佩羅、氣泡酒與蘇打水，輕輕攪拌，放上柳橙片。", highlight: "義大利最受歡迎的國民餐前酒，明亮的橘色是夏日的代名詞。" },
-            { id: 603, name: "側車", engName: "Sidecar", category: "classic", base: "其他", type: "Shake", tags: ["經典", "白蘭地", "酸甜"], icon: "fa-martini-glass-citrus", color: "text-amber-500", ingredients: ["干邑白蘭地 45ml", "橙酒 (Cointreau) 20ml", "檸檬汁 20ml", "糖口杯"], method: "準備半圈糖口杯。所有材料加冰搖盪均勻，濾入馬丁尼杯。", highlight: "白蘭地最經典的三合一調酒，葡萄果香與柑橘完美結合。" },
-            { id: 604, name: "皮斯可酸酒", engName: "Pisco Sour", category: "classic", base: "其他", type: "Shake", tags: ["經典", "白蘭地", "綿密"], icon: "fa-wine-glass", color: "text-lime-300", ingredients: ["皮斯可酒 (Pisco) 60ml", "萊姆汁 30ml", "糖漿 20ml", "蛋白 1顆", "安格斯特拉苦精 3滴"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入高腳杯中，將苦精滴在泡沫上。", highlight: "秘魯與智利的國酒之爭，充滿麝香葡萄香氣的南美風情。" },
-            { id: 605, name: "皮姆杯", engName: "Pimm's Cup", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "水果", "消暑"], icon: "fa-glass-water", color: "text-red-800", ingredients: ["皮姆一號 (Pimm's No.1) 60ml", "檸檬汽水或薑汁汽水 補滿", "黃瓜片、草莓、柳橙、薄荷"], method: "在高球杯或紅酒杯中塞滿各式切片水果與黃瓜，加冰塊，倒入皮姆酒，補滿汽水。", highlight: "英國溫布頓網球賽的傳統飲品，像是豐富的水果沙拉調酒。" },
-            { id: 606, name: "綠石蜢", engName: "Grasshopper", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "甜點", "薄荷巧克力"], icon: "fa-martini-glass", color: "text-green-300", ingredients: ["綠薄荷利口酒 30ml", "白可可利口酒 30ml", "鮮奶油 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入馬丁尼杯。", highlight: "翠綠討喜的顏色，喝起來完全就是「薄荷巧克力冰淇淋」。" },
-            { id: 607, name: "白蘭地亞歷山大", engName: "Brandy Alexander", category: "classic", base: "其他", type: "Shake", tags: ["經典", "甜點", "奶香"], icon: "fa-martini-glass", color: "text-stone-300", ingredients: ["干邑白蘭地 30ml", "黑可可利口酒 30ml", "鮮奶油 30ml", "肉豆蔻粉"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入馬丁尼杯，表面撒上現磨肉豆蔻粉。", highlight: "約翰藍儂的最愛，白蘭地與巧克力牛奶交織的華麗甜點酒。" },
-            { id: 608, name: "B-52轟炸機", engName: "B-52", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "Shot", "視覺系"], icon: "fa-vial", color: "text-amber-800", ingredients: ["咖啡利口酒 (Kahlua) 15ml", "愛爾蘭奶酒 (Baileys) 15ml", "柑橘利口酒 (Grand Marnier) 15ml"], method: "在 Shot 杯中，利用吧匙背緩慢引流，依序倒入咖啡酒、奶酒、柑橘酒，形成完美的三層漸層。可點火飲用。", highlight: "最著名的分層 Shot，一口喝下感受三種香甜風味的衝擊。" },
-            { id: 609, name: "日本拖鞋", engName: "Japanese Slipper", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "哈密瓜", "果香"], icon: "fa-martini-glass", color: "text-lime-400", ingredients: ["蜜多麗哈密瓜利口酒 30ml", "橙酒 (Cointreau) 30ml", "檸檬汁 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入馬丁尼杯，以糖漬櫻桃裝飾。", highlight: "發源於澳洲的經典，鮮豔螢光綠與濃郁哈密瓜香氣十分迷人。" },
+            { id: 602, name: "卡魯哇牛奶", engName: "Kahlua Milk", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "奶香", "咖啡"], icon: "fa-glass-whiskey", color: "text-stone-300", ingredients: ["咖啡利口酒 (Kahlua) 45ml", "鮮奶 補滿"], method: "在岩石杯中加滿冰塊，倒入卡魯哇，緩慢倒入鮮奶形成漸層，飲用前攪拌。", highlight: "酒吧裡最平易近人的入門款，香濃的咖啡牛奶感。" },
+            { id: 603, name: "貝禮詩牛奶", engName: "Baileys Milk", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "奶香", "甜美"], icon: "fa-glass-whiskey", color: "text-amber-100", ingredients: ["貝禮詩奶酒 (Baileys) 45ml", "鮮奶 補滿"], method: "在岩石杯中加滿冰塊，倒入奶酒，補滿鮮奶，攪拌均勻。", highlight: "帶有愛爾蘭威士忌與可可香氣的終極甜點奶酒。" },
+            { id: 604, name: "綠石蜢", engName: "Grasshopper", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "甜點", "薄荷巧克力"], icon: "fa-martini-glass", color: "text-green-300", ingredients: ["綠薄荷利口酒 30ml", "白可可利口酒 30ml", "鮮奶油 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入馬丁尼杯。", highlight: "翠綠討喜的顏色，喝起來完全就是「薄荷巧克力冰淇淋」。" },
+            { id: 605, name: "B-52轟炸機", engName: "B-52", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "Shot", "視覺系"], icon: "fa-vial", color: "text-amber-800", ingredients: ["咖啡利口酒 (Kahlua) 15ml", "愛爾蘭奶酒 (Baileys) 15ml", "柑橘利口酒 (Grand Marnier / 橙酒) 15ml"], method: "在 Shot 杯中，利用吧匙背緩慢引流，依序倒入咖啡酒、奶酒、柑橘酒，形成完美的三層漸層。", highlight: "最著名的分層 Shot，一口喝下感受三種香甜風味的衝擊。" },
+            { id: 606, name: "金巴利柳橙", engName: "Campari Orange", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "微苦", "果香"], icon: "fa-glass-water", color: "text-red-500", ingredients: ["金巴利 (Campari) 45ml", "柳橙汁 補滿", "柳橙片裝飾"], method: "在高球杯中加冰，倒入金巴利與柳橙汁，輕輕攪拌即可。", highlight: "義大利常見的餐前飲品，柳橙的甜味能稍微中和金巴利的苦味。" },
+            { id: 607, name: "蜜桃女孩", engName: "Fuzzy Navel", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "甜美", "果香"], icon: "fa-glass-water", color: "text-orange-300", ingredients: ["蜜桃利口酒 (Peach Schnapps) 45ml", "柳橙汁 補滿"], method: "在高球杯中加冰，倒入蜜桃利口酒，補滿柳橙汁並攪拌均勻。", highlight: "80年代紅極一時的迪斯可調酒，滿滿的水蜜桃與柳橙香甜。" },
+            { id: 608, name: "荔枝葡萄柚", engName: "China Blue", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "視覺系", "清爽"], icon: "fa-glass-water", color: "text-blue-300", ingredients: ["荔枝利口酒 (Dita等) 30ml", "藍柑橘酒 10ml", "葡萄柚汁 補滿"], method: "在高球杯中加冰，倒入所有材料攪拌均勻。也可先倒果汁再將藍柑橘沉底作漸層。", highlight: "極美的天藍色澤，荔枝的甜香完美平衡了葡萄柚的微苦。" },
+            { id: 609, name: "蜜多麗酸酒", engName: "Midori Sour", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "哈密瓜", "酸甜"], icon: "fa-glass-water", color: "text-green-500", ingredients: ["哈密瓜利口酒 (Midori) 45ml", "檸檬汁 20ml", "蘇打水 些許"], method: "將哈密瓜酒與檸檬汁加冰搖盪，濾入加冰的岩石或高球杯中，補上少許蘇打水。", highlight: "亮綠色的搶眼外觀，喝起來有著濃郁哈密瓜氣息與清爽酸度。" },
             { id: 610, name: "絕對誘惑", engName: "Orgasm", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "甜烈", "奶香"], icon: "fa-glass-whiskey", color: "text-stone-400", ingredients: ["咖啡利口酒 20ml", "杏仁利口酒 20ml", "愛爾蘭奶酒 20ml", "鮮奶油 20ml"], method: "所有材料加冰用力搖盪，濾冰倒入岩石杯中。", highlight: "如同其名，四種濃郁香甜的材料混合出令人難以抗拒的罪惡感。" }
         ];
 
@@ -518,7 +517,7 @@
         const STORAGE_KEY_DRINKS = 'binbar_data_v1';
         const STORAGE_KEY_CATS = 'binbar_categories_v1';
         const STORAGE_KEY_ORDERS = 'binbar_orders_v1';
-        const STORAGE_KEY_MADE = 'binbar_made_v1'; // 新增：用於記錄已調製過的酒單
+        const STORAGE_KEY_MADE = 'binbar_made_v1'; 
 
         function init() {
             let storedDrinks = localStorage.getItem(STORAGE_KEY_DRINKS);
@@ -538,19 +537,27 @@
             if (storedCats) { categories = JSON.parse(storedCats); } 
             else { categories = JSON.parse(JSON.stringify(defaultCategories)); saveCategories(); }
 
-            // 自動遷移機制：如果還沒有「經典調酒」分類，自動補齊並推入所有經典酒單
-            if (!categories.some(c => c.id === 'classic')) {
-                categories.splice(1, 0, { id: 'classic', name: '經典調酒' });
-                saveCategories();
+            // 🟢 自動遷移機制：更新成完全聚焦常見六大基酒的新酒單
+            // 我們檢查是否有新加入的 "螺絲起子" (id: 409)，如果沒有，代表使用者用的是舊版經典酒單，我們執行更新。
+            if (!drinks.some(d => d.name === "螺絲起子")) {
+                // 1. 移除舊的經典調酒 (不影響使用者自己新增的分類)
+                drinks = drinks.filter(d => d.category !== 'classic');
+                // 2. 加入全新的 60+ 杯經典調酒
                 const newClassics = fullDefaultDrinks.filter(d => d.category === 'classic');
                 drinks = [...drinks, ...newClassics];
                 saveData();
+                console.log("Classic drinks updated to new standard list.");
+            }
+            
+            // 確保分類選單中有「經典調酒」
+            if (!categories.some(c => c.id === 'classic')) {
+                categories.splice(1, 0, { id: 'classic', name: '經典調酒' });
+                saveCategories();
             }
 
             const storedOrders = localStorage.getItem(STORAGE_KEY_ORDERS);
             if(storedOrders) { orders = JSON.parse(storedOrders); }
 
-            // 讀取已調製過的紀錄
             const storedMade = localStorage.getItem(STORAGE_KEY_MADE);
             if (storedMade) {
                 try { madeDrinks = JSON.parse(storedMade); } catch(e) { madeDrinks = []; }
@@ -562,7 +569,7 @@
         }
 
         function saveData() {
-            try { localStorage.setItem(STORAGE_KEY_DRINKS, JSON.stringify(drinks)); renderDrinks(); showToast('已儲存！'); } 
+            try { localStorage.setItem(STORAGE_KEY_DRINKS, JSON.stringify(drinks)); renderDrinks(); } 
             catch(e) { if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { alert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); } else { console.error("Save error:", e); alert('儲存發生錯誤。'); } }
         }
         function saveCategories() { localStorage.setItem(STORAGE_KEY_CATS, JSON.stringify(categories)); renderFilters(); renderCategoryEditorList(); }
@@ -590,7 +597,6 @@
             filtered.forEach((drink, index) => {
                 const card = document.createElement('div');
                 
-                // 檢查是否已調製過，改變卡片背景樣式
                 const isMade = madeDrinks.some(id => id == drink.id);
                 let cardClass = `drink-card rounded-xl cursor-pointer animate-pop overflow-hidden flex flex-col h-full relative group transition-all duration-300 `;
                 if (isMade) {
@@ -727,6 +733,7 @@
                 drinks.push(newDrink); 
             } 
             saveData(); 
+            showToast('已儲存！');
             closeEditor(); 
         }
         
