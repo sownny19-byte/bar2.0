@@ -191,12 +191,16 @@
             </div>
             
             <div class="flex items-center gap-3">
+                <!-- 備份設定按鈕 -->
+                <div class="relative cursor-pointer w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10 transition-colors" onclick="window.openBackupModal()" title="資料備份">
+                    <i class="fas fa-cog text-gray-300"></i>
+                </div>
                 <!-- 雲端狀態指示燈 -->
                 <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-full cursor-pointer" onclick="window.initCloudSync()" title="點擊重試雲端連線">
                     <i class="fas fa-cloud text-gray-400 transition-colors duration-500" id="cloud-icon-base"></i>
                     <span id="cloud-icon-indicator" class="absolute top-0 right-0 w-3 h-3 bg-green-500 border-2 border-bar-dark rounded-full animate-pulse hidden"></span>
                 </div>
-                <button onclick="pickRandom()" class="bg-bar-gold text-bar-dark px-3 py-1.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2 shadow-lg">
+                <button onclick="window.pickRandom()" class="bg-bar-gold text-bar-dark px-3 py-1.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2 shadow-lg">
                     <i class="fas fa-dice"></i> <span class="hidden sm:inline">今晚喝什麼?</span><span class="sm:hidden">手氣</span>
                 </button>
             </div>
@@ -244,32 +248,58 @@
     <!-- FAB -->
     <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-4" id="fab-container">
         <div id="fab-menu" class="flex flex-col items-end gap-3 mb-2">
-            <div class="fab-menu-item flex items-center gap-3 cursor-pointer group" onclick="openOrdersList()">
+            <div class="fab-menu-item flex items-center gap-3 cursor-pointer group" onclick="window.openOrdersList()">
                 <span class="bg-white text-gray-800 px-3 py-1 rounded-lg text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">已點清單</span>
                 <button class="w-12 h-12 bg-accent-blue text-white rounded-full shadow-lg hover:bg-blue-400 transition-colors flex items-center justify-center relative">
                     <i class="fas fa-clipboard-list text-xl"></i>
                     <span id="order-count-badge-menu" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold border-2 border-bar-dark">0</span>
                 </button>
             </div>
-            <div class="fab-menu-item flex items-center gap-3 cursor-pointer group" onclick="openEditor()">
+            <div class="fab-menu-item flex items-center gap-3 cursor-pointer group" onclick="window.openEditor()">
                 <span class="bg-white text-gray-800 px-3 py-1 rounded-lg text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">新增調酒</span>
                 <button class="w-12 h-12 bg-white text-bar-dark rounded-full shadow-lg hover:bg-gray-200 transition-colors flex items-center justify-center">
                     <i class="fas fa-plus text-xl"></i>
                 </button>
             </div>
         </div>
-        <button onclick="toggleFab()" id="fab-main-btn" class="w-16 h-16 bg-bar-gold text-bar-dark rounded-full shadow-lg fab-main-btn flex items-center justify-center relative">
+        <button onclick="window.toggleFab()" id="fab-main-btn" class="w-16 h-16 bg-bar-gold text-bar-dark rounded-full shadow-lg fab-main-btn flex items-center justify-center relative">
             <i class="fas fa-plus text-2xl" id="fab-icon"></i>
             <span id="order-count-badge-main" class="hidden absolute top-0 right-0 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold border-2 border-bar-dark shadow-sm">0</span>
         </button>
     </div>
 
+    <!-- 備份設定 Modal -->
+    <div id="backup-modal" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300" onclick="window.closeBackupModal()">
+        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-gray-500/30 p-8 text-center" onclick="event.stopPropagation()">
+            <div class="mb-6">
+                <div class="w-16 h-16 bg-gray-600/20 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-400 text-2xl border border-gray-500/30">
+                    <i class="fas fa-save"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-1">資料備份與還原</h2>
+                <p class="text-gray-400 text-sm">手動匯出或匯入您的專屬酒單</p>
+            </div>
+            <div class="space-y-4">
+                <button onclick="window.exportData()" class="w-full bg-bar-gold text-bar-dark font-bold py-3 rounded-lg shadow-lg hover:bg-yellow-400 transition-transform active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fas fa-file-export"></i> 匯出備份 (JSON)
+                </button>
+                <button onclick="document.getElementById('import-file').click()" class="w-full bg-white/10 text-white font-bold py-3 rounded-lg shadow-lg hover:bg-white/20 border border-white/20 transition-transform active:scale-95 flex items-center justify-center gap-2 mt-4">
+                    <i class="fas fa-file-import"></i> 匯入備份 (JSON)
+                </button>
+                <input type="file" id="import-file" class="hidden" accept=".json" onchange="window.importData(event)">
+                
+                <div class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-left text-xs text-red-200">
+                    <i class="fas fa-exclamation-triangle mr-1"></i> 注意：匯入備份將會完全覆蓋當前的酒單資料。
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- View Modal -->
-    <div id="view-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="closeViewModal()">
+    <div id="view-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="window.closeViewModal()">
         <div id="view-modal-content" class="bg-bar-gray w-full max-w-lg rounded-2xl shadow-2xl border border-white/10 transform scale-95 transition-transform duration-300 max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
             <div id="view-header" class="relative h-48 bg-gray-800 flex-shrink-0 bg-cover bg-center">
                 <div class="absolute inset-0 bg-gradient-to-t from-bar-gray via-transparent to-black/30"></div>
-                <button onclick="closeViewModal()" class="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full backdrop-blur-sm transition-colors z-20 w-8 h-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
+                <button onclick="window.closeViewModal()" class="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/50 p-2 rounded-full backdrop-blur-sm transition-colors z-20 w-8 h-8 flex items-center justify-center"><i class="fas fa-times"></i></button>
                 <div class="absolute bottom-4 left-6 right-6 z-10"><span id="view-badge" class="tag-pill bg-bar-gold text-bar-dark mb-2 inline-block shadow-lg">Whiskey</span><h3 id="view-title" class="text-3xl font-bold text-white font-serif drop-shadow-md">Drink Name</h3></div>
             </div>
             <div class="p-6 space-y-6 overflow-y-auto flex-grow">
@@ -282,22 +312,28 @@
     </div>
 
     <!-- Orders Modal -->
-    <div id="orders-modal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="closeOrdersList()">
+    <div id="orders-modal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="window.closeOrdersList()">
         <div class="bg-bar-gray w-full max-w-md rounded-2xl shadow-2xl border border-white/10 max-h-[80vh] flex flex-col" onclick="event.stopPropagation()">
             <div class="p-5 border-b border-white/10 flex justify-between items-center bg-gradient-to-r from-blue-900 to-bar-gray rounded-t-2xl">
                 <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white"><i class="fas fa-clipboard-check text-lg"></i></div><div><h3 class="text-xl font-bold text-white">已點清單</h3><p class="text-xs text-blue-200">點擊項目可查看做法並出單</p></div></div>
-                <button onclick="closeOrdersList()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center"><i class="fas fa-times"></i></button>
+                <button onclick="window.closeOrdersList()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center"><i class="fas fa-times"></i></button>
             </div>
             <div id="orders-list-container" class="p-4 overflow-y-auto custom-scroll space-y-2 min-h-[200px] flex-grow"></div>
             <div id="orders-empty-state" class="hidden flex-col items-center justify-center py-10 text-gray-500 flex-grow"><i class="fas fa-glass-cheers text-4xl mb-3 opacity-30"></i><p>目前沒有等待中的訂單</p><p class="text-xs mt-1">快去點幾杯來喝吧！</p></div>
-            <div class="p-4 border-t border-white/10 bg-bar-gray rounded-b-2xl text-center"><p class="text-xs text-gray-500">雲端即時派對系統</p></div>
+            
+            <div class="p-4 border-t border-white/10 bg-bar-gray rounded-b-2xl flex justify-between items-center">
+                <p class="text-xs text-gray-500">雲端即時派對系統</p>
+                <button onclick="window.clearAllOrders()" class="text-xs text-red-400 border border-red-500/50 px-3 py-1.5 rounded hover:bg-red-500/10 transition-colors flex items-center gap-1">
+                    <i class="fas fa-trash-alt"></i> 一鍵清空
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Editor Modal -->
-    <div id="editor-modal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="closeEditor()">
+    <div id="editor-modal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="window.closeEditor()">
         <div class="bg-bar-gray w-full max-w-2xl rounded-2xl shadow-2xl border border-white/10 max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
-            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-bar-gray rounded-t-2xl"><h3 id="editor-title" class="text-xl font-bold text-bar-gold">新增調酒</h3><button onclick="closeEditor()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button></div>
+            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-bar-gray rounded-t-2xl"><h3 id="editor-title" class="text-xl font-bold text-bar-gold">新增調酒</h3><button onclick="window.closeEditor()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button></div>
             <div class="p-6 overflow-y-auto space-y-4 custom-scroll">
                 <input type="hidden" id="edit-id">
                 <div class="mb-4"><label class="form-label">調酒照片 (可選)</label><div class="flex items-center gap-4"><div id="preview-container" class="w-24 h-24 bg-black/30 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 relative"><img id="img-preview" src="" class="w-full h-full object-cover hidden z-10"><i id="preview-icon-display" class="fas fa-cocktail text-3xl text-gray-500 absolute z-0 transition-colors"></i></div><div class="flex-1"><input type="file" id="img-upload" accept="image/*" class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-bar-gold file:text-bar-dark hover:file:bg-yellow-400 cursor-pointer" onchange="window.handleImageUpload(this)"><p class="text-xs text-gray-500 mt-2">建議使用小於 500KB 的圖片以避免儲存失敗。</p><button onclick="window.clearImage()" class="text-xs text-red-400 mt-1 hover:text-red-300 underline hidden" id="clear-img-btn">移除照片</button></div></div></div>
@@ -310,13 +346,26 @@
                 <div><label class="form-label">亮點</label><input type="text" id="inp-highlight" class="form-input" placeholder="口感描述"></div>
                 <div><label class="form-label">標籤</label><input type="text" id="inp-tags" class="form-input" placeholder="甜點酒, 女生最愛"></div>
             </div>
-            <div class="p-4 border-t border-white/10 flex justify-end gap-3 bg-bar-gray rounded-b-2xl"><button onclick="closeEditor()" class="px-5 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-gray-300">取消</button><button onclick="saveDrink()" class="px-6 py-2 rounded-lg bg-bar-gold text-bar-dark font-bold hover:bg-yellow-400 shadow-lg">儲存</button></div>
+            <div class="p-4 border-t border-white/10 flex justify-end gap-3 bg-bar-gray rounded-b-2xl"><button onclick="window.closeEditor()" class="px-5 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-gray-300">取消</button><button onclick="window.saveDrink()" class="px-6 py-2 rounded-lg bg-bar-gold text-bar-dark font-bold hover:bg-yellow-400 shadow-lg">儲存</button></div>
         </div>
     </div>
     
     <div id="toast">Order Added!</div>
 
-    <!-- 使用 Firebase Modular SDK 實作雲端功能 -->
+    <!-- 新增：客製化專屬對話視窗 (取代原生的 alert/confirm/prompt) -->
+    <div id="custom-dialog-modal" class="fixed inset-0 bg-black/90 z-[200] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300 opacity-0" onclick="window.closeCustomDialog()">
+        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-white/10 p-6 flex flex-col" onclick="event.stopPropagation()">
+            <h3 id="dialog-title" class="text-xl font-bold text-bar-gold mb-3">提示</h3>
+            <p id="dialog-message" class="text-gray-300 text-sm mb-4 whitespace-pre-line"></p>
+            <input type="text" id="dialog-input" class="form-input mb-4 hidden" placeholder="">
+            <div class="flex justify-end gap-3 mt-2">
+                <button id="dialog-cancel-btn" class="px-4 py-2 rounded-lg border border-white/10 text-gray-400 hover:bg-white/5 transition-colors hidden">取消</button>
+                <button id="dialog-confirm-btn" class="px-4 py-2 rounded-lg bg-bar-gold text-bar-dark font-bold hover:bg-yellow-400 transition-colors">確認</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 唯一的 Script 區塊 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -335,7 +384,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // 使用固定的全域路徑，所有開啟此網頁的裝置都會存取同一個位置
         const PROJECT_ID = "bar-menu-e9896";
         const basePath = ['artifacts', PROJECT_ID, 'public', 'data'];
 
@@ -383,13 +431,98 @@
             { id: 707, name: "改變的勇氣", engName: "Courage to Change", category: "idiot", base: "琴酒", type: "Shake", tags: [], icon: "fa-flask", color: "text-gray-500", ingredients: ["龐貝琴酒 45ml", "檸檬汁 30ml", "蜂蜜(糖漿)", "深色萊姆純酒"], method: "1. Shake\n2. high ball杯放9成滿冰\n3. 倒入調酒，碎冰放滿上層\n4. 深色萊姆純酒stir後，倒上層\n5. 碎冰用榨汁器壓出一個小冰碗，放置最上層\n6. 冰碗內放淹櫻桃(或其他水果)", highlight: "" }
         ];
 
-        // 綁定到 window 使 html 中的 onclick 可以正確呼叫
         window.drinks = []; window.categories = []; window.orders = []; window.madeDrinks = []; window.currentFilter = 'all'; window.currentViewingId = null; window.tempImageBase64 = null; window.selectedIcon = 'fa-cocktail'; window.selectedColor = 'text-white';
         window.isFabOpen = false;
         window.isCloudConnected = false;
         window.unsubscribes = [];
 
-        // 雲端功能初始化 (背景連線)
+        // 新增：客製化彈窗函數
+        window.customAlert = (message, title = "提示") => {
+            return new Promise(resolve => {
+                const m = document.getElementById('custom-dialog-modal');
+                document.getElementById('dialog-title').textContent = title;
+                document.getElementById('dialog-message').textContent = message;
+                const input = document.getElementById('dialog-input');
+                input.classList.add('hidden');
+                
+                const cancelBtn = document.getElementById('dialog-cancel-btn');
+                const confirmBtn = document.getElementById('dialog-confirm-btn');
+                
+                cancelBtn.classList.add('hidden');
+                
+                confirmBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(true);
+                };
+                
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+            });
+        };
+
+        window.customConfirm = (message, title = "確認") => {
+            return new Promise(resolve => {
+                const m = document.getElementById('custom-dialog-modal');
+                document.getElementById('dialog-title').textContent = title;
+                document.getElementById('dialog-message').textContent = message;
+                const input = document.getElementById('dialog-input');
+                input.classList.add('hidden');
+                
+                const cancelBtn = document.getElementById('dialog-cancel-btn');
+                const confirmBtn = document.getElementById('dialog-confirm-btn');
+                
+                cancelBtn.classList.remove('hidden');
+                
+                cancelBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(false);
+                };
+                confirmBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(true);
+                };
+                
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+            });
+        };
+
+        window.customPrompt = (message, title = "輸入", type="text") => {
+            return new Promise(resolve => {
+                const m = document.getElementById('custom-dialog-modal');
+                document.getElementById('dialog-title').textContent = title;
+                document.getElementById('dialog-message').textContent = message;
+                const input = document.getElementById('dialog-input');
+                input.type = type;
+                input.value = '';
+                input.classList.remove('hidden');
+                
+                const cancelBtn = document.getElementById('dialog-cancel-btn');
+                const confirmBtn = document.getElementById('dialog-confirm-btn');
+                
+                cancelBtn.classList.remove('hidden');
+                
+                cancelBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(null);
+                };
+                confirmBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(input.value);
+                };
+                
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+                setTimeout(() => input.focus(), 100);
+            });
+        };
+
+        window.closeCustomDialog = () => {
+            const m = document.getElementById('custom-dialog-modal');
+            m.classList.add('opacity-0');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
         window.initCloudSync = async () => {
             const iconBase = document.getElementById('cloud-icon-base');
             const indicator = document.getElementById('cloud-icon-indicator');
@@ -417,7 +550,7 @@
                     } else {
                         window.categories.forEach(c => setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c).catch(e=>console.warn(e)));
                     }
-                }));
+                }, err => console.warn("Sync error:", err)));
 
                 // 2. 同步「酒單」
                 window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'drinks'), snap => {
@@ -430,19 +563,18 @@
                     } else {
                         window.drinks.forEach(d => setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d).catch(e=>console.warn(e)));
                     }
-                }));
+                }, err => console.warn("Sync error:", err)));
 
                 // 3. 同步「訂單」
                 window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'orders'), snap => {
                     const cloudOrders = [];
                     snap.forEach(doc => cloudOrders.push(doc.data()));
-                    // 排序避免跳動
                     cloudOrders.sort((a, b) => a.ts - b.ts);
                     window.orders = cloudOrders;
                     localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders));
                     window.renderOrdersList();
                     window.updateOrderBadges();
-                }));
+                }, err => console.warn("Sync error:", err)));
 
                 // 4. 同步「已解鎖紀錄」
                 window.unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
@@ -453,7 +585,7 @@
                     } else {
                         setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }).catch(e=>console.warn(e));
                     }
-                }));
+                }, err => console.warn("Sync error:", err)));
 
                 window.showToast("雲端同步已連線 ☁️");
 
@@ -467,8 +599,7 @@
                 }
                 if (indicator) indicator.classList.add('hidden');
                 
-                // 判斷是否為權限問題
-                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed' || e.message.includes('auth/configuration-not-found')) {
+                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed' || (e.message && e.message.includes('configuration-not-found'))) {
                     window.showToast("設定提醒：請至 Firebase 控制台啟用「匿名登入 (Anonymous)」以開啟雲端功能！", 6000);
                 } else {
                     window.showToast("雲端連線失敗，目前為單機模式。", 4000);
@@ -476,7 +607,6 @@
             }
         };
 
-        // --- 備份與還原功能 ---
         window.openBackupModal = () => {
             const m = document.getElementById('backup-modal');
             m.classList.remove('hidden');
@@ -515,7 +645,8 @@
                 try {
                     const imported = JSON.parse(e.target.result);
                     if (imported.drinks && Array.isArray(imported.drinks)) {
-                        if (confirm("⚠️ 警告：匯入將會完全覆蓋當前所有的酒單與分類！確定要繼續嗎？")) {
+                        const res = await window.customConfirm("⚠️ 警告：匯入將會完全覆蓋當前所有的酒單與分類！確定要繼續嗎？");
+                        if (res) {
                             window.drinks = imported.drinks;
                             if (imported.categories) window.categories = imported.categories;
                             if (imported.madeDrinks) window.madeDrinks = imported.madeDrinks;
@@ -537,11 +668,11 @@
                             window.showToast("✅ 匯入成功！");
                         }
                     } else {
-                        alert("❌ 檔案格式不正確或損毀！");
+                        window.customAlert("❌ 檔案格式不正確或損毀！");
                     }
                 } catch (err) {
                     console.error(err);
-                    alert("❌ 讀取檔案失敗：" + err.message);
+                    window.customAlert("❌ 讀取檔案失敗：" + err.message);
                 }
                 event.target.value = ''; 
             };
@@ -611,6 +742,28 @@
             }); 
         };
 
+        window.clearAllOrders = async function() {
+            if (window.orders.length === 0) return;
+            const res = await window.customConfirm("確定要清空所有排隊中的酒單嗎？這無法復原！");
+            if (!res) return;
+            
+            const ordersToDelete = [...window.orders];
+            window.orders = [];
+            window.saveOrders();
+            window.renderOrdersList();
+            window.updateOrderBadges();
+            
+            if (window.isCloudConnected) {
+                ordersToDelete.forEach(o => {
+                    if (o.orderId) {
+                        deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e => console.warn(e));
+                    }
+                });
+            }
+            window.showToast("已清空所有點單！");
+            window.closeOrdersList();
+        };
+
         window.init = function() {
             let storedDrinks = localStorage.getItem('binbar_data_v1');
             if (!storedDrinks) {
@@ -675,13 +828,12 @@
             window.updateOrderBadges();
             window.renderOrdersList();
 
-            // 啟動自動雲端連線
             window.initCloudSync();
         };
 
         window.saveData = function() {
             try { localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks)); window.renderDrinks(); } 
-            catch(e) { if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { alert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); } else { console.error("Save error:", e); alert('儲存發生錯誤。'); } }
+            catch(e) { if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { window.customAlert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); } else { console.error("Save error:", e); window.customAlert('儲存發生錯誤。'); } }
         };
         window.saveCategories = function() { localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories)); window.renderFilters(); window.renderCategoryEditorList(); };
         window.saveOrders = function() { localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders)); window.updateOrderBadges(); window.renderOrdersList(); };
@@ -747,14 +899,13 @@
         
         window.placeOrder = function(drinkId, drinkName) {
             const order = {
-                orderId: Date.now() + Math.floor(Math.random() * 1000), // 防止重複
+                orderId: Date.now() + Math.floor(Math.random() * 1000), 
                 drinkId: drinkId,
                 drinkName: drinkName,
                 ts: Date.now(),
                 displayTime: new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
             };
             
-            // 先在本地反映以提升反應速度
             window.orders.push(order);
             window.saveOrders();
             window.showToast(`已點單：${drinkName}`);
@@ -774,14 +925,14 @@
                 window.orders.splice(orderIndex, 1);
                 window.saveOrders();
 
-                if (window.currentRoomId) {
+                if (window.isCloudConnected) {
                     deleteDoc(doc(db, ...basePath, 'orders', orderToRemove.orderId.toString())).catch(e => console.error(e));
                 }
                 
                 if (!window.madeDrinks.some(id => id == drinkId)) {
                     window.madeDrinks.push(drinkId);
                     window.saveMadeDrinks();
-                    if (window.currentRoomId) {
+                    if (window.isCloudConnected) {
                         setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }, { merge: true }).catch(e => console.error(e));
                     }
                     window.renderDrinks(); 
@@ -794,16 +945,14 @@
                 } else {
                     window.showToast(`出單成功！剩餘 ${remaining} 杯`);
                     const btn = document.querySelector('#btn-finish-order');
-                    if (btn) btn.innerHTML = `<i class="fas fa-check-circle"></i> 製作完成 / 出單 (剩 ${remaining} 杯)`;
+                    if (btn) btn.innerHTML = `<i class="fas fa-check-circle"></i> 製作完成 (剩 ${remaining})`;
                 }
             } else {
                 window.closeViewModal();
             }
         };
 
-        // 新增：取消點單功能
         window.cancelGroupOrder = function(drinkId) {
-            // 找出該品項最新的一筆訂單來取消
             let idx = -1;
             for (let i = window.orders.length - 1; i >= 0; i--) {
                 if (window.orders[i].drinkId == drinkId) {
@@ -817,8 +966,7 @@
                 window.orders.splice(idx, 1);
                 window.saveOrders();
 
-                // 同步刪除雲端紀錄
-                if (window.currentRoomId) {
+                if (window.isCloudConnected && orderToRemove && orderToRemove.orderId) {
                     deleteDoc(doc(db, ...basePath, 'orders', orderToRemove.orderId.toString())).catch(e => console.error(e));
                 }
                 
@@ -829,23 +977,24 @@
                 } else {
                     window.showToast(`已取消一杯！剩餘 ${remaining} 杯`);
                     const btn = document.querySelector('#btn-finish-order');
-                    if (btn) btn.innerHTML = `<i class="fas fa-check-circle"></i> 製作完成 / 出單 (剩 ${remaining} 杯)`;
+                    if (btn) btn.innerHTML = `<i class="fas fa-check-circle"></i> 製作完成 (剩 ${remaining})`;
                 }
             } else {
                 window.closeViewModal();
             }
         };
 
-        window.openMenuDetail = function(id) { window.currentViewingId = id; const drink = window.drinks.find(d => d.id === id); if(!drink) return; window.updateModalContent(drink); const footer = document.getElementById('view-modal-footer'); footer.innerHTML = `<div class="flex justify-between gap-3 items-center w-full"><div class="flex gap-2"><button onclick="confirmDelete()" class="px-3 py-2 rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 text-sm font-bold transition-colors"><i class="fas fa-trash-alt"></i></button><button onclick="editCurrentDrink()" class="px-3 py-2 rounded-lg border border-white/10 text-gray-300 hover:bg-white/10 text-sm font-bold transition-colors"><i class="fas fa-pen"></i></button></div><button onclick="placeOrderFromModal()" class="flex-1 ml-2 px-4 py-2 rounded-lg bg-accent-blue text-white font-bold hover:bg-blue-400 shadow-lg transition-colors flex items-center justify-center gap-2"><i class="fas fa-plus-circle"></i> 我要點這杯</button></div>`; const m = document.getElementById('view-modal'); m.classList.remove('hidden'); setTimeout(() => m.classList.remove('opacity-0'), 10); };
+        window.openMenuDetail = function(id) { window.currentViewingId = id; const drink = window.drinks.find(d => d.id === id); if(!drink) return; window.updateModalContent(drink); const footer = document.getElementById('view-modal-footer'); footer.innerHTML = `<div class="flex justify-between gap-3 items-center w-full"><div class="flex gap-2"><button onclick="window.confirmDelete()" class="px-3 py-2 rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 text-sm font-bold transition-colors"><i class="fas fa-trash-alt"></i></button><button onclick="window.editCurrentDrink()" class="px-3 py-2 rounded-lg border border-white/10 text-gray-300 hover:bg-white/10 text-sm font-bold transition-colors"><i class="fas fa-pen"></i></button></div><button onclick="window.placeOrderFromModal()" class="flex-1 ml-2 px-4 py-2 rounded-lg bg-accent-blue text-white font-bold hover:bg-blue-400 shadow-lg transition-colors flex items-center justify-center gap-2"><i class="fas fa-plus-circle"></i> 我要點這杯</button></div>`; const m = document.getElementById('view-modal'); m.classList.remove('hidden'); setTimeout(() => m.classList.remove('opacity-0'), 10); };
         
-        window.openGroupOrderCheck = function(drinkId) {
+        window.openGroupOrderCheck = async function(drinkId) {
              const drink = window.drinks.find(d => d.id == drinkId); 
              if (!drink) {
-                 if(confirm("原始酒譜已刪除，是否清除此類訂單？")) {
+                 const res = await window.customConfirm("原始酒譜已刪除，是否清除此類訂單？");
+                 if(res) {
                      const ordersToRemove = window.orders.filter(o => o.drinkId == drinkId);
                      ordersToRemove.forEach(o => {
-                         if(window.currentRoomId) {
-                             deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e=>console.error(e));
+                         if(window.isCloudConnected) {
+                             deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e=>console.warn(e));
                          }
                      });
                      window.orders = window.orders.filter(o => o.drinkId != drinkId);
@@ -859,13 +1008,12 @@
              const remaining = window.orders.filter(o => o.drinkId == drinkId).length;
              const footer = document.getElementById('view-modal-footer');
              
-             // 更新：加入了取消按鈕的版面配置
              footer.innerHTML = `
                  <div class="flex gap-3 w-full">
                      <button onclick="window.cancelGroupOrder('${drinkId}')" class="w-1/3 px-2 py-3 rounded-lg border border-red-500/50 text-red-400 font-bold hover:bg-red-500/10 transition-colors flex items-center justify-center gap-1 text-sm">
                          <i class="fas fa-undo"></i> 取消點單
                      </button>
-                     <button id="btn-finish-order" onclick="finishGroupOrder('${drinkId}')" class="w-2/3 px-4 py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-500 shadow-lg transition-colors flex items-center justify-center gap-2 text-lg animate-pulse">
+                     <button id="btn-finish-order" onclick="window.finishGroupOrder('${drinkId}')" class="w-2/3 px-4 py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-500 shadow-lg transition-colors flex items-center justify-center gap-2 text-lg animate-pulse">
                          <i class="fas fa-check-circle"></i> 製作完成 (剩 ${remaining})
                      </button>
                  </div>
@@ -879,11 +1027,11 @@
         window.updateModalContent = function(drink) { document.getElementById('view-title').textContent = drink.name; const header = document.getElementById('view-header'); if (drink.image) { header.style.backgroundImage = `url('${drink.image}')`; header.classList.remove('bg-gray-800'); } else { header.style.backgroundImage = 'none'; header.classList.add('bg-gray-800'); } document.getElementById('view-ingredients').innerHTML = (drink.ingredients || []).map(ing => `<li class="flex justify-between border-b border-white/5 pb-1"><span>${ing}</span><i class="fas fa-check text-bar-gold/50 text-xs"></i></li>`).join(''); document.getElementById('view-method').textContent = drink.method || ''; document.getElementById('view-highlight').textContent = drink.highlight || ''; };
         window.closeViewModal = function() { const m = document.getElementById('view-modal'); m.classList.add('opacity-0'); setTimeout(() => m.classList.add('hidden'), 300); };
 
-        window.saveDrink = function() { 
+        window.saveDrink = async function() { 
             const name = document.getElementById('inp-name').value.trim(); 
-            if(!name) return alert('請輸入酒名'); 
+            if(!name) { window.customAlert('請輸入酒名'); return; }
             const catEl = document.querySelector('input[name="cat"]:checked'); 
-            if(!catEl) return alert('請選擇分類'); 
+            if(!catEl) { window.customAlert('請選擇分類'); return; }
             const category = catEl.value; 
             const editId = document.getElementById('edit-id').value; 
             
@@ -909,8 +1057,10 @@
             window.closeEditor(); 
         };
         
-        window.confirmDelete = function() { 
-            if(confirm('確定要刪除這杯調酒嗎？')) { 
+        // 新增：防呆刪除保護
+        window.confirmDelete = async function() { 
+            const pwd = await window.customPrompt('警告：這將永久刪除此調酒！\n請輸入密碼以確認刪除：', '刪除確認', 'password');
+            if (pwd === '095219') {
                 if(window.currentViewingId) { 
                     window.drinks = window.drinks.filter(d => d.id !== window.currentViewingId); 
                     window.saveData(); 
@@ -918,12 +1068,22 @@
                         deleteDoc(doc(db, ...basePath, 'drinks', window.currentViewingId.toString())).catch(e => console.error(e));
                     }
                     window.closeViewModal(); 
+                    window.showToast('已成功刪除該調酒！');
                 } 
-            } 
+            } else if (pwd !== null) {
+                window.customAlert('密碼錯誤，已取消刪除操作。', '錯誤');
+            }
         };
 
         window.addNewCategory = function() { const val = document.getElementById('new-cat-input').value.trim(); if(!val) return; const newCat = { id: 'cat_' + Date.now(), name: val, order: Date.now() }; window.categories.push(newCat); window.saveCategories(); if(window.isCloudConnected) { setDoc(doc(db, ...basePath, 'categories', newCat.id.toString()), newCat); } document.getElementById('new-cat-input').value = ''; };
-        window.deleteCategory = function(id) { if(window.categories.length <= 1) return alert("請至少保留一個分類"); if(confirm('確定刪除分類？')) { window.categories = window.categories.filter(c => c.id !== id); window.saveCategories(); if(window.isCloudConnected) { deleteDoc(doc(db, ...basePath, 'categories', id.toString())); } } };
+        window.deleteCategory = async function(id) { 
+            if(window.categories.length <= 1) { window.customAlert("請至少保留一個分類"); return; }
+            if(await window.customConfirm('確定刪除分類？')) { 
+                window.categories = window.categories.filter(c => c.id !== id); 
+                window.saveCategories(); 
+                if(window.isCloudConnected) { deleteDoc(doc(db, ...basePath, 'categories', id.toString())); } 
+            } 
+        };
 
         window.toggleFab = function() { const menu = document.getElementById('fab-menu'); const mainBtn = document.getElementById('fab-main-btn'); const icon = document.getElementById('fab-icon'); window.isFabOpen = !window.isFabOpen; if (window.isFabOpen) { menu.classList.add('fab-menu-open'); mainBtn.classList.add('active'); icon.classList.remove('fa-plus'); icon.classList.add('fa-times'); } else { menu.classList.remove('fab-menu-open'); mainBtn.classList.remove('active'); icon.classList.remove('fa-times'); icon.classList.add('fa-plus'); } };
         window.openOrdersList = function() { window.toggleFab(); document.getElementById('orders-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('orders-modal').classList.remove('opacity-0'), 10); window.renderOrdersList(); };
@@ -932,9 +1092,9 @@
         window.closeEditor = function() { const m = document.getElementById('editor-modal'); m.classList.add('opacity-0'); setTimeout(() => m.classList.add('hidden'), 300); };
         window.editCurrentDrink = function() { window.openEditor(true); };
         window.pickRandom = function() { const d = window.drinks[Math.floor(Math.random() * window.drinks.length)]; if(d) window.openMenuDetail(d.id); };
-        window.renderCategoryEditorList = function() { document.getElementById('category-editor-list').innerHTML = window.categories.map(cat => `<div class="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 group"><label class="flex items-center gap-2 cursor-pointer text-sm text-gray-300 flex-1"><input type="radio" name="cat" value="${cat.id}" class="accent-bar-gold"> ${cat.name}</label><button onclick="deleteCategory('${cat.id}')" class="text-gray-500 hover:text-red-400 opacity-30 group-hover:opacity-100 p-1"><i class="fas fa-times"></i></button></div>`).join(''); };
-        window.renderIconSelector = function() { document.getElementById('icon-selector').innerHTML = iconList.map(i => `<div class="icon-option ${i === window.selectedIcon ? 'selected' : ''}" onclick="selectIcon('${i}')"><i class="fas ${i}"></i></div>`).join(''); };
-        window.renderColorSelector = function() { document.getElementById('color-selector').innerHTML = colorList.map(c => `<div class="color-option ${c.c === window.selectedColor ? 'selected' : ''}" style="background-color: ${c.b}" onclick="selectColor('${c.c}')"></div>`).join(''); };
+        window.renderCategoryEditorList = function() { document.getElementById('category-editor-list').innerHTML = window.categories.map(cat => `<div class="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 group"><label class="flex items-center gap-2 cursor-pointer text-sm text-gray-300 flex-1"><input type="radio" name="cat" value="${cat.id}" class="accent-bar-gold"> ${cat.name}</label><button onclick="window.deleteCategory('${cat.id}')" class="text-gray-500 hover:text-red-400 opacity-30 group-hover:opacity-100 p-1"><i class="fas fa-times"></i></button></div>`).join(''); };
+        window.renderIconSelector = function() { document.getElementById('icon-selector').innerHTML = iconList.map(i => `<div class="icon-option ${i === window.selectedIcon ? 'selected' : ''}" onclick="window.selectIcon('${i}')"><i class="fas ${i}"></i></div>`).join(''); };
+        window.renderColorSelector = function() { document.getElementById('color-selector').innerHTML = colorList.map(c => `<div class="color-option ${c.c === window.selectedColor ? 'selected' : ''}" style="background-color: ${c.b}" onclick="window.selectColor('${c.c}')"></div>`).join(''); };
         window.selectIcon = function(i) { window.selectedIcon = i; window.renderIconSelector(); window.updatePreviewIcon(); };
         window.selectColor = function(c) { window.selectedColor = c; window.renderColorSelector(); window.updatePreviewIcon(); };
         window.updatePreviewIcon = function() { document.getElementById('preview-icon-display').className = `fas ${window.selectedIcon} text-3xl transition-colors ${window.selectedColor}`; };
@@ -942,7 +1102,11 @@
         window.handleImageUpload = function(input) { 
             if(input.files[0]) { 
                 const file = input.files[0]; 
-                if(file.size > 500 * 1024) return alert("圖片太大囉！請使用小於 500KB 的圖片以免雲端同步失敗。"); 
+                if(file.size > 500 * 1024) { 
+                    window.customAlert("圖片太大囉！請使用小於 500KB 的圖片以免雲端同步失敗。"); 
+                    input.value = ''; 
+                    return; 
+                } 
                 const reader = new FileReader(); 
                 reader.onload = e => { 
                     window.tempImageBase64 = e.target.result; 
