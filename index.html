@@ -287,6 +287,11 @@
                 </button>
                 <input type="file" id="import-file" class="hidden" accept=".json" onchange="window.importData(event)">
                 
+                <!-- 新增：重置所有調酒狀態按鈕 -->
+                <button onclick="window.resetMadeDrinks()" class="w-full bg-red-600/20 text-red-400 font-bold py-3 rounded-lg shadow-lg hover:bg-red-600/40 border border-red-500/30 transition-transform active:scale-95 flex items-center justify-center gap-2 mt-4">
+                    <i class="fas fa-undo-alt"></i> 重置所有調酒狀態
+                </button>
+
                 <div class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-left text-xs text-red-200">
                     <i class="fas fa-exclamation-triangle mr-1"></i> 注意：匯入備份將會完全覆蓋當前的酒單資料。
                 </div>
@@ -677,6 +682,23 @@
                 event.target.value = ''; 
             };
             reader.readAsText(file);
+        };
+
+        // 新增：重置所有調酒狀態 (清除成就)
+        window.resetMadeDrinks = async function() {
+            const res = await window.customConfirm("確定要重置所有調酒的「已調製」狀態嗎？\n這會讓所有酒卡恢復成尚未調製的原本顏色。");
+            if (!res) return;
+
+            window.madeDrinks = [];
+            window.saveMadeDrinks();
+
+            if (window.isCloudConnected) {
+                setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }, { merge: true }).catch(e => console.error(e));
+            }
+
+            window.renderDrinks();
+            window.showToast("✅ 已重置所有調酒狀態！");
+            window.closeBackupModal();
         };
 
         window.renderOrdersList = function() {
