@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>宗彬的 Bar (雲端同步版)</title>
+    <title>宗彬的 Bar (自動雲端版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -196,9 +196,9 @@
                     <i class="fas fa-cog text-gray-300"></i>
                 </div>
                 <!-- 雲端狀態指示燈 -->
-                <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-full" title="已連線至雲端同步">
-                    <i class="fas fa-cloud text-green-400"></i>
-                    <span class="absolute top-0 right-0 w-3 h-3 bg-green-500 border-2 border-bar-dark rounded-full animate-pulse"></span>
+                <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-full cursor-pointer" onclick="initCloudSync()" title="點擊重試雲端連線">
+                    <i class="fas fa-cloud text-gray-400 transition-colors duration-500" id="cloud-icon-base"></i>
+                    <span id="cloud-icon-indicator" class="absolute top-0 right-0 w-3 h-3 bg-green-500 border-2 border-bar-dark rounded-full animate-pulse hidden"></span>
                 </div>
                 <button onclick="pickRandom()" class="bg-bar-gold text-bar-dark px-3 py-1.5 rounded-full text-sm font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2 shadow-lg">
                     <i class="fas fa-dice"></i> <span class="hidden sm:inline">今晚喝什麼?</span><span class="sm:hidden">手氣</span>
@@ -268,32 +268,6 @@
         </button>
     </div>
 
-    <!-- 雲端設定 Modal -->
-    <div id="cloud-modal" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300" onclick="closeCloudModal()">
-        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-blue-500/30 p-8 text-center" onclick="event.stopPropagation()">
-            <div class="mb-6">
-                <div class="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-400 text-2xl border border-blue-500/30">
-                    <i class="fas fa-cloud"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-white mb-1">雲端包廂連線</h2>
-                <p class="text-gray-400 text-sm" id="cloud-status-text">尚未連線</p>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="form-label text-left">酒吧專屬代碼</label>
-                    <input type="text" id="room-id-input" class="form-input text-center text-lg py-3 tracking-widest font-bold text-bar-gold" placeholder="例如：BAR888" maxlength="15">
-                    <p class="text-xs text-gray-500 mt-2 text-left">與朋友輸入相同代碼，即可同步酒單與點單紀錄。</p>
-                </div>
-                <button id="btn-connect-cloud" onclick="connectCloud()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg shadow-lg hover:bg-blue-500 transition-transform active:scale-95 mt-4">
-                    建立 / 加入連線
-                </button>
-                <button id="btn-disconnect-cloud" onclick="disconnectCloud()" class="w-full bg-red-600 text-white font-bold py-3 rounded-lg shadow-lg hover:bg-red-500 transition-transform active:scale-95 mt-4 hidden">
-                    斷開連線
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- 備份設定 Modal -->
     <div id="backup-modal" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300" onclick="closeBackupModal()">
         <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-gray-500/30 p-8 text-center" onclick="event.stopPropagation()">
@@ -314,7 +288,7 @@
                 <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(event)">
                 
                 <div class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-left text-xs text-red-200">
-                    <i class="fas fa-exclamation-triangle mr-1"></i> 注意：匯入備份將會完全覆蓋目前的酒單與分類資料。
+                    <i class="fas fa-exclamation-triangle mr-1"></i> 注意：匯入備份將會完全覆蓋當前的酒單資料。
                 </div>
             </div>
         </div>
@@ -345,7 +319,7 @@
             </div>
             <div id="orders-list-container" class="p-4 overflow-y-auto custom-scroll space-y-2 min-h-[200px] flex-grow"></div>
             <div id="orders-empty-state" class="hidden flex-col items-center justify-center py-10 text-gray-500 flex-grow"><i class="fas fa-glass-cheers text-4xl mb-3 opacity-30"></i><p>目前沒有等待中的訂單</p><p class="text-xs mt-1">快去點幾杯來喝吧！</p></div>
-            <div class="p-4 border-t border-white/10 bg-bar-gray rounded-b-2xl text-center"><p class="text-xs text-gray-500">雲端即時派對系統</p></div>
+            <div class="p-4 border-t border-white/10 bg-bar-gray rounded-b-2xl text-center"><p class="text-xs text-gray-500">雲端支援派對系統</p></div>
         </div>
     </div>
 
@@ -376,9 +350,6 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDocs, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // ==========================================
-        // 1. Firebase 初始化 (直接套用您的專屬設定)
-        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBWNYigzvVaVpITWyXLXIHkg0Cm17cUMCk",
             authDomain: "bar-menu-e9896.firebaseapp.com",
@@ -391,11 +362,11 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        
+        // 嚴格遵守路徑規範：/artifacts/{appId}/public/data/...
         const PROJECT_ID = "bar-menu-e9896";
+        const basePath = ['artifacts', PROJECT_ID, 'public', 'data'];
 
-        // ==========================================
-        // 2. 常數與預設資料
-        // ==========================================
         const iconList = [
             'fa-cocktail', 'fa-glass-martini-alt', 'fa-glass-whiskey', 'fa-wine-glass', 'fa-beer', 'fa-mug-hot', 'fa-coffee', 'fa-flask', 
             'fa-wine-bottle', 'fa-champagne-glasses', 'fa-glass-water', 'fa-beer-mug-empty', 'fa-martini-glass', 'fa-martini-glass-citrus', 'fa-martini-glass-empty',
@@ -443,103 +414,81 @@
         // 綁定到 window 使 html 中的 onclick 可以正確呼叫
         window.drinks = []; window.categories = []; window.orders = []; window.madeDrinks = []; window.currentFilter = 'all'; window.currentViewingId = null; window.tempImageBase64 = null; window.selectedIcon = 'fa-cocktail'; window.selectedColor = 'text-white';
         window.isFabOpen = false;
-        window.currentRoomId = null;
+        window.isCloudConnected = false;
         window.unsubscribes = [];
 
-        window.openCloudModal = () => {
-            const m = document.getElementById('cloud-modal');
-            m.classList.remove('hidden');
-            setTimeout(() => m.classList.remove('opacity-0'), 10);
-            document.getElementById('room-id-input').value = window.currentRoomId || '';
-            
-            if(window.currentRoomId) {
-                document.getElementById('cloud-status-text').innerHTML = `<span class="text-green-400">已連線至：${window.currentRoomId}</span>`;
-                document.getElementById('btn-connect-cloud').classList.add('hidden');
-                document.getElementById('btn-disconnect-cloud').classList.remove('hidden');
-            } else {
-                document.getElementById('cloud-status-text').innerHTML = `<span class="text-gray-400">尚未連線</span>`;
-                document.getElementById('btn-connect-cloud').classList.remove('hidden');
-                document.getElementById('btn-disconnect-cloud').classList.add('hidden');
-            }
-        };
-
-        window.closeCloudModal = () => {
-            const m = document.getElementById('cloud-modal');
-            m.classList.add('opacity-0');
-            setTimeout(() => m.classList.add('hidden'), 300);
-        };
-
-        window.connectCloud = async () => {
-            const roomId = document.getElementById('room-id-input').value.trim();
-            if(!roomId) return alert("請輸入酒吧代碼！");
-            
-            const btn = document.getElementById('btn-connect-cloud');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 連線中...`;
-            btn.disabled = true;
-
+        // 雲端功能初始化 (背景連線)
+        window.initCloudSync = async () => {
             try {
                 await signInAnonymously(auth);
-                window.currentRoomId = roomId;
-                localStorage.setItem('binbar_cloud_room', roomId);
+                window.isCloudConnected = true;
                 
-                const drinksSnap = await getDocs(collection(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', roomId, 'drinks'));
-                if (drinksSnap.empty) {
-                    window.showToast("建立新雲端酒吧，同步酒單中...");
-                    for(const d of window.drinks) await setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', roomId, 'drinks', d.id.toString()), d);
-                    for(const c of window.categories) await setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', roomId, 'categories', c.id.toString()), c);
-                    await setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', roomId, 'meta', 'info'), { madeDrinks: window.madeDrinks });
-                } else {
-                    window.showToast("載入雲端資料...");
+                const iconBase = document.getElementById('cloud-icon-base');
+                if (iconBase) {
+                    iconBase.classList.remove('text-gray-400', 'text-red-500');
+                    iconBase.classList.add('text-green-400');
                 }
+                const indicator = document.getElementById('cloud-icon-indicator');
+                if (indicator) indicator.classList.remove('hidden');
 
-                window.unsubscribes.push(onSnapshot(collection(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', roomId, 'drinks'), snap => {
-                    const cloudDrinks = [];
-                    snap.forEach(doc => cloudDrinks.push(doc.data()));
-                    if(cloudDrinks.length > 0) {
-                        window.drinks = cloudDrinks;
-                        window.renderDrinks();
+                // 1. 同步「分類」
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'categories'), snap => {
+                    if(!snap.empty) {
+                        const cloudCats = [];
+                        snap.forEach(doc => cloudCats.push(doc.data()));
+                        cloudCats.sort((a,b) => (a.order || 0) - (b.order || 0));
+                        window.categories = cloudCats;
+                        localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories));
+                        window.renderFilters();
+                        window.renderCategoryEditorList();
+                    } else {
+                        window.categories.forEach(c => setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c).catch(e=>console.warn(e)));
                     }
                 }));
-                
-                window.unsubscribes.push(onSnapshot(collection(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', roomId, 'orders'), snap => {
-                    const cloudOrders = [];
-                    snap.forEach(doc => cloudOrders.push(doc.data()));
-                    window.orders = cloudOrders;
-                    window.renderOrdersList();
-                    window.updateOrderBadges();
+
+                // 2. 同步「酒單」
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'drinks'), snap => {
+                    if(!snap.empty) {
+                        const cloudDrinks = [];
+                        snap.forEach(doc => cloudDrinks.push(doc.data()));
+                        window.drinks = cloudDrinks;
+                        localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks));
+                        window.renderDrinks();
+                    } else {
+                        window.drinks.forEach(d => setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d).catch(e=>console.warn(e)));
+                    }
                 }));
 
-                window.unsubscribes.push(onSnapshot(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', roomId, 'meta', 'info'), docSnap => {
+                // 3. 同步「已解鎖紀錄」
+                window.unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
                     if (docSnap.exists() && docSnap.data().madeDrinks) {
                         window.madeDrinks = docSnap.data().madeDrinks;
+                        localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks));
                         window.renderDrinks();
+                    } else {
+                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }).catch(e=>console.warn(e));
                     }
                 }));
-                
-                document.getElementById('cloud-icon-indicator').classList.remove('hidden');
-                window.closeCloudModal();
-                window.showToast(`成功連線至酒吧: ${roomId}`);
+
+                window.showToast("雲端同步已連線 ☁️");
+
             } catch (e) {
-                console.error(e);
-                alert("連線失敗：" + e.message);
-                window.currentRoomId = null;
-            } finally {
-                btn.innerHTML = `建立 / 加入連線`;
-                btn.disabled = false;
+                console.warn("Cloud Sync disabled:", e.message);
+                const iconBase = document.getElementById('cloud-icon-base');
+                if (iconBase) {
+                    iconBase.classList.remove('text-gray-400', 'text-green-400');
+                    iconBase.classList.add('text-red-500');
+                }
+                
+                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed') {
+                    window.showToast("未啟用匿名登入，請至 Firebase 開啟！");
+                } else {
+                    window.showToast("雲端連線失敗，目前為單機模式。");
+                }
             }
         };
 
-        window.disconnectCloud = () => {
-            window.unsubscribes.forEach(unsub => unsub());
-            window.unsubscribes = [];
-            window.currentRoomId = null;
-            localStorage.removeItem('binbar_cloud_room');
-            document.getElementById('cloud-icon-indicator').classList.add('hidden');
-            window.showToast("已斷開雲端連線，恢復單機模式");
-            window.closeCloudModal();
-        };
-
-        // --- 新增：備份與還原功能 ---
+        // --- 備份與還原功能 ---
         window.openBackupModal = () => {
             const m = document.getElementById('backup-modal');
             m.classList.remove('hidden');
@@ -587,11 +536,11 @@
                             window.saveCategories();
                             window.saveMadeDrinks();
                             
-                            if (window.currentRoomId) {
-                                window.showToast("正在同步至雲端...");
-                                for(const d of window.drinks) await setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'drinks', d.id.toString()), d);
-                                for(const c of window.categories) await setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'categories', c.id.toString()), c);
-                                await setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'meta', 'info'), { madeDrinks: window.madeDrinks });
+                            if (window.isCloudConnected) {
+                                window.showToast("正在覆寫雲端資料...");
+                                for(const d of window.drinks) await setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d);
+                                for(const c of window.categories) await setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c);
+                                await setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks });
                             }
                             
                             window.renderFilters();
@@ -606,7 +555,7 @@
                     console.error(err);
                     alert("❌ 讀取檔案失敗：" + err.message);
                 }
-                event.target.value = ''; // 重置 file input
+                event.target.value = ''; 
             };
             reader.readAsText(file);
         };
@@ -737,11 +686,8 @@
             window.renderDrinks();
             window.updateOrderBadges();
 
-            const savedRoom = localStorage.getItem('binbar_cloud_room');
-            if (savedRoom) {
-                document.getElementById('room-id-input').value = savedRoom;
-                window.connectCloud(); 
-            }
+            // 啟動自動雲端連線
+            window.initCloudSync();
         };
 
         window.saveData = function() {
@@ -820,10 +766,6 @@
             };
             window.orders.push(order);
             window.saveOrders();
-            
-            if (window.currentRoomId) {
-                setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'orders', order.orderId.toString()), order).catch(e => console.error(e));
-            }
             window.showToast(`已點單：${drinkName}`);
         };
 
@@ -833,19 +775,14 @@
             const orderIndex = window.orders.findIndex(o => o.drinkId == drinkId);
             
             if (orderIndex !== -1) {
-                const orderToRemove = window.orders[orderIndex];
                 window.orders.splice(orderIndex, 1);
                 window.saveOrders();
-
-                if (window.currentRoomId) {
-                    deleteDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'orders', orderToRemove.orderId.toString())).catch(e => console.error(e));
-                }
                 
                 if (!window.madeDrinks.some(id => id == drinkId)) {
                     window.madeDrinks.push(drinkId);
                     window.saveMadeDrinks();
-                    if (window.currentRoomId) {
-                        setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'meta', 'info'), { madeDrinks: window.madeDrinks }, { merge: true }).catch(e => console.error(e));
+                    if (window.isCloudConnected) {
+                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }, { merge: true }).catch(e => console.error(e));
                     }
                     window.renderDrinks(); 
                 }
@@ -918,8 +855,8 @@
             } 
             window.saveData(); 
             
-            if (window.currentRoomId) {
-                setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'drinks', newDrink.id.toString()), newDrink).catch(e => console.error(e));
+            if (window.isCloudConnected) {
+                setDoc(doc(db, ...basePath, 'drinks', newDrink.id.toString()), newDrink).catch(e => console.error(e));
             }
             window.closeEditor(); 
         };
@@ -929,16 +866,16 @@
                 if(window.currentViewingId) { 
                     window.drinks = window.drinks.filter(d => d.id !== window.currentViewingId); 
                     window.saveData(); 
-                    if(window.currentRoomId) {
-                        deleteDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'drinks', window.currentViewingId.toString())).catch(e => console.error(e));
+                    if(window.isCloudConnected) {
+                        deleteDoc(doc(db, ...basePath, 'drinks', window.currentViewingId.toString())).catch(e => console.error(e));
                     }
                     window.closeViewModal(); 
                 } 
             } 
         };
 
-        window.addNewCategory = function() { const val = document.getElementById('new-cat-input').value.trim(); if(!val) return; const newCat = { id: 'cat_' + Date.now(), name: val, order: Date.now() }; window.categories.push(newCat); window.saveCategories(); if(window.currentRoomId) { setDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'categories', newCat.id), newCat); } document.getElementById('new-cat-input').value = ''; };
-        window.deleteCategory = function(id) { if(window.categories.length <= 1) return alert("請至少保留一個分類"); if(confirm('確定刪除分類？')) { window.categories = window.categories.filter(c => c.id !== id); window.saveCategories(); if(window.currentRoomId) { deleteDoc(doc(db, 'artifacts', PROJECT_ID, 'public', 'data', 'rooms', window.currentRoomId, 'categories', id)); } } };
+        window.addNewCategory = function() { const val = document.getElementById('new-cat-input').value.trim(); if(!val) return; const newCat = { id: 'cat_' + Date.now(), name: val, order: Date.now() }; window.categories.push(newCat); window.saveCategories(); if(window.isCloudConnected) { setDoc(doc(db, ...basePath, 'categories', newCat.id.toString()), newCat); } document.getElementById('new-cat-input').value = ''; };
+        window.deleteCategory = function(id) { if(window.categories.length <= 1) return alert("請至少保留一個分類"); if(confirm('確定刪除分類？')) { window.categories = window.categories.filter(c => c.id !== id); window.saveCategories(); if(window.isCloudConnected) { deleteDoc(doc(db, ...basePath, 'categories', id.toString())); } } };
 
         window.toggleFab = function() { const menu = document.getElementById('fab-menu'); const mainBtn = document.getElementById('fab-main-btn'); const icon = document.getElementById('fab-icon'); window.isFabOpen = !window.isFabOpen; if (window.isFabOpen) { menu.classList.add('fab-menu-open'); mainBtn.classList.add('active'); icon.classList.remove('fa-plus'); icon.classList.add('fa-times'); } else { menu.classList.remove('fab-menu-open'); mainBtn.classList.remove('active'); icon.classList.remove('fa-times'); icon.classList.add('fa-plus'); } };
         window.openOrdersList = function() { window.toggleFab(); document.getElementById('orders-modal').classList.remove('hidden'); setTimeout(() => document.getElementById('orders-modal').classList.remove('opacity-0'), 10); window.renderOrdersList(); };
