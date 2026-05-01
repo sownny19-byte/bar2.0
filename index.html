@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>宗彬的 Bar (自動雲端版)</title>
+    <title>宗彬的 Bar (雲端即時同步版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -191,12 +191,8 @@
             </div>
             
             <div class="flex items-center gap-3">
-                <!-- 備份設定按鈕 -->
-                <div class="relative cursor-pointer w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10 transition-colors" onclick="openBackupModal()" title="資料備份">
-                    <i class="fas fa-cog text-gray-300"></i>
-                </div>
                 <!-- 雲端狀態指示燈 -->
-                <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-full cursor-pointer" onclick="initCloudSync()" title="點擊重試雲端連線">
+                <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 rounded-full cursor-pointer" onclick="window.initCloudSync()" title="點擊重試雲端連線">
                     <i class="fas fa-cloud text-gray-400 transition-colors duration-500" id="cloud-icon-base"></i>
                     <span id="cloud-icon-indicator" class="absolute top-0 right-0 w-3 h-3 bg-green-500 border-2 border-bar-dark rounded-full animate-pulse hidden"></span>
                 </div>
@@ -235,7 +231,7 @@
             </svg>
         </div>
         <p class="text-gray-500 text-xs tracking-widest uppercase">
-            <span id="welcome-msg">Welcome</span>
+            <span id="welcome-msg">Welcome to the Bar</span>
         </p>
         <div id="filter-container" class="flex flex-wrap justify-center gap-2 mt-4"></div>
     </header>
@@ -268,32 +264,6 @@
         </button>
     </div>
 
-    <!-- 備份設定 Modal -->
-    <div id="backup-modal" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300" onclick="closeBackupModal()">
-        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-gray-500/30 p-8 text-center" onclick="event.stopPropagation()">
-            <div class="mb-6">
-                <div class="w-16 h-16 bg-gray-600/20 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-400 text-2xl border border-gray-500/30">
-                    <i class="fas fa-save"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-white mb-1">資料備份與還原</h2>
-                <p class="text-gray-400 text-sm">手動匯出或匯入您的專屬酒單</p>
-            </div>
-            <div class="space-y-4">
-                <button onclick="exportData()" class="w-full bg-bar-gold text-bar-dark font-bold py-3 rounded-lg shadow-lg hover:bg-yellow-400 transition-transform active:scale-95 flex items-center justify-center gap-2">
-                    <i class="fas fa-file-export"></i> 匯出備份 (JSON)
-                </button>
-                <button onclick="document.getElementById('import-file').click()" class="w-full bg-white/10 text-white font-bold py-3 rounded-lg shadow-lg hover:bg-white/20 border border-white/20 transition-transform active:scale-95 flex items-center justify-center gap-2 mt-4">
-                    <i class="fas fa-file-import"></i> 匯入備份 (JSON)
-                </button>
-                <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(event)">
-                
-                <div class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-left text-xs text-red-200">
-                    <i class="fas fa-exclamation-triangle mr-1"></i> 注意：匯入備份將會完全覆蓋當前的酒單資料。
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- View Modal -->
     <div id="view-modal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="closeViewModal()">
         <div id="view-modal-content" class="bg-bar-gray w-full max-w-lg rounded-2xl shadow-2xl border border-white/10 transform scale-95 transition-transform duration-300 max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
@@ -311,6 +281,7 @@
         </div>
     </div>
 
+    <!-- Orders Modal -->
     <div id="orders-modal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="closeOrdersList()">
         <div class="bg-bar-gray w-full max-w-md rounded-2xl shadow-2xl border border-white/10 max-h-[80vh] flex flex-col" onclick="event.stopPropagation()">
             <div class="p-5 border-b border-white/10 flex justify-between items-center bg-gradient-to-r from-blue-900 to-bar-gray rounded-t-2xl">
@@ -319,19 +290,20 @@
             </div>
             <div id="orders-list-container" class="p-4 overflow-y-auto custom-scroll space-y-2 min-h-[200px] flex-grow"></div>
             <div id="orders-empty-state" class="hidden flex-col items-center justify-center py-10 text-gray-500 flex-grow"><i class="fas fa-glass-cheers text-4xl mb-3 opacity-30"></i><p>目前沒有等待中的訂單</p><p class="text-xs mt-1">快去點幾杯來喝吧！</p></div>
-            <div class="p-4 border-t border-white/10 bg-bar-gray rounded-b-2xl text-center"><p class="text-xs text-gray-500">雲端支援派對系統</p></div>
+            <div class="p-4 border-t border-white/10 bg-bar-gray rounded-b-2xl text-center"><p class="text-xs text-gray-500">雲端即時派對系統</p></div>
         </div>
     </div>
 
+    <!-- Editor Modal -->
     <div id="editor-modal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="closeEditor()">
         <div class="bg-bar-gray w-full max-w-2xl rounded-2xl shadow-2xl border border-white/10 max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
             <div class="p-4 border-b border-white/10 flex justify-between items-center bg-bar-gray rounded-t-2xl"><h3 id="editor-title" class="text-xl font-bold text-bar-gold">新增調酒</h3><button onclick="closeEditor()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button></div>
             <div class="p-6 overflow-y-auto space-y-4 custom-scroll">
                 <input type="hidden" id="edit-id">
-                <div class="mb-4"><label class="form-label">調酒照片 (可選)</label><div class="flex items-center gap-4"><div id="preview-container" class="w-24 h-24 bg-black/30 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 relative"><img id="img-preview" src="" class="w-full h-full object-cover hidden z-10"><i id="preview-icon-display" class="fas fa-cocktail text-3xl text-gray-500 absolute z-0 transition-colors"></i></div><div class="flex-1"><input type="file" id="img-upload" accept="image/*" class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-bar-gold file:text-bar-dark hover:file:bg-yellow-400 cursor-pointer" onchange="handleImageUpload(this)"><p class="text-xs text-gray-500 mt-2">建議使用小於 500KB 的圖片以避免儲存失敗。</p><button onclick="clearImage()" class="text-xs text-red-400 mt-1 hover:text-red-300 underline hidden" id="clear-img-btn">移除照片</button></div></div></div>
+                <div class="mb-4"><label class="form-label">調酒照片 (可選)</label><div class="flex items-center gap-4"><div id="preview-container" class="w-24 h-24 bg-black/30 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 relative"><img id="img-preview" src="" class="w-full h-full object-cover hidden z-10"><i id="preview-icon-display" class="fas fa-cocktail text-3xl text-gray-500 absolute z-0 transition-colors"></i></div><div class="flex-1"><input type="file" id="img-upload" accept="image/*" class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-bar-gold file:text-bar-dark hover:file:bg-yellow-400 cursor-pointer" onchange="window.handleImageUpload(this)"><p class="text-xs text-gray-500 mt-2">建議使用小於 500KB 的圖片以避免儲存失敗。</p><button onclick="window.clearImage()" class="text-xs text-red-400 mt-1 hover:text-red-300 underline hidden" id="clear-img-btn">移除照片</button></div></div></div>
                 <div class="grid grid-cols-2 gap-4"><div><label class="form-label">酒名</label><input type="text" id="inp-name" class="form-input" placeholder="例如：花生拿鐵"></div><div><label class="form-label">英文名</label><input type="text" id="inp-engname" class="form-input" placeholder="例如：Peanut Latte"></div></div>
                 <div class="grid grid-cols-2 gap-4"><div><label class="form-label">基酒種類</label><select id="inp-base" class="form-input appearance-none"><option value="威士忌">威士忌</option><option value="萊姆酒">萊姆酒</option><option value="琴酒">琴酒</option><option value="伏特加">伏特加</option><option value="龍舌蘭">龍舌蘭</option><option value="利口酒">利口酒</option><option value="其他">其他</option></select></div><div><label class="form-label">製作方式</label><select id="inp-type" class="form-input appearance-none"><option value="Simple Mix">直調</option><option value="Build">直注</option><option value="Stir">攪拌</option><option value="Shake">搖盪</option><option value="Blend">冰沙</option></select></div></div>
-                <div class="mb-4"><label class="form-label flex justify-between items-center">分類管理</label><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="flex gap-2 mb-3"><input type="text" id="new-cat-input" class="form-input text-sm py-1.5" placeholder="輸入新分類名稱..."><button onclick="addNewCategory()" class="bg-bar-gold text-bar-dark px-3 rounded text-sm font-bold whitespace-nowrap hover:bg-yellow-400"><i class="fas fa-plus"></i> 新增</button></div><div id="category-editor-list" class="space-y-1 max-h-32 overflow-y-auto custom-scroll pr-1"></div></div></div>
+                <div class="mb-4"><label class="form-label flex justify-between items-center">分類管理</label><div class="bg-black/20 p-3 rounded-lg border border-white/5"><div class="flex gap-2 mb-3"><input type="text" id="new-cat-input" class="form-input text-sm py-1.5" placeholder="輸入新分類名稱..."><button onclick="window.addNewCategory()" class="bg-bar-gold text-bar-dark px-3 rounded text-sm font-bold whitespace-nowrap hover:bg-yellow-400"><i class="fas fa-plus"></i> 新增</button></div><div id="category-editor-list" class="space-y-1 max-h-32 overflow-y-auto custom-scroll pr-1"></div></div></div>
                 <div class="bg-black/20 p-4 rounded-lg border border-white/5"><label class="form-label mb-3">選擇卡片圖示</label><div id="icon-selector" class="flex flex-wrap gap-2 max-h-32 overflow-y-auto mb-4 custom-scroll"></div><label class="form-label mb-3">選擇主題顏色</label><div id="color-selector" class="flex flex-wrap gap-3"></div></div>
                 <div><label class="form-label">材料</label><textarea id="inp-ingredients" class="form-input h-24" placeholder="材料清單..."></textarea></div>
                 <div><label class="form-label">作法步驟</label><textarea id="inp-method" class="form-input h-20" placeholder="描述調製過程..."></textarea></div>
@@ -348,7 +320,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDocs, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBWNYigzvVaVpITWyXLXIHkg0Cm17cUMCk",
@@ -363,7 +335,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // 嚴格遵守路徑規範：/artifacts/{appId}/public/data/...
+        // 使用固定的全域路徑，所有開啟此網頁的裝置都會存取同一個位置
         const PROJECT_ID = "bar-menu-e9896";
         const basePath = ['artifacts', PROJECT_ID, 'public', 'data'];
 
@@ -419,16 +391,17 @@
 
         // 雲端功能初始化 (背景連線)
         window.initCloudSync = async () => {
+            const iconBase = document.getElementById('cloud-icon-base');
+            const indicator = document.getElementById('cloud-icon-indicator');
+            
             try {
                 await signInAnonymously(auth);
                 window.isCloudConnected = true;
                 
-                const iconBase = document.getElementById('cloud-icon-base');
                 if (iconBase) {
                     iconBase.classList.remove('text-gray-400', 'text-red-500');
                     iconBase.classList.add('text-green-400');
                 }
-                const indicator = document.getElementById('cloud-icon-indicator');
                 if (indicator) indicator.classList.remove('hidden');
 
                 // 1. 同步「分類」
@@ -459,7 +432,19 @@
                     }
                 }));
 
-                // 3. 同步「已解鎖紀錄」
+                // 3. 同步「訂單」
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'orders'), snap => {
+                    const cloudOrders = [];
+                    snap.forEach(doc => cloudOrders.push(doc.data()));
+                    // 排序避免跳動
+                    cloudOrders.sort((a, b) => a.ts - b.ts);
+                    window.orders = cloudOrders;
+                    localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders));
+                    window.renderOrdersList();
+                    window.updateOrderBadges();
+                }));
+
+                // 4. 同步「已解鎖紀錄」
                 window.unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
                     if (docSnap.exists() && docSnap.data().madeDrinks) {
                         window.madeDrinks = docSnap.data().madeDrinks;
@@ -473,17 +458,20 @@
                 window.showToast("雲端同步已連線 ☁️");
 
             } catch (e) {
-                console.warn("Cloud Sync disabled:", e.message);
-                const iconBase = document.getElementById('cloud-icon-base');
+                console.warn("Cloud Sync disabled or failed:", e);
+                window.isCloudConnected = false;
+                
                 if (iconBase) {
                     iconBase.classList.remove('text-gray-400', 'text-green-400');
                     iconBase.classList.add('text-red-500');
                 }
+                if (indicator) indicator.classList.add('hidden');
                 
-                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed') {
-                    window.showToast("未啟用匿名登入，請至 Firebase 開啟！");
+                // 判斷是否為權限問題
+                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed' || e.message.includes('auth/configuration-not-found')) {
+                    window.showToast("設定提醒：請至 Firebase 控制台啟用「匿名登入 (Anonymous)」以開啟雲端功能！", 6000);
                 } else {
-                    window.showToast("雲端連線失敗，目前為單機模式。");
+                    window.showToast("雲端連線失敗，目前為單機模式。", 4000);
                 }
             }
         };
@@ -685,6 +673,7 @@
             window.renderFilters();
             window.renderDrinks();
             window.updateOrderBadges();
+            window.renderOrdersList();
 
             // 啟動自動雲端連線
             window.initCloudSync();
@@ -758,15 +747,21 @@
         
         window.placeOrder = function(drinkId, drinkName) {
             const order = {
-                orderId: Date.now(),
+                orderId: Date.now() + Math.floor(Math.random() * 1000), // 防止重複
                 drinkId: drinkId,
                 drinkName: drinkName,
                 ts: Date.now(),
                 displayTime: new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
             };
+            
+            // 先在本地反映以提升反應速度
             window.orders.push(order);
             window.saveOrders();
             window.showToast(`已點單：${drinkName}`);
+
+            if (window.isCloudConnected) {
+                setDoc(doc(db, ...basePath, 'orders', order.orderId.toString()), order).catch(e => console.error("Cloud Write Error:", e));
+            }
         };
 
         window.placeOrderFromModal = function() { if(!window.currentViewingId) return; const drink = window.drinks.find(d => d.id === window.currentViewingId); if(drink) { window.placeOrder(drink.id, drink.name); window.closeViewModal(); } };
@@ -775,9 +770,18 @@
             const orderIndex = window.orders.findIndex(o => o.drinkId == drinkId);
             
             if (orderIndex !== -1) {
+                const orderToRemove = window.orders[orderIndex];
+                
+                // 本地刪除
                 window.orders.splice(orderIndex, 1);
                 window.saveOrders();
+
+                // 雲端刪除
+                if (window.isCloudConnected) {
+                    deleteDoc(doc(db, ...basePath, 'orders', orderToRemove.orderId.toString())).catch(e => console.error(e));
+                }
                 
+                // 更新成就狀態
                 if (!window.madeDrinks.some(id => id == drinkId)) {
                     window.madeDrinks.push(drinkId);
                     window.saveMadeDrinks();
@@ -807,6 +811,12 @@
              const drink = window.drinks.find(d => d.id == drinkId); 
              if (!drink) {
                  if(confirm("原始酒譜已刪除，是否清除此類訂單？")) {
+                     const ordersToRemove = window.orders.filter(o => o.drinkId == drinkId);
+                     ordersToRemove.forEach(o => {
+                         if(window.isCloudConnected) {
+                             deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e=>console.error(e));
+                         }
+                     });
                      window.orders = window.orders.filter(o => o.drinkId != drinkId);
                      window.saveOrders();
                  }
@@ -906,7 +916,7 @@
             } 
         };
         window.clearImage = function() { window.tempImageBase64 = null; document.getElementById('img-upload').value=''; document.getElementById('img-preview').classList.add('hidden'); document.getElementById('clear-img-btn').classList.add('hidden'); };
-        window.showToast = function(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'show'; setTimeout(() => t.className = '', 3000); };
+        window.showToast = function(msg, timeout=3000) { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'show'; setTimeout(() => t.className = '', timeout); };
         
         window.init();
     </script>
