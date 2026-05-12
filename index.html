@@ -301,7 +301,7 @@
 
     <!-- 備份設定 Modal -->
     <div id="backup-modal" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300" onclick="window.closeBackupModal()">
-        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-gray-500/30 p-8 text-center" onclick="event.stopPropagation()">
+        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-white/10 p-8 text-center" onclick="event.stopPropagation()">
             <div class="mb-6">
                 <div class="w-16 h-16 bg-gray-600/20 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-400 text-2xl border border-gray-500/30">
                     <i class="fas fa-save"></i>
@@ -363,7 +363,7 @@
                 <div><h4 class="text-bar-gold text-sm font-bold uppercase tracking-wider mb-3 flex items-center gap-2"><i class="fas fa-flask"></i> 黃金比例</h4><ul id="view-ingredients" class="space-y-2 text-gray-300 text-sm bg-black/20 p-4 rounded-lg"></ul></div>
                 <div><h4 class="text-bar-gold text-sm font-bold uppercase tracking-wider mb-2 flex items-center gap-2"><i class="fas fa-blender"></i> 調製心法</h4><p id="view-method" class="text-gray-300 leading-relaxed whitespace-pre-line"></p></div>
                 <div class="border-l-2 border-bar-gold pl-4 py-1"><h4 class="text-white text-sm font-bold mb-1">亮點筆記</h4><p id="view-highlight" class="text-gray-400 text-sm italic whitespace-pre-line"></p></div>
-                <!-- 新增：點單管理區塊 -->
+                <!-- 點單管理區塊 -->
                 <div id="view-order-management" class="hidden mt-4 pt-4 border-t border-white/10"></div>
             </div>
             <div id="view-modal-footer" class="p-4 border-t border-white/10 bg-bar-gray/50"></div>
@@ -430,7 +430,9 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase 初始化
+        // ==========================================
+        // 1. Firebase 初始化
+        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBWNYigzvVaVpITWyXLXIHkg0Cm17cUMCk",
             authDomain: "bar-menu-e9896.firebaseapp.com",
@@ -439,15 +441,15 @@
             messagingSenderId: "965242240528",
             appId: "1:965242240528:web:f95d5da9da0d36adbcd495"
         };
-        
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        
         const PROJECT_ID = "bar-menu-e9896";
         const basePath = ['artifacts', PROJECT_ID, 'public', 'data'];
 
-        // 定義全域變數與初始狀態
+        // ==========================================
+        // 2. 全域變數定義 & 預設資料
+        // ==========================================
         window.drinks = []; 
         window.categories = []; 
         window.orders = []; 
@@ -462,11 +464,20 @@
         window.unsubscribes = [];
         window.currentUser = { name: '', role: 'guest' };
 
+        window.baseSpiritMap = {
+            "威士忌": "Whiskey",
+            "萊姆酒": "Rum",
+            "琴酒": "Gin",
+            "伏特加": "Vodka",
+            "龍舌蘭": "Tequila",
+            "利口酒": "Liqueur",
+            "其他": "Other"
+        };
+
         const iconList = [
             'fa-cocktail', 'fa-glass-martini-alt', 'fa-glass-whiskey', 'fa-wine-glass', 'fa-beer', 'fa-mug-hot', 'fa-coffee', 'fa-flask', 
             'fa-wine-bottle', 'fa-champagne-glasses', 'fa-glass-water', 'fa-beer-mug-empty', 'fa-martini-glass', 'fa-martini-glass-citrus', 'fa-martini-glass-empty',
-            'fa-vial', 'fa-prescription-bottle', 'fa-jar', 
-            'fa-lemon', 'fa-carrot', 'fa-apple-alt', 'fa-pepper-hot', 'fa-ice-cream', 'fa-cookie', 'fa-burger', 'fa-pizza-slice', 'fa-bacon', 'fa-candy-cane', 'fa-cheese', 'fa-hotdog', 'fa-bread-slice', 'fa-bowl-rice', 'fa-drumstick-bite',
+            'fa-vial', 'fa-prescription-bottle', 'fa-jar', 'fa-lemon', 'fa-carrot', 'fa-apple-alt', 'fa-pepper-hot', 'fa-ice-cream', 'fa-cookie', 'fa-burger', 'fa-pizza-slice', 'fa-bacon', 'fa-candy-cane', 'fa-cheese', 'fa-hotdog', 'fa-bread-slice', 'fa-bowl-rice', 'fa-drumstick-bite',
             'fa-leaf', 'fa-seedling', 'fa-holly-berry', 'fa-tree', 'fa-fire', 'fa-water', 'fa-snowflake', 'fa-wind', 'fa-cloud', 'fa-bolt', 'fa-sun', 'fa-moon', 'fa-cloud-moon', 'fa-volcano', 'fa-meteor',
             'fa-cat', 'fa-dog', 'fa-dragon', 'fa-fish', 'fa-crow', 'fa-dove', 'fa-frog', 'fa-hippo', 'fa-horse', 'fa-otter', 'fa-spider', 'fa-bug', 'fa-paw', 'fa-kiwi-bird', 'fa-shrimp', 'fa-worm', 'fa-locust', 'fa-mosquito',
             'fa-heart', 'fa-star', 'fa-umbrella-beach', 'fa-music', 'fa-skull', 'fa-bomb', 'fa-gem', 'fa-crown', 'fa-rocket', 'fa-ghost', 'fa-robot', 'fa-gamepad', 'fa-dice', 'fa-puzzle-piece', 'fa-anchor', 'fa-plane', 'fa-bicycle', 'fa-car',
@@ -506,24 +517,11 @@
             { id: 707, name: "改變的勇氣", engName: "Courage to Change", category: "idiot", base: "琴酒", type: "Shake", tags: [], icon: "fa-flask", color: "text-gray-500", ingredients: ["龐貝琴酒 45ml", "檸檬汁 30ml", "蜂蜜(糖漿)", "深色萊姆純酒"], method: "1. Shake\n2. high ball杯放9成滿冰\n3. 倒入調酒，碎冰放滿上層\n4. 深色萊姆純酒stir後，倒上層\n5. 碎冰用榨汁器壓出一個小冰碗，放置最上層\n6. 冰碗內放淹櫻桃(或其他水果)", highlight: "" }
         ];
 
-        // 綁定全域變數
-        window.drinks = []; 
-        window.categories = []; 
-        window.orders = []; 
-        window.madeDrinks = []; 
-        window.currentFilter = 'all'; 
-        window.currentViewingId = null; 
-        window.tempImageBase64 = null; 
-        window.selectedIcon = 'fa-cocktail'; 
-        window.selectedColor = 'text-white';
-        window.isFabOpen = false;
-        window.isCloudConnected = false;
-        window.unsubscribes = [];
-        window.currentUser = { name: '', role: 'guest' };
-
-        // 建立全域基礎函數
+        // ==========================================
+        // 3. UI 互動與共用功能
+        // ==========================================
         window.getBaseEnglish = function(base) {
-            return baseSpiritMap[base] || base || 'Special';
+            return window.baseSpiritMap[base] || base || 'Special';
         };
 
         window.customAlert = (message, title = "提示") => {
@@ -612,17 +610,102 @@
             setTimeout(() => m.classList.add('hidden'), 300);
         };
 
-        // 登入系統相關函數
-        window.checkLogin = function() {
-            const savedUser = localStorage.getItem('binbar_user');
-            if (savedUser) {
-                window.currentUser = JSON.parse(savedUser);
-                document.getElementById('login-modal').classList.add('hidden');
-                window.applyRoleUI();
-                window.initApp(); 
-            } else {
-                document.getElementById('login-modal').classList.remove('hidden');
-            }
+        window.showToast = function(msg, timeout = 3000) { 
+            const t = document.getElementById('toast'); 
+            t.textContent = msg; 
+            t.className = 'show'; 
+            setTimeout(() => t.className = '', timeout); 
+        };
+
+        window.toggleFab = function() { 
+            const menu = document.getElementById('fab-menu'); 
+            const mainBtn = document.getElementById('fab-main-btn'); 
+            const icon = document.getElementById('fab-icon'); 
+            window.isFabOpen = !window.isFabOpen; 
+            if (window.isFabOpen) { 
+                menu.classList.add('fab-menu-open'); 
+                mainBtn.classList.add('active'); 
+                icon.classList.remove('fa-plus'); 
+                icon.classList.add('fa-times'); 
+            } else { 
+                menu.classList.remove('fab-menu-open'); 
+                mainBtn.classList.remove('active'); 
+                icon.classList.remove('fa-times'); 
+                icon.classList.add('fa-plus'); 
+            } 
+        };
+
+        window.openOrdersList = function() { 
+            if(window.isFabOpen) window.toggleFab(); 
+            const m = document.getElementById('orders-modal');
+            m.classList.remove('hidden'); 
+            setTimeout(() => m.classList.remove('opacity-0'), 10); 
+            window.renderOrdersList(); 
+        };
+
+        window.closeOrdersList = function() { 
+            const m = document.getElementById('orders-modal'); 
+            m.classList.add('opacity-0'); 
+            setTimeout(() => m.classList.add('hidden'), 300); 
+        };
+
+        window.openBackupModal = () => {
+            const m = document.getElementById('backup-modal');
+            m.classList.remove('hidden');
+            setTimeout(() => m.classList.remove('opacity-0'), 10);
+        };
+
+        window.closeBackupModal = () => {
+            const m = document.getElementById('backup-modal');
+            m.classList.add('opacity-0');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
+        window.openQRCodeModal = () => {
+            const m = document.getElementById('qrcode-modal');
+            const img = document.getElementById('qrcode-img');
+            const currentUrl = encodeURIComponent(window.location.href.split('#')[0]);
+            img.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=1&data=${currentUrl}`;
+            
+            m.classList.remove('hidden');
+            setTimeout(() => m.classList.remove('opacity-0'), 10);
+        };
+
+        window.closeQRCodeModal = () => {
+            const m = document.getElementById('qrcode-modal');
+            m.classList.add('opacity-0');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
+        window.copyBarUrl = () => {
+            const url = window.location.href.split('#')[0];
+            const tempInput = document.createElement("input");
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            window.showToast("✅ 網址已複製到剪貼簿！");
+        };
+
+        // ==========================================
+        // 4. 身分驗證系統
+        // ==========================================
+        window.applyRoleUI = function() {
+            const isBartender = window.currentUser.role === 'bartender';
+            
+            document.getElementById('nav-user-role').textContent = isBartender ? 'BARTENDER' : 'GUEST';
+            document.getElementById('nav-user-name').textContent = window.currentUser.name;
+            document.getElementById('welcome-msg').textContent = isBartender ? 'Bartender 管理模式' : `歡迎光臨，${window.currentUser.name}`;
+            
+            const gearBtn = document.getElementById('nav-gear-btn');
+            if(gearBtn) gearBtn.style.display = isBartender ? 'flex' : 'none';
+            
+            const addDrinkFab = document.getElementById('fab-add-drink');
+            if(addDrinkFab) addDrinkFab.style.display = isBartender ? 'flex' : 'none';
+            
+            const clearOrdersBtn = document.getElementById('btn-clear-orders');
+            if(clearOrdersBtn) clearOrdersBtn.style.display = isBartender ? 'flex' : 'none';
         };
 
         window.loginAsGuest = function() {
@@ -668,139 +751,49 @@
             }
         };
 
-        window.applyRoleUI = function() {
-            const isBartender = window.currentUser.role === 'bartender';
-            
-            document.getElementById('nav-user-role').textContent = isBartender ? 'BARTENDER' : 'GUEST';
-            document.getElementById('nav-user-name').textContent = window.currentUser.name;
-            document.getElementById('welcome-msg').textContent = isBartender ? 'Bartender 管理模式' : `歡迎光臨，${window.currentUser.name}`;
-            
-            const gearBtn = document.getElementById('nav-gear-btn');
-            if(gearBtn) gearBtn.style.display = isBartender ? 'flex' : 'none';
-            
-            const addDrinkFab = document.getElementById('fab-add-drink');
-            if(addDrinkFab) addDrinkFab.style.display = isBartender ? 'flex' : 'none';
-            
-            const clearOrdersBtn = document.getElementById('btn-clear-orders');
-            if(clearOrdersBtn) clearOrdersBtn.style.display = isBartender ? 'flex' : 'none';
-        };
-
-        // 雲端同步與備份功能
-        window.initCloudSync = async () => {
-            const iconBase = document.getElementById('cloud-icon-base');
-            const indicator = document.getElementById('cloud-icon-indicator');
-            
-            try {
-                await signInAnonymously(auth);
-                window.isCloudConnected = true;
-                
-                if (iconBase) {
-                    iconBase.classList.remove('text-gray-400', 'text-red-500');
-                    iconBase.classList.add('text-green-400');
-                }
-                if (indicator) indicator.classList.remove('hidden');
-
-                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'categories'), snap => {
-                    if(!snap.empty) {
-                        const cloudCats = [];
-                        snap.forEach(doc => cloudCats.push(doc.data()));
-                        cloudCats.sort((a,b) => (a.order || 0) - (b.order || 0));
-                        window.categories = cloudCats;
-                        localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories));
-                        window.renderFilters();
-                        window.renderCategoryEditorList();
-                    } else {
-                        window.categories.forEach(c => setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c).catch(e=>console.warn(e)));
-                    }
-                }, err => console.warn("Sync error:", err)));
-
-                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'drinks'), snap => {
-                    if(!snap.empty) {
-                        const cloudDrinks = [];
-                        snap.forEach(doc => cloudDrinks.push(doc.data()));
-                        window.drinks = cloudDrinks;
-                        localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks));
-                        window.renderDrinks();
-                    } else {
-                        window.drinks.forEach(d => setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d).catch(e=>console.warn(e)));
-                    }
-                }, err => console.warn("Sync error:", err)));
-
-                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'orders'), snap => {
-                    const cloudOrders = [];
-                    snap.forEach(doc => cloudOrders.push(doc.data()));
-                    cloudOrders.sort((a, b) => a.ts - b.ts);
-                    window.orders = cloudOrders;
-                    localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders));
-                    window.renderOrdersList();
-                    window.updateOrderBadges();
-                }, err => console.warn("Sync error:", err)));
-
-                window.unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
-                    if (docSnap.exists() && docSnap.data().madeDrinks) {
-                        window.madeDrinks = docSnap.data().madeDrinks;
-                        localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks));
-                        window.renderDrinks();
-                    } else {
-                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }).catch(e=>console.warn(e));
-                    }
-                }, err => console.warn("Sync error:", err)));
-
-            } catch (e) {
-                console.warn("Cloud Sync disabled or failed:", e);
-                window.isCloudConnected = false;
-                
-                if (iconBase) {
-                    iconBase.classList.remove('text-gray-400', 'text-green-400');
-                    iconBase.classList.add('text-red-500');
-                }
-                if (indicator) indicator.classList.add('hidden');
-                
-                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed') {
-                    window.showToast("設定提醒：請至 Firebase 啟用「匿名登入」", 6000);
-                } else {
-                    window.showToast("雲端連線失敗，目前為單機模式", 4000);
-                }
+        window.checkLogin = function() {
+            const savedUser = localStorage.getItem('binbar_user');
+            if (savedUser) {
+                window.currentUser = JSON.parse(savedUser);
+                document.getElementById('login-modal').classList.add('hidden');
+                window.applyRoleUI();
+                window.initApp(); 
+            } else {
+                document.getElementById('login-modal').classList.remove('hidden');
             }
         };
 
-        window.openBackupModal = () => {
-            const m = document.getElementById('backup-modal');
-            m.classList.remove('hidden');
-            setTimeout(() => m.classList.remove('opacity-0'), 10);
+        // ==========================================
+        // 5. 儲存與同步相關函數 (Data Persistence)
+        // ==========================================
+        window.saveData = function() {
+            try { 
+                localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks)); 
+                window.renderDrinks(); 
+            } catch(e) { 
+                if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { 
+                    window.customAlert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); 
+                } else { 
+                    console.error("Save error:", e); 
+                    window.customAlert('儲存發生錯誤。'); 
+                } 
+            }
         };
 
-        window.closeBackupModal = () => {
-            const m = document.getElementById('backup-modal');
-            m.classList.add('opacity-0');
-            setTimeout(() => m.classList.add('hidden'), 300);
+        window.saveCategories = function() { 
+            localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories)); 
+            window.renderFilters(); 
+            window.renderCategoryEditorList(); 
         };
 
-        window.openQRCodeModal = () => {
-            const m = document.getElementById('qrcode-modal');
-            const img = document.getElementById('qrcode-img');
-            const currentUrl = encodeURIComponent(window.location.href.split('#')[0]);
-            img.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=1&data=${currentUrl}`;
-            
-            m.classList.remove('hidden');
-            setTimeout(() => m.classList.remove('opacity-0'), 10);
+        window.saveOrders = function() { 
+            localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders)); 
+            window.updateOrderBadges(); 
+            window.renderOrdersList(); 
         };
 
-        window.closeQRCodeModal = () => {
-            const m = document.getElementById('qrcode-modal');
-            m.classList.add('opacity-0');
-            setTimeout(() => m.classList.add('hidden'), 300);
-        };
-
-        window.copyBarUrl = () => {
-            const url = window.location.href.split('#')[0];
-            const tempInput = document.createElement("input");
-            tempInput.value = url;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-            window.showToast("✅ 網址已複製到剪貼簿！");
+        window.saveMadeDrinks = function() { 
+            localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks)); 
         };
 
         window.exportData = () => {
@@ -879,95 +872,82 @@
             window.closeBackupModal();
         };
 
-        // 畫面渲染與操作功能
-        window.renderOrdersList = function() {
-            const container = document.getElementById('orders-list-container');
-            const emptyState = document.getElementById('orders-empty-state');
-            container.innerHTML = '';
+        window.initCloudSync = async () => {
+            const iconBase = document.getElementById('cloud-icon-base');
+            const indicator = document.getElementById('cloud-icon-indicator');
             
-            if(window.orders.length === 0) {
-                emptyState.classList.remove('hidden'); 
-                emptyState.classList.add('flex');
-            } else {
-                emptyState.classList.add('hidden'); 
-                emptyState.classList.remove('flex');
+            try {
+                await signInAnonymously(auth);
+                window.isCloudConnected = true;
                 
-                const grouped = {};
-                window.orders.forEach(o => {
-                    if (!grouped[o.drinkId]) {
-                        grouped[o.drinkId] = { drinkId: o.drinkId, drinkName: o.drinkName, count: 0, ids: [], displayTime: o.displayTime, users: [] };
-                    }
-                    grouped[o.drinkId].count++;
-                    grouped[o.drinkId].ids.push(o.orderId);
-                    if (o.userName) grouped[o.drinkId].users.push(o.userName);
-                });
-
-                Object.values(grouped).forEach(group => {
-                    const item = document.createElement('div');
-                    item.className = 'flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 cursor-pointer group transition-all mb-2';
-                    item.onclick = () => window.openGroupOrderCheck(group.drinkId); 
-                    
-                    const usersStr = group.users.length > 0 ? group.users.join(', ') : '匿名';
-
-                    item.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-bar-gray border border-white/10 flex items-center justify-center text-xl shadow-inner font-bold text-bar-gold">
-                                x${group.count}
-                            </div>
-                            <div>
-                                <h4 class="text-white font-bold flex items-center gap-2">
-                                    ${group.drinkName} 
-                                </h4>
-                                <p class="text-[0.7rem] text-bar-gold mt-0.5 truncate max-w-[180px]">點單者: ${usersStr}</p>
-                            </div>
-                        </div>
-                        <div class="w-8 h-8 rounded-full border border-gray-600 flex items-center justify-center group-hover:bg-green-500/20 group-hover:border-green-500 transition-all text-gray-500 group-hover:text-green-500">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    `;
-                    container.appendChild(item);
-                });
-            }
-        };
-
-        window.updateOrderBadges = function() { 
-            const count = window.orders.length; 
-            const mainBadge = document.getElementById('order-count-badge-main'); 
-            const menuBadge = document.getElementById('order-count-badge-menu'); 
-            [mainBadge, menuBadge].forEach(b => { 
-                if (b) {
-                    b.textContent = count; 
-                    if(count > 0) { 
-                        b.classList.remove('hidden'); 
-                        b.classList.add('animate-bounce'); 
-                        setTimeout(()=>b.classList.remove('animate-bounce'), 1000); 
-                    } else { 
-                        b.classList.add('hidden'); 
-                    }
+                if (iconBase) {
+                    iconBase.classList.remove('text-gray-400', 'text-red-500');
+                    iconBase.classList.add('text-green-400');
                 }
-            }); 
-        };
+                if (indicator) indicator.classList.remove('hidden');
 
-        window.clearAllOrders = async function() {
-            if (window.orders.length === 0) return;
-            const res = await window.customConfirm("確定要清空所有排隊中的酒單嗎？這無法復原！");
-            if (!res) return;
-            
-            const ordersToDelete = [...window.orders];
-            window.orders = [];
-            window.saveOrders();
-            window.renderOrdersList();
-            window.updateOrderBadges();
-            
-            if (window.isCloudConnected) {
-                ordersToDelete.forEach(o => {
-                    if (o.orderId) {
-                        deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e => console.warn(e));
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'categories'), snap => {
+                    if(!snap.empty) {
+                        const cloudCats = [];
+                        snap.forEach(doc => cloudCats.push(doc.data()));
+                        cloudCats.sort((a,b) => (a.order || 0) - (b.order || 0));
+                        window.categories = cloudCats;
+                        localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories));
+                        window.renderFilters();
+                        window.renderCategoryEditorList();
+                    } else {
+                        window.categories.forEach(c => setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c).catch(e=>console.warn(e)));
                     }
-                });
+                }, err => console.warn("Sync error:", err)));
+
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'drinks'), snap => {
+                    if(!snap.empty) {
+                        const cloudDrinks = [];
+                        snap.forEach(doc => cloudDrinks.push(doc.data()));
+                        window.drinks = cloudDrinks;
+                        localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks));
+                        window.renderDrinks();
+                    } else {
+                        window.drinks.forEach(d => setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d).catch(e=>console.warn(e)));
+                    }
+                }, err => console.warn("Sync error:", err)));
+
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'orders'), snap => {
+                    const cloudOrders = [];
+                    snap.forEach(doc => cloudOrders.push(doc.data()));
+                    cloudOrders.sort((a, b) => a.ts - b.ts);
+                    window.orders = cloudOrders;
+                    localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders));
+                    window.renderOrdersList();
+                    window.updateOrderBadges();
+                }, err => console.warn("Sync error:", err)));
+
+                window.unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
+                    if (docSnap.exists() && docSnap.data().madeDrinks) {
+                        window.madeDrinks = docSnap.data().madeDrinks;
+                        localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks));
+                        window.renderDrinks();
+                    } else {
+                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }).catch(e=>console.warn(e));
+                    }
+                }, err => console.warn("Sync error:", err)));
+
+            } catch (e) {
+                console.warn("Cloud Sync disabled or failed:", e);
+                window.isCloudConnected = false;
+                
+                if (iconBase) {
+                    iconBase.classList.remove('text-gray-400', 'text-green-400');
+                    iconBase.classList.add('text-red-500');
+                }
+                if (indicator) indicator.classList.add('hidden');
+                
+                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed') {
+                    window.showToast("設定提醒：請至 Firebase 啟用「匿名登入」", 6000);
+                } else {
+                    window.showToast("雲端連線失敗，目前為單機模式", 4000);
+                }
             }
-            window.showToast("已清空所有點單！");
-            window.closeOrdersList();
         };
 
         window.initApp = function() {
@@ -1044,34 +1024,9 @@
             window.initCloudSync();
         };
 
-        window.saveData = function() {
-            try { 
-                localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks)); 
-                window.renderDrinks(); 
-            } catch(e) { 
-                if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { 
-                    window.customAlert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); 
-                } else { 
-                    console.error("Save error:", e); 
-                    window.customAlert('儲存發生錯誤。'); 
-                } 
-            }
-        };
-
-        window.saveCategories = function() { 
-            localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories)); 
-            window.renderFilters(); 
-            window.renderCategoryEditorList(); 
-        };
-        window.saveOrders = function() { 
-            localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders)); 
-            window.updateOrderBadges(); 
-            window.renderOrdersList(); 
-        };
-        window.saveMadeDrinks = function() { 
-            localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks)); 
-        };
-
+        // ==========================================
+        // 6. 畫面渲染與 UI 操作功能
+        // ==========================================
         window.renderFilters = function() {
             const container = document.getElementById('filter-container');
             if(!container) return;
@@ -1169,7 +1124,78 @@
             window.renderFilters(); 
             window.renderDrinks(); 
         };
-        
+
+        window.renderOrdersList = function() {
+            const container = document.getElementById('orders-list-container');
+            const emptyState = document.getElementById('orders-empty-state');
+            container.innerHTML = '';
+            
+            if(window.orders.length === 0) {
+                emptyState.classList.remove('hidden'); 
+                emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden'); 
+                emptyState.classList.remove('flex');
+                
+                const grouped = {};
+                window.orders.forEach(o => {
+                    if (!grouped[o.drinkId]) {
+                        grouped[o.drinkId] = { drinkId: o.drinkId, drinkName: o.drinkName, count: 0, ids: [], displayTime: o.displayTime, users: [] };
+                    }
+                    grouped[o.drinkId].count++;
+                    grouped[o.drinkId].ids.push(o.orderId);
+                    if (o.userName) grouped[o.drinkId].users.push(o.userName);
+                });
+
+                Object.values(grouped).forEach(group => {
+                    const item = document.createElement('div');
+                    item.className = 'flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 cursor-pointer group transition-all mb-2';
+                    item.onclick = () => window.openGroupOrderCheck(group.drinkId); 
+                    
+                    const usersStr = group.users.length > 0 ? group.users.join(', ') : '匿名';
+
+                    item.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-bar-gray border border-white/10 flex items-center justify-center text-xl shadow-inner font-bold text-bar-gold">
+                                x${group.count}
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold flex items-center gap-2">
+                                    ${group.drinkName} 
+                                </h4>
+                                <p class="text-[0.7rem] text-bar-gold mt-0.5 truncate max-w-[180px]">點單者: ${usersStr}</p>
+                            </div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full border border-gray-600 flex items-center justify-center group-hover:bg-green-500/20 group-hover:border-green-500 transition-all text-gray-500 group-hover:text-green-500">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
+        };
+
+        window.updateOrderBadges = function() { 
+            const count = window.orders.length; 
+            const mainBadge = document.getElementById('order-count-badge-main'); 
+            const menuBadge = document.getElementById('order-count-badge-menu'); 
+            [mainBadge, menuBadge].forEach(b => { 
+                if (b) {
+                    b.textContent = count; 
+                    if(count > 0) { 
+                        b.classList.remove('hidden'); 
+                        b.classList.add('animate-bounce'); 
+                        setTimeout(()=>b.classList.remove('animate-bounce'), 1000); 
+                    } else { 
+                        b.classList.add('hidden'); 
+                    }
+                }
+            }); 
+        };
+
+        // ==========================================
+        // 7. 點單系統與模態框操作
+        // ==========================================
         window.placeOrder = function(drinkId, drinkName) {
             const order = {
                 orderId: Date.now() + Math.floor(Math.random() * 1000), 
@@ -1288,6 +1314,28 @@
             }
         };
 
+        window.clearAllOrders = async function() {
+            if (window.orders.length === 0) return;
+            const res = await window.customConfirm("確定要清空所有排隊中的酒單嗎？這無法復原！");
+            if (!res) return;
+            
+            const ordersToDelete = [...window.orders];
+            window.orders = [];
+            window.saveOrders();
+            window.renderOrdersList();
+            window.updateOrderBadges();
+            
+            if (window.isCloudConnected) {
+                ordersToDelete.forEach(o => {
+                    if (o.orderId) {
+                        deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e => console.warn(e));
+                    }
+                });
+            }
+            window.showToast("已清空所有點單！");
+            window.closeOrdersList();
+        };
+
         window.openMenuDetail = function(id) { 
             window.currentViewingId = id; 
             const drink = window.drinks.find(d => d.id === id); 
@@ -1401,6 +1449,81 @@
             setTimeout(() => m.classList.add('hidden'), 300); 
         };
 
+        // ==========================================
+        // 8. 編輯器與圖示管理
+        // ==========================================
+        window.openEditor = function(isEdit = false) { 
+            if(window.isFabOpen) window.toggleFab(); 
+            const titleEl = document.getElementById('editor-title'); 
+            const editIdInput = document.getElementById('edit-id'); 
+            const imgPreview = document.getElementById('img-preview'); 
+            const clearBtn = document.getElementById('clear-img-btn'); 
+            document.getElementById('inp-name').value = ''; 
+            document.getElementById('inp-engname').value = ''; 
+            document.getElementById('inp-ingredients').value = ''; 
+            document.getElementById('inp-method').value = ''; 
+            document.getElementById('inp-highlight').value = ''; 
+            document.getElementById('inp-tags').value = ''; 
+            document.getElementById('img-upload').value = ''; 
+            window.tempImageBase64 = null; 
+            imgPreview.src = ''; 
+            imgPreview.classList.add('hidden'); 
+            clearBtn.classList.add('hidden'); 
+            window.selectedIcon = 'fa-cocktail'; 
+            window.selectedColor = 'text-white'; 
+            window.renderCategoryEditorList(); 
+            
+            if (isEdit && window.currentViewingId) { 
+                const drink = window.drinks.find(d => d.id === window.currentViewingId); 
+                window.closeViewModal(); 
+                titleEl.textContent = '編輯調酒'; 
+                editIdInput.value = drink.id; 
+                document.getElementById('inp-name').value = drink.name; 
+                document.getElementById('inp-engname').value = drink.engName || ''; 
+                document.getElementById('inp-base').value = drink.base; 
+                document.getElementById('inp-type').value = drink.type; 
+                document.getElementById('inp-ingredients').value = (drink.ingredients || []).join('\n'); 
+                document.getElementById('inp-method').value = drink.method; 
+                document.getElementById('inp-highlight').value = drink.highlight; 
+                document.getElementById('inp-tags').value = (drink.tags || []).join(', '); 
+                setTimeout(() => { 
+                    const r = document.querySelector(`input[name="cat"][value="${drink.category}"]`); 
+                    if(r) r.checked = true; 
+                }, 100); 
+                window.selectedIcon = drink.icon || 'fa-cocktail'; 
+                window.selectedColor = drink.color || 'text-white'; 
+                if (drink.image) { 
+                    window.tempImageBase64 = drink.image; 
+                    imgPreview.src = drink.image; 
+                    imgPreview.classList.remove('hidden'); 
+                    clearBtn.classList.remove('hidden'); 
+                } 
+            } else { 
+                titleEl.textContent = '新增調酒'; 
+                editIdInput.value = ''; 
+                setTimeout(() => { 
+                    const r = document.querySelector('input[name="cat"]'); 
+                    if(r) r.checked = true; 
+                }, 100); 
+            } 
+            window.renderIconSelector(); 
+            window.renderColorSelector(); 
+            window.updatePreviewIcon(); 
+            const m = document.getElementById('editor-modal'); 
+            m.classList.remove('hidden'); 
+            setTimeout(() => m.classList.remove('opacity-0'), 10); 
+        };
+
+        window.closeEditor = function() { 
+            const m = document.getElementById('editor-modal'); 
+            m.classList.add('opacity-0'); 
+            setTimeout(() => m.classList.add('hidden'), 300); 
+        };
+
+        window.editCurrentDrink = function() { 
+            window.openEditor(true); 
+        };
+
         window.saveDrink = async function() { 
             const name = document.getElementById('inp-name').value.trim(); 
             if(!name) { window.customAlert('請輸入酒名'); return; }
@@ -1488,110 +1611,6 @@
             } 
         };
 
-        window.toggleFab = function() { 
-            const menu = document.getElementById('fab-menu'); 
-            const mainBtn = document.getElementById('fab-main-btn'); 
-            const icon = document.getElementById('fab-icon'); 
-            window.isFabOpen = !window.isFabOpen; 
-            if (window.isFabOpen) { 
-                menu.classList.add('fab-menu-open'); 
-                mainBtn.classList.add('active'); 
-                icon.classList.remove('fa-plus'); 
-                icon.classList.add('fa-times'); 
-            } else { 
-                menu.classList.remove('fab-menu-open'); 
-                mainBtn.classList.remove('active'); 
-                icon.classList.remove('fa-times'); 
-                icon.classList.add('fa-plus'); 
-            } 
-        };
-
-        window.openOrdersList = function() { 
-            window.toggleFab(); 
-            const m = document.getElementById('orders-modal');
-            m.classList.remove('hidden'); 
-            setTimeout(() => m.classList.remove('opacity-0'), 10); 
-            window.renderOrdersList(); 
-        };
-
-        window.closeOrdersList = function() { 
-            const m = document.getElementById('orders-modal'); 
-            m.classList.add('opacity-0'); 
-            setTimeout(() => m.classList.add('hidden'), 300); 
-        };
-
-        window.openEditor = function(isEdit = false) { 
-            if(window.isFabOpen) window.toggleFab(); 
-            const titleEl = document.getElementById('editor-title'); 
-            const editIdInput = document.getElementById('edit-id'); 
-            const imgPreview = document.getElementById('img-preview'); 
-            const clearBtn = document.getElementById('clear-img-btn'); 
-            document.getElementById('inp-name').value = ''; 
-            document.getElementById('inp-engname').value = ''; 
-            document.getElementById('inp-ingredients').value = ''; 
-            document.getElementById('inp-method').value = ''; 
-            document.getElementById('inp-highlight').value = ''; 
-            document.getElementById('inp-tags').value = ''; 
-            document.getElementById('img-upload').value = ''; 
-            window.tempImageBase64 = null; 
-            imgPreview.src = ''; 
-            imgPreview.classList.add('hidden'); 
-            clearBtn.classList.add('hidden'); 
-            window.selectedIcon = 'fa-cocktail'; 
-            window.selectedColor = 'text-white'; 
-            window.renderCategoryEditorList(); 
-            
-            if (isEdit && window.currentViewingId) { 
-                const drink = window.drinks.find(d => d.id === window.currentViewingId); 
-                window.closeViewModal(); 
-                titleEl.textContent = '編輯調酒'; 
-                editIdInput.value = drink.id; 
-                document.getElementById('inp-name').value = drink.name; 
-                document.getElementById('inp-engname').value = drink.engName || ''; 
-                document.getElementById('inp-base').value = drink.base; 
-                document.getElementById('inp-type').value = drink.type; 
-                document.getElementById('inp-ingredients').value = (drink.ingredients || []).join('\n'); 
-                document.getElementById('inp-method').value = drink.method; 
-                document.getElementById('inp-highlight').value = drink.highlight; 
-                document.getElementById('inp-tags').value = (drink.tags || []).join(', '); 
-                setTimeout(() => { 
-                    const r = document.querySelector(`input[name="cat"][value="${drink.category}"]`); 
-                    if(r) r.checked = true; 
-                }, 100); 
-                window.selectedIcon = drink.icon || 'fa-cocktail'; 
-                window.selectedColor = drink.color || 'text-white'; 
-                if (drink.image) { 
-                    window.tempImageBase64 = drink.image; 
-                    imgPreview.src = drink.image; 
-                    imgPreview.classList.remove('hidden'); 
-                    clearBtn.classList.remove('hidden'); 
-                } 
-            } else { 
-                titleEl.textContent = '新增調酒'; 
-                editIdInput.value = ''; 
-                setTimeout(() => { 
-                    const r = document.querySelector('input[name="cat"]'); 
-                    if(r) r.checked = true; 
-                }, 100); 
-            } 
-            window.renderIconSelector(); 
-            window.renderColorSelector(); 
-            window.updatePreviewIcon(); 
-            const m = document.getElementById('editor-modal'); 
-            m.classList.remove('hidden'); 
-            setTimeout(() => m.classList.remove('opacity-0'), 10); 
-        };
-
-        window.closeEditor = function() { 
-            const m = document.getElementById('editor-modal'); 
-            m.classList.add('opacity-0'); 
-            setTimeout(() => m.classList.add('hidden'), 300); 
-        };
-
-        window.editCurrentDrink = function() { 
-            window.openEditor(true); 
-        };
-
         window.pickRandom = function() { 
             const d = window.drinks[Math.floor(Math.random() * window.drinks.length)]; 
             if(d) window.openMenuDetail(d.id); 
@@ -1663,15 +1682,11 @@
             document.getElementById('clear-img-btn').classList.add('hidden'); 
         };
 
-        window.showToast = function(msg, timeout=3000) { 
-            const t = document.getElementById('toast'); 
-            t.textContent = msg; 
-            t.className = 'show'; 
-            setTimeout(() => t.className = '', timeout); 
-        };
-        
-        // 程式進入點
+        // ==========================================
+        // 9. 程式啟動點
+        // ==========================================
         window.checkLogin();
+
     </script>
 </body>
 </html>
