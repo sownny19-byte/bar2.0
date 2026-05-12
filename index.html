@@ -192,6 +192,10 @@
             </div>
             
             <div class="flex items-center gap-3">
+                <!-- QR Code 邀請按鈕 -->
+                <div class="relative cursor-pointer w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10 transition-colors" onclick="window.openQRCodeModal()" title="邀請朋友入座">
+                    <i class="fas fa-qrcode text-gray-300"></i>
+                </div>
                 <!-- 備份設定按鈕 (僅 Bartender 顯示) -->
                 <div id="nav-gear-btn" class="relative cursor-pointer w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-white/10 transition-colors hidden" onclick="window.openBackupModal()" title="資料備份">
                     <i class="fas fa-cog text-gray-300"></i>
@@ -322,6 +326,28 @@
                     <i class="fas fa-exclamation-triangle mr-1"></i> 注意：匯入備份將會完全覆蓋當前的酒單資料。
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- QR Code 邀請 Modal -->
+    <div id="qrcode-modal" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300" onclick="window.closeQRCodeModal()">
+        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-white/10 p-8 text-center flex flex-col items-center" onclick="event.stopPropagation()">
+            <div class="mb-4">
+                <div class="w-16 h-16 bg-bar-gold/20 rounded-full flex items-center justify-center mx-auto mb-3 text-bar-gold text-2xl border border-bar-gold/30">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-1">邀請酒友入座</h2>
+                <p class="text-gray-400 text-sm">請朋友掃描下方條碼進入酒吧</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-lg mb-6 flex items-center justify-center min-h-[220px]">
+                <img id="qrcode-img" src="" alt="QR Code" class="w-48 h-48 object-contain">
+            </div>
+            <button onclick="window.copyBarUrl()" class="w-full bg-white/10 text-white font-bold py-3 rounded-lg shadow-lg hover:bg-white/20 border border-white/20 transition-transform active:scale-95 flex items-center justify-center gap-2">
+                <i class="fas fa-copy"></i> 複製酒吧網址
+            </button>
+            <button onclick="window.closeQRCodeModal()" class="w-full mt-3 text-gray-500 hover:text-white transition-colors py-2 text-sm font-bold">
+                關閉
+            </button>
         </div>
     </div>
 
@@ -729,6 +755,35 @@
             const m = document.getElementById('backup-modal');
             m.classList.add('opacity-0');
             setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
+        // 新增：QR Code 顯示與複製網址功能
+        window.openQRCodeModal = () => {
+            const m = document.getElementById('qrcode-modal');
+            const img = document.getElementById('qrcode-img');
+            // 動態抓取目前的網址並轉換成 QR Code 圖片
+            const currentUrl = encodeURIComponent(window.location.href.split('#')[0]);
+            img.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=1&data=${currentUrl}`;
+            
+            m.classList.remove('hidden');
+            setTimeout(() => m.classList.remove('opacity-0'), 10);
+        };
+
+        window.closeQRCodeModal = () => {
+            const m = document.getElementById('qrcode-modal');
+            m.classList.add('opacity-0');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
+        window.copyBarUrl = () => {
+            const url = window.location.href.split('#')[0];
+            const tempInput = document.createElement("input");
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            window.showToast("✅ 網址已複製到剪貼簿！");
         };
 
         window.exportData = () => {
