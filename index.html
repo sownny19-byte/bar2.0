@@ -448,23 +448,23 @@
         const basePath = ['artifacts', PROJECT_ID, 'public', 'data'];
 
         // ==========================================
-        // 2. 全域變數定義 & 預設資料
+        // 2. 全域變數定義 (使用區塊變數)
         // ==========================================
-        window.drinks = []; 
-        window.categories = []; 
-        window.orders = []; 
-        window.madeDrinks = []; 
-        window.currentFilter = 'all'; 
-        window.currentViewingId = null; 
-        window.tempImageBase64 = null; 
-        window.selectedIcon = 'fa-cocktail'; 
-        window.selectedColor = 'text-white';
-        window.isFabOpen = false;
-        window.isCloudConnected = false;
-        window.unsubscribes = [];
-        window.currentUser = { name: '', role: 'guest' };
+        let drinks = []; 
+        let categories = []; 
+        let orders = []; 
+        let madeDrinks = []; 
+        let currentFilter = 'all'; 
+        let currentViewingId = null; 
+        let tempImageBase64 = null; 
+        let selectedIcon = 'fa-cocktail'; 
+        let selectedColor = 'text-white';
+        let isFabOpen = false;
+        let isCloudConnected = false;
+        let unsubscribes = [];
+        let currentUser = { name: '', role: 'guest' };
 
-        window.baseSpiritMap = {
+        const baseSpiritMap = {
             "威士忌": "Whiskey",
             "萊姆酒": "Rum",
             "琴酒": "Gin",
@@ -518,13 +518,13 @@
         ];
 
         // ==========================================
-        // 3. UI 互動與共用功能
+        // 3. UI 互動與共用功能 (宣告標準函式)
         // ==========================================
-        window.getBaseEnglish = function(base) {
-            return window.baseSpiritMap[base] || base || 'Special';
-        };
+        function getBaseEnglish(base) {
+            return baseSpiritMap[base] || base || 'Special';
+        }
 
-        window.customAlert = (message, title = "提示") => {
+        function customAlert(message, title = "提示") {
             return new Promise(resolve => {
                 const m = document.getElementById('custom-dialog-modal');
                 document.getElementById('dialog-title').textContent = title;
@@ -538,16 +538,16 @@
                 cancelBtn.classList.add('hidden');
                 
                 confirmBtn.onclick = () => {
-                    window.closeCustomDialog();
+                    closeCustomDialog();
                     resolve(true);
                 };
                 
                 m.classList.remove('hidden');
                 setTimeout(() => m.classList.remove('opacity-0'), 10);
             });
-        };
+        }
 
-        window.customConfirm = (message, title = "確認") => {
+        function customConfirm(message, title = "確認") {
             return new Promise(resolve => {
                 const m = document.getElementById('custom-dialog-modal');
                 document.getElementById('dialog-title').textContent = title;
@@ -561,20 +561,20 @@
                 cancelBtn.classList.remove('hidden');
                 
                 cancelBtn.onclick = () => {
-                    window.closeCustomDialog();
+                    closeCustomDialog();
                     resolve(false);
                 };
                 confirmBtn.onclick = () => {
-                    window.closeCustomDialog();
+                    closeCustomDialog();
                     resolve(true);
                 };
                 
                 m.classList.remove('hidden');
                 setTimeout(() => m.classList.remove('opacity-0'), 10);
             });
-        };
+        }
 
-        window.customPrompt = (message, title = "輸入", type = "text", defaultValue = "") => {
+        function customPrompt(message, title = "輸入", type = "text", defaultValue = "") {
             return new Promise(resolve => {
                 const m = document.getElementById('custom-dialog-modal');
                 document.getElementById('dialog-title').textContent = title;
@@ -590,11 +590,11 @@
                 cancelBtn.classList.remove('hidden');
                 
                 cancelBtn.onclick = () => {
-                    window.closeCustomDialog();
+                    closeCustomDialog();
                     resolve(null);
                 };
                 confirmBtn.onclick = () => {
-                    window.closeCustomDialog();
+                    closeCustomDialog();
                     resolve(input.value);
                 };
                 
@@ -602,27 +602,27 @@
                 setTimeout(() => m.classList.remove('opacity-0'), 10);
                 setTimeout(() => input.focus(), 100);
             });
-        };
+        }
 
-        window.closeCustomDialog = () => {
+        function closeCustomDialog() {
             const m = document.getElementById('custom-dialog-modal');
             m.classList.add('opacity-0');
             setTimeout(() => m.classList.add('hidden'), 300);
-        };
+        }
 
-        window.showToast = function(msg, timeout = 3000) { 
+        function showToast(msg, timeout = 3000) { 
             const t = document.getElementById('toast'); 
             t.textContent = msg; 
             t.className = 'show'; 
             setTimeout(() => t.className = '', timeout); 
-        };
+        }
 
-        window.toggleFab = function() { 
+        function toggleFab() { 
             const menu = document.getElementById('fab-menu'); 
             const mainBtn = document.getElementById('fab-main-btn'); 
             const icon = document.getElementById('fab-icon'); 
-            window.isFabOpen = !window.isFabOpen; 
-            if (window.isFabOpen) { 
+            isFabOpen = !isFabOpen; 
+            if (isFabOpen) { 
                 menu.classList.add('fab-menu-open'); 
                 mainBtn.classList.add('active'); 
                 icon.classList.remove('fa-plus'); 
@@ -633,35 +633,35 @@
                 icon.classList.remove('fa-times'); 
                 icon.classList.add('fa-plus'); 
             } 
-        };
+        }
 
-        window.openOrdersList = function() { 
-            if(window.isFabOpen) window.toggleFab(); 
+        function openOrdersList() { 
+            if(isFabOpen) toggleFab(); 
             const m = document.getElementById('orders-modal');
             m.classList.remove('hidden'); 
             setTimeout(() => m.classList.remove('opacity-0'), 10); 
-            window.renderOrdersList(); 
-        };
+            renderOrdersList(); 
+        }
 
-        window.closeOrdersList = function() { 
+        function closeOrdersList() { 
             const m = document.getElementById('orders-modal'); 
             m.classList.add('opacity-0'); 
             setTimeout(() => m.classList.add('hidden'), 300); 
-        };
+        }
 
-        window.openBackupModal = () => {
+        function openBackupModal() {
             const m = document.getElementById('backup-modal');
             m.classList.remove('hidden');
             setTimeout(() => m.classList.remove('opacity-0'), 10);
-        };
+        }
 
-        window.closeBackupModal = () => {
+        function closeBackupModal() {
             const m = document.getElementById('backup-modal');
             m.classList.add('opacity-0');
             setTimeout(() => m.classList.add('hidden'), 300);
-        };
+        }
 
-        window.openQRCodeModal = () => {
+        function openQRCodeModal() {
             const m = document.getElementById('qrcode-modal');
             const img = document.getElementById('qrcode-img');
             const currentUrl = encodeURIComponent(window.location.href.split('#')[0]);
@@ -669,15 +669,15 @@
             
             m.classList.remove('hidden');
             setTimeout(() => m.classList.remove('opacity-0'), 10);
-        };
+        }
 
-        window.closeQRCodeModal = () => {
+        function closeQRCodeModal() {
             const m = document.getElementById('qrcode-modal');
             m.classList.add('opacity-0');
             setTimeout(() => m.classList.add('hidden'), 300);
-        };
+        }
 
-        window.copyBarUrl = () => {
+        function copyBarUrl() {
             const url = window.location.href.split('#')[0];
             const tempInput = document.createElement("input");
             tempInput.value = url;
@@ -685,18 +685,18 @@
             tempInput.select();
             document.execCommand("copy");
             document.body.removeChild(tempInput);
-            window.showToast("✅ 網址已複製到剪貼簿！");
-        };
+            showToast("✅ 網址已複製到剪貼簿！");
+        }
 
         // ==========================================
         // 4. 身分驗證系統
         // ==========================================
-        window.applyRoleUI = function() {
-            const isBartender = window.currentUser.role === 'bartender';
+        function applyRoleUI() {
+            const isBartender = currentUser.role === 'bartender';
             
             document.getElementById('nav-user-role').textContent = isBartender ? 'BARTENDER' : 'GUEST';
-            document.getElementById('nav-user-name').textContent = window.currentUser.name;
-            document.getElementById('welcome-msg').textContent = isBartender ? 'Bartender 管理模式' : `歡迎光臨，${window.currentUser.name}`;
+            document.getElementById('nav-user-name').textContent = currentUser.name;
+            document.getElementById('welcome-msg').textContent = isBartender ? 'Bartender 管理模式' : `歡迎光臨，${currentUser.name}`;
             
             const gearBtn = document.getElementById('nav-gear-btn');
             if(gearBtn) gearBtn.style.display = isBartender ? 'flex' : 'none';
@@ -706,348 +706,87 @@
             
             const clearOrdersBtn = document.getElementById('btn-clear-orders');
             if(clearOrdersBtn) clearOrdersBtn.style.display = isBartender ? 'flex' : 'none';
-        };
+        }
 
-        window.loginAsGuest = function() {
+        function loginAsGuest() {
             const name = document.getElementById('login-name-input').value.trim();
             if (!name) {
-                window.customAlert('請輸入一個專屬的稱號！');
+                customAlert('請輸入一個專屬的稱號！');
                 return;
             }
-            window.currentUser = { name: name, role: 'guest' };
-            localStorage.setItem('binbar_user', JSON.stringify(window.currentUser));
+            currentUser = { name: name, role: 'guest' };
+            localStorage.setItem('binbar_user', JSON.stringify(currentUser));
             
             document.getElementById('login-modal').classList.add('opacity-0');
             setTimeout(() => {
                 document.getElementById('login-modal').classList.add('hidden');
-                window.applyRoleUI();
-                window.initApp();
+                applyRoleUI();
+                initApp();
             }, 300);
-        };
+        }
 
-        window.loginAsBartender = async function() {
-            const pwd = await window.customPrompt('請輸入 Bartender 密碼：', '身分驗證', 'password');
+        async function loginAsBartender() {
+            const pwd = await customPrompt('請輸入 Bartender 密碼：', '身分驗證', 'password');
             if (pwd === '095219') {
-                window.currentUser = { name: 'Bartender', role: 'bartender' };
-                localStorage.setItem('binbar_user', JSON.stringify(window.currentUser));
+                currentUser = { name: 'Bartender', role: 'bartender' };
+                localStorage.setItem('binbar_user', JSON.stringify(currentUser));
                 
                 document.getElementById('login-modal').classList.add('opacity-0');
                 setTimeout(() => {
                     document.getElementById('login-modal').classList.add('hidden');
-                    window.applyRoleUI();
-                    window.initApp();
+                    applyRoleUI();
+                    initApp();
                 }, 300);
-                window.showToast('歡迎回來，Bartender！');
+                showToast('歡迎回來，Bartender！');
             } else if (pwd !== null) {
-                window.customAlert('密碼錯誤，請重新確認！');
+                customAlert('密碼錯誤，請重新確認！');
             }
-        };
+        }
 
-        window.logout = async function() {
-            const res = await window.customConfirm("確定要登出並切換使用者嗎？");
+        async function logout() {
+            const res = await customConfirm("確定要登出並切換使用者嗎？");
             if (res) {
                 localStorage.removeItem('binbar_user');
                 location.reload();
             }
-        };
+        }
 
-        window.checkLogin = function() {
+        function checkLogin() {
             const savedUser = localStorage.getItem('binbar_user');
             if (savedUser) {
-                window.currentUser = JSON.parse(savedUser);
+                currentUser = JSON.parse(savedUser);
                 document.getElementById('login-modal').classList.add('hidden');
-                window.applyRoleUI();
-                window.initApp(); 
+                applyRoleUI();
+                initApp(); 
             } else {
                 document.getElementById('login-modal').classList.remove('hidden');
             }
-        };
+        }
 
         // ==========================================
-        // 5. 儲存與同步相關函數 (Data Persistence)
+        // 5. 渲染與畫面功能
         // ==========================================
-        window.saveData = function() {
-            try { 
-                localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks)); 
-                window.renderDrinks(); 
-            } catch(e) { 
-                if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { 
-                    window.customAlert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); 
-                } else { 
-                    console.error("Save error:", e); 
-                    window.customAlert('儲存發生錯誤。'); 
-                } 
-            }
-        };
-
-        window.saveCategories = function() { 
-            localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories)); 
-            window.renderFilters(); 
-            window.renderCategoryEditorList(); 
-        };
-
-        window.saveOrders = function() { 
-            localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders)); 
-            window.updateOrderBadges(); 
-            window.renderOrdersList(); 
-        };
-
-        window.saveMadeDrinks = function() { 
-            localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks)); 
-        };
-
-        window.exportData = () => {
-            const backup = {
-                drinks: window.drinks,
-                categories: window.categories,
-                madeDrinks: window.madeDrinks
-            };
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            const date = new Date().toISOString().split('T')[0];
-            downloadAnchorNode.setAttribute("download", `binbar_backup_${date}.json`);
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-            window.showToast("✅ 匯出成功！");
-            window.closeBackupModal();
-        };
-
-        window.importData = async (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (imported.drinks && Array.isArray(imported.drinks)) {
-                        const res = await window.customConfirm("⚠️ 警告：匯入將會完全覆蓋當前所有的酒單與分類！確定要繼續嗎？");
-                        if (res) {
-                            window.drinks = imported.drinks;
-                            if (imported.categories) window.categories = imported.categories;
-                            if (imported.madeDrinks) window.madeDrinks = imported.madeDrinks;
-                            
-                            window.saveData();
-                            window.saveCategories();
-                            window.saveMadeDrinks();
-                            
-                            if (window.isCloudConnected) {
-                                window.showToast("正在覆寫雲端資料...");
-                                for(const d of window.drinks) await setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d);
-                                for(const c of window.categories) await setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c);
-                                await setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks });
-                            }
-                            
-                            window.renderFilters();
-                            window.renderDrinks();
-                            window.closeBackupModal();
-                            window.showToast("✅ 匯入成功！");
-                        }
-                    } else {
-                        window.customAlert("❌ 檔案格式不正確或損毀！");
-                    }
-                } catch (err) {
-                    console.error(err);
-                    window.customAlert("❌ 讀取檔案失敗：" + err.message);
-                }
-                event.target.value = ''; 
-            };
-            reader.readAsText(file);
-        };
-
-        window.resetMadeDrinks = async function() {
-            const res = await window.customConfirm("確定要重置所有調酒的「已調製」狀態嗎？\n這會讓所有酒卡恢復成尚未調製的原本顏色。");
-            if (!res) return;
-
-            window.madeDrinks = [];
-            window.saveMadeDrinks();
-
-            if (window.isCloudConnected) {
-                setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }, { merge: true }).catch(e => console.error(e));
-            }
-
-            window.renderDrinks();
-            window.showToast("✅ 已重置所有調酒狀態！");
-            window.closeBackupModal();
-        };
-
-        window.initCloudSync = async () => {
-            const iconBase = document.getElementById('cloud-icon-base');
-            const indicator = document.getElementById('cloud-icon-indicator');
-            
-            try {
-                await signInAnonymously(auth);
-                window.isCloudConnected = true;
-                
-                if (iconBase) {
-                    iconBase.classList.remove('text-gray-400', 'text-red-500');
-                    iconBase.classList.add('text-green-400');
-                }
-                if (indicator) indicator.classList.remove('hidden');
-
-                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'categories'), snap => {
-                    if(!snap.empty) {
-                        const cloudCats = [];
-                        snap.forEach(doc => cloudCats.push(doc.data()));
-                        cloudCats.sort((a,b) => (a.order || 0) - (b.order || 0));
-                        window.categories = cloudCats;
-                        localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories));
-                        window.renderFilters();
-                        window.renderCategoryEditorList();
-                    } else {
-                        window.categories.forEach(c => setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c).catch(e=>console.warn(e)));
-                    }
-                }, err => console.warn("Sync error:", err)));
-
-                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'drinks'), snap => {
-                    if(!snap.empty) {
-                        const cloudDrinks = [];
-                        snap.forEach(doc => cloudDrinks.push(doc.data()));
-                        window.drinks = cloudDrinks;
-                        localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks));
-                        window.renderDrinks();
-                    } else {
-                        window.drinks.forEach(d => setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d).catch(e=>console.warn(e)));
-                    }
-                }, err => console.warn("Sync error:", err)));
-
-                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'orders'), snap => {
-                    const cloudOrders = [];
-                    snap.forEach(doc => cloudOrders.push(doc.data()));
-                    cloudOrders.sort((a, b) => a.ts - b.ts);
-                    window.orders = cloudOrders;
-                    localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders));
-                    window.renderOrdersList();
-                    window.updateOrderBadges();
-                }, err => console.warn("Sync error:", err)));
-
-                window.unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
-                    if (docSnap.exists() && docSnap.data().madeDrinks) {
-                        window.madeDrinks = docSnap.data().madeDrinks;
-                        localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks));
-                        window.renderDrinks();
-                    } else {
-                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }).catch(e=>console.warn(e));
-                    }
-                }, err => console.warn("Sync error:", err)));
-
-            } catch (e) {
-                console.warn("Cloud Sync disabled or failed:", e);
-                window.isCloudConnected = false;
-                
-                if (iconBase) {
-                    iconBase.classList.remove('text-gray-400', 'text-green-400');
-                    iconBase.classList.add('text-red-500');
-                }
-                if (indicator) indicator.classList.add('hidden');
-                
-                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed') {
-                    window.showToast("設定提醒：請至 Firebase 啟用「匿名登入」", 6000);
-                } else {
-                    window.showToast("雲端連線失敗，目前為單機模式", 4000);
-                }
-            }
-        };
-
-        window.initApp = function() {
-            let storedDrinks = localStorage.getItem('binbar_data_v1');
-            if (!storedDrinks) {
-                const oldKeyData = localStorage.getItem('zongbin_drinks_local');
-                if (oldKeyData) { storedDrinks = oldKeyData; }
-            }
-            if (storedDrinks) {
-                try {
-                    window.drinks = JSON.parse(storedDrinks);
-                    if (!Array.isArray(window.drinks)) throw new Error("Format error");
-                } catch(e) { window.drinks = []; }
-            }
-            if (!window.drinks || window.drinks.length === 0) { 
-                window.drinks = JSON.parse(JSON.stringify(fullDefaultDrinks)); 
-                window.saveData(); 
-            }
-
-            const storedCats = localStorage.getItem('binbar_categories_v1');
-            if (storedCats) { 
-                window.categories = JSON.parse(storedCats); 
-            } else { 
-                window.categories = JSON.parse(JSON.stringify(defaultCategories)); 
-                window.saveCategories(); 
-            }
-
-            if (!window.drinks.some(d => d.name === "螺絲起子")) {
-                window.drinks = window.drinks.filter(d => d.category !== 'classic');
-                const newClassics = fullDefaultDrinks.filter(d => d.category === 'classic');
-                window.drinks = [...window.drinks, ...newClassics];
-                window.saveData();
-            }
-            
-            if (!window.categories.some(c => c.id === 'classic')) {
-                window.categories.splice(1, 0, { id: 'classic', name: '經典調酒' });
-                window.saveCategories();
-            }
-
-            if (!window.categories.some(c => c.id === 'idiot')) {
-                window.categories.push({ id: 'idiot', name: '喝酒吧!笨蛋' });
-                window.saveCategories();
-                const newIdiotDrinks = fullDefaultDrinks.filter(d => d.category === 'idiot');
-                window.drinks = [...window.drinks, ...newIdiotDrinks];
-                window.saveData();
-            }
-
-            const storedOrders = localStorage.getItem('binbar_orders_v1');
-            if(storedOrders) { window.orders = JSON.parse(storedOrders); }
-
-            const storedMade = localStorage.getItem('binbar_made_v1');
-            if (storedMade) {
-                try { window.madeDrinks = JSON.parse(storedMade); } catch(e) { window.madeDrinks = []; }
-            }
-
-            let dataUpdated = false;
-            window.drinks.forEach(d => {
-                if (d.name && d.name.includes(' (未解鎖)')) {
-                    d.name = d.name.replace(' (未解鎖)', '');
-                    dataUpdated = true;
-                }
-                if (d.tags && d.tags.includes('未解鎖')) {
-                    d.tags = d.tags.filter(t => t !== '未解鎖');
-                    dataUpdated = true;
-                }
-            });
-            if (dataUpdated) window.saveData();
-
-            window.renderFilters();
-            window.renderDrinks();
-            window.updateOrderBadges();
-            window.renderOrdersList();
-
-            window.initCloudSync();
-        };
-
-        // ==========================================
-        // 6. 畫面渲染與 UI 操作功能
-        // ==========================================
-        window.renderFilters = function() {
+        function renderFilters() {
             const container = document.getElementById('filter-container');
             if(!container) return;
             
             let html = '<button onclick="window.filterDrinks(\'all\')" class="filter-btn ' + 
-                (window.currentFilter === 'all' ? 'active bg-bar-gold text-bar-dark font-bold' : 'bg-bar-gray text-gray-400 border border-white/10') + 
+                (currentFilter === 'all' ? 'active bg-bar-gold text-bar-dark font-bold' : 'bg-bar-gray text-gray-400 border border-white/10') + 
                 ' px-4 py-2 rounded-lg hover:border-bar-gold transition-colors text-xs md:text-sm whitespace-nowrap">全部</button>';
             
-            window.categories.forEach(cat => {
-                const activeClass = window.currentFilter === cat.id ? 'bg-bar-gold text-bar-dark font-bold' : 'bg-bar-gray text-gray-400 border border-white/10';
+            categories.forEach(cat => {
+                const activeClass = currentFilter === cat.id ? 'bg-bar-gold text-bar-dark font-bold' : 'bg-bar-gray text-gray-400 border border-white/10';
                 html += '<button onclick="window.filterDrinks(\'' + cat.id + '\')" class="filter-btn ' + activeClass + ' px-4 py-2 rounded-lg hover:border-bar-gold transition-colors text-xs md:text-sm whitespace-nowrap">' + cat.name + '</button>';
             });
             container.innerHTML = html;
-        };
+        }
 
-        window.renderDrinks = function() {
+        function renderDrinks() {
             const grid = document.getElementById('drinks-grid');
             if(!grid) return;
             grid.innerHTML = '';
             
-            let filtered = window.currentFilter === 'all' ? window.drinks : window.drinks.filter(d => d.category === window.currentFilter);
+            let filtered = currentFilter === 'all' ? drinks : drinks.filter(d => d.category === currentFilter);
             filtered.sort((a, b) => b.id - a.id);
             
             if (filtered.length === 0) { 
@@ -1057,7 +796,7 @@
             
             filtered.forEach((drink, index) => {
                 const card = document.createElement('div');
-                const isMade = window.madeDrinks.some(id => id == drink.id);
+                const isMade = madeDrinks.some(id => id == drink.id);
                 
                 let cardClass = 'drink-card rounded-2xl cursor-pointer animate-pop overflow-hidden flex flex-col h-full relative group transition-all duration-300 ';
                 if (isMade) {
@@ -1067,7 +806,7 @@
                 }
                 card.className = cardClass;
                 card.style.animationDelay = `${Math.min(index * 50, 500)}ms`;
-                card.onclick = () => window.openMenuDetail(drink.id);
+                card.onclick = () => openMenuDetail(drink.id);
                 
                 let badgeClass = drink.type === 'Shake' ? 'tag-shake' : (['Stir', 'Build'].includes(drink.type) ? 'tag-stir' : 'tag-simple');
                 
@@ -1091,7 +830,7 @@
                 const safeDrinkName = drink.name.replace(/'/g, "&#39;");
                 const safeIcon = drink.icon || 'fa-cocktail';
                 const safeColor = drink.color || 'text-bar-gold';
-                const safeEngName = drink.engName || window.getBaseEnglish(drink.base);
+                const safeEngName = drink.engName || getBaseEnglish(drink.base);
                 
                 let imageHtml = drink.image 
                     ? '<div class="mt-auto w-full pt-2"><img src="' + drink.image + '" class="w-full h-[220px] object-cover border border-white/10 shadow-sm rounded-xl" alt="' + safeDrinkName + '"></div>' 
@@ -1117,20 +856,20 @@
                     '</div>';
                 grid.appendChild(card);
             });
-        };
+        }
 
-        window.filterDrinks = function(cat) { 
-            window.currentFilter = cat; 
-            window.renderFilters(); 
-            window.renderDrinks(); 
-        };
+        function filterDrinks(cat) { 
+            currentFilter = cat; 
+            renderFilters(); 
+            renderDrinks(); 
+        }
 
-        window.renderOrdersList = function() {
+        function renderOrdersList() {
             const container = document.getElementById('orders-list-container');
             const emptyState = document.getElementById('orders-empty-state');
             container.innerHTML = '';
             
-            if(window.orders.length === 0) {
+            if(orders.length === 0) {
                 emptyState.classList.remove('hidden'); 
                 emptyState.classList.add('flex');
             } else {
@@ -1138,7 +877,7 @@
                 emptyState.classList.remove('flex');
                 
                 const grouped = {};
-                window.orders.forEach(o => {
+                orders.forEach(o => {
                     if (!grouped[o.drinkId]) {
                         grouped[o.drinkId] = { drinkId: o.drinkId, drinkName: o.drinkName, count: 0, ids: [], displayTime: o.displayTime, users: [] };
                     }
@@ -1150,7 +889,7 @@
                 Object.values(grouped).forEach(group => {
                     const item = document.createElement('div');
                     item.className = 'flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 cursor-pointer group transition-all mb-2';
-                    item.onclick = () => window.openGroupOrderCheck(group.drinkId); 
+                    item.onclick = () => openGroupOrderCheck(group.drinkId); 
                     
                     const usersStr = group.users.length > 0 ? group.users.join(', ') : '匿名';
 
@@ -1173,10 +912,10 @@
                     container.appendChild(item);
                 });
             }
-        };
+        }
 
-        window.updateOrderBadges = function() { 
-            const count = window.orders.length; 
+        function updateOrderBadges() { 
+            const count = orders.length; 
             const mainBadge = document.getElementById('order-count-badge-main'); 
             const menuBadge = document.getElementById('order-count-badge-menu'); 
             [mainBadge, menuBadge].forEach(b => { 
@@ -1191,163 +930,166 @@
                     }
                 }
             }); 
-        };
+        }
 
         // ==========================================
-        // 7. 點單系統與模態框操作
+        // 6. 點單系統操作
         // ==========================================
-        window.placeOrder = function(drinkId, drinkName) {
+        function placeOrder(drinkId, drinkName) {
             const order = {
                 orderId: Date.now() + Math.floor(Math.random() * 1000), 
                 drinkId: drinkId,
                 drinkName: drinkName,
-                userName: window.currentUser.name, 
+                userName: currentUser.name, 
                 ts: Date.now(),
                 displayTime: new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
             };
             
-            window.orders.push(order);
-            window.saveOrders();
-            window.showToast(`已點單：${drinkName}`);
+            orders.push(order);
+            saveOrders();
+            showToast(`已點單：${drinkName}`);
 
-            if (window.isCloudConnected) {
+            if (isCloudConnected) {
                 setDoc(doc(db, ...basePath, 'orders', order.orderId.toString()), order).catch(e => console.error("Cloud Write Error:", e));
             }
-        };
+        }
 
-        window.placeOrderFromModal = function() { 
-            if(!window.currentViewingId) return; 
-            const drink = window.drinks.find(d => d.id === window.currentViewingId); 
+        function placeOrderFromModal() { 
+            if(!currentViewingId) return; 
+            const drink = drinks.find(d => d.id === currentViewingId); 
             if(drink) { 
-                window.placeOrder(drink.id, drink.name); 
-                window.closeViewModal(); 
+                placeOrder(drink.id, drink.name); 
+                closeViewModal(); 
             } 
-        };
+        }
         
-        window.finishGroupOrder = function(drinkId) {
-            const orderIndex = window.orders.findIndex(o => o.drinkId == drinkId);
+        function finishGroupOrder(drinkId) {
+            const orderIndex = orders.findIndex(o => o.drinkId == drinkId);
             
             if (orderIndex !== -1) {
-                const orderToRemove = window.orders[orderIndex];
-                window.orders.splice(orderIndex, 1);
-                window.saveOrders();
+                const orderToRemove = orders[orderIndex];
+                orders.splice(orderIndex, 1);
+                saveOrders();
 
-                if (window.isCloudConnected) {
+                if (isCloudConnected) {
                     deleteDoc(doc(db, ...basePath, 'orders', orderToRemove.orderId.toString())).catch(e => console.error(e));
                 }
                 
-                if (!window.madeDrinks.some(id => id == drinkId)) {
-                    window.madeDrinks.push(drinkId);
-                    window.saveMadeDrinks();
-                    if (window.isCloudConnected) {
-                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }, { merge: true }).catch(e => console.error(e));
+                if (!madeDrinks.some(id => id == drinkId)) {
+                    madeDrinks.push(drinkId);
+                    saveMadeDrinks();
+                    if (isCloudConnected) {
+                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: madeDrinks }, { merge: true }).catch(e => console.error(e));
                     }
-                    window.renderDrinks(); 
+                    renderDrinks(); 
                 }
                 
-                const remaining = window.orders.filter(o => o.drinkId == drinkId).length;
+                const remaining = orders.filter(o => o.drinkId == drinkId).length;
                 if (remaining === 0) {
-                    window.showToast('已全數出單！');
-                    window.closeViewModal(); 
+                    showToast('已全數出單！');
+                    closeViewModal(); 
                 } else {
-                    window.showToast(`出單成功！剩餘 ${remaining} 杯`);
+                    showToast(`出單成功！剩餘 ${remaining} 杯`);
                     const btn = document.querySelector('#btn-finish-order');
                     if (btn) btn.innerHTML = `<i class="fas fa-check-circle"></i> 製作完成 (剩 ${remaining})`;
                 }
             } else {
-                window.closeViewModal();
+                closeViewModal();
             }
-        };
+        }
 
-        window.cancelGroupOrder = function(drinkId) {
+        function cancelGroupOrder(drinkId) {
             let idx = -1;
-            for (let i = window.orders.length - 1; i >= 0; i--) {
-                if (window.orders[i].drinkId == drinkId) {
+            for (let i = orders.length - 1; i >= 0; i--) {
+                if (orders[i].drinkId == drinkId) {
                     idx = i;
                     break;
                 }
             }
             
             if (idx !== -1) {
-                const orderToRemove = window.orders[idx];
-                window.orders.splice(idx, 1);
-                window.saveOrders();
+                const orderToRemove = orders[idx];
+                orders.splice(idx, 1);
+                saveOrders();
 
-                if (window.isCloudConnected && orderToRemove && orderToRemove.orderId) {
+                if (isCloudConnected && orderToRemove && orderToRemove.orderId) {
                     deleteDoc(doc(db, ...basePath, 'orders', orderToRemove.orderId.toString())).catch(e => console.error(e));
                 }
                 
-                const remaining = window.orders.filter(o => o.drinkId == drinkId).length;
+                const remaining = orders.filter(o => o.drinkId == drinkId).length;
                 if (remaining === 0) {
-                    window.showToast('已取消該點單！');
-                    window.closeViewModal(); 
+                    showToast('已取消該點單！');
+                    closeViewModal(); 
                 } else {
-                    window.showToast(`已取消一杯！剩餘 ${remaining} 杯`);
+                    showToast(`已取消一杯！剩餘 ${remaining} 杯`);
                     const btn = document.querySelector('#btn-finish-order');
                     if (btn) btn.innerHTML = `<i class="fas fa-check-circle"></i> 製作完成 (剩 ${remaining})`;
-                    window.openGroupOrderCheck(drinkId); 
+                    openGroupOrderCheck(drinkId); 
                 }
             } else {
-                window.closeViewModal();
+                closeViewModal();
             }
-        };
+        }
 
-        window.editOrderUser = async function(orderId, drinkId) {
-            const orderIndex = window.orders.findIndex(o => o.orderId == orderId);
+        async function editOrderUser(orderId, drinkId) {
+            const orderIndex = orders.findIndex(o => o.orderId == orderId);
             if (orderIndex === -1) return;
             
-            const currentName = window.orders[orderIndex].userName || '';
-            const newName = await window.customPrompt('請輸入新的點單者稱號：', '修改稱號', 'text', currentName);
+            const currentName = orders[orderIndex].userName || '';
+            const newName = await customPrompt('請輸入新的點單者稱號：', '修改稱號', 'text', currentName);
             
             if (newName !== null && newName.trim() !== '') {
-                const orderToUpdate = window.orders[orderIndex];
+                const orderToUpdate = orders[orderIndex];
                 orderToUpdate.userName = newName.trim();
-                window.saveOrders();
+                saveOrders();
                 
-                if (window.isCloudConnected) {
+                if (isCloudConnected) {
                     setDoc(doc(db, ...basePath, 'orders', orderToUpdate.orderId.toString()), orderToUpdate).catch(e => console.error("Cloud Write Error:", e));
                 }
                 
-                window.renderOrdersList();
-                window.openGroupOrderCheck(drinkId); 
-                window.showToast('稱號修改成功！');
+                renderOrdersList();
+                openGroupOrderCheck(drinkId); 
+                showToast('稱號修改成功！');
             }
-        };
+        }
 
-        window.clearAllOrders = async function() {
-            if (window.orders.length === 0) return;
-            const res = await window.customConfirm("確定要清空所有排隊中的酒單嗎？這無法復原！");
+        async function clearAllOrders() {
+            if (orders.length === 0) return;
+            const res = await customConfirm("確定要清空所有排隊中的酒單嗎？這無法復原！");
             if (!res) return;
             
-            const ordersToDelete = [...window.orders];
-            window.orders = [];
-            window.saveOrders();
-            window.renderOrdersList();
-            window.updateOrderBadges();
+            const ordersToDelete = [...orders];
+            orders = [];
+            saveOrders();
+            renderOrdersList();
+            updateOrderBadges();
             
-            if (window.isCloudConnected) {
+            if (isCloudConnected) {
                 ordersToDelete.forEach(o => {
                     if (o.orderId) {
                         deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e => console.warn(e));
                     }
                 });
             }
-            window.showToast("已清空所有點單！");
-            window.closeOrdersList();
-        };
+            showToast("已清空所有點單！");
+            closeOrdersList();
+        }
 
-        window.openMenuDetail = function(id) { 
-            window.currentViewingId = id; 
-            const drink = window.drinks.find(d => d.id === id); 
+        // ==========================================
+        // 7. 酒譜視窗與編輯管理
+        // ==========================================
+        function openMenuDetail(id) { 
+            currentViewingId = id; 
+            const drink = drinks.find(d => d.id === id); 
             if(!drink) return; 
-            window.updateModalContent(drink); 
+            updateModalContent(drink); 
             
             const orderMgmt = document.getElementById('view-order-management');
             if (orderMgmt) orderMgmt.classList.add('hidden');
 
             const footer = document.getElementById('view-modal-footer'); 
             
-            if (window.currentUser.role === 'bartender') {
+            if (currentUser.role === 'bartender') {
                 footer.innerHTML = 
                     '<div class="flex justify-between gap-3 items-center w-full">' +
                         '<div class="flex gap-2">' +
@@ -1363,37 +1105,37 @@
             const m = document.getElementById('view-modal'); 
             m.classList.remove('hidden'); 
             setTimeout(() => m.classList.remove('opacity-0'), 10); 
-        };
+        }
         
-        window.openGroupOrderCheck = async function(drinkId) {
-             const drink = window.drinks.find(d => d.id == drinkId); 
+        async function openGroupOrderCheck(drinkId) {
+             const drink = drinks.find(d => d.id == drinkId); 
              if (!drink) {
-                 if (window.currentUser.role === 'bartender') {
-                     const res = await window.customConfirm("原始酒譜已刪除，是否清除此類訂單？");
+                 if (currentUser.role === 'bartender') {
+                     const res = await customConfirm("原始酒譜已刪除，是否清除此類訂單？");
                      if(res) {
-                         const ordersToRemove = window.orders.filter(o => o.drinkId == drinkId);
+                         const ordersToRemove = orders.filter(o => o.drinkId == drinkId);
                          ordersToRemove.forEach(o => {
-                             if(window.isCloudConnected) {
+                             if(isCloudConnected) {
                                  deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e=>console.warn(e));
                              }
                          });
-                         window.orders = window.orders.filter(o => o.drinkId != drinkId);
-                         window.saveOrders();
+                         orders = orders.filter(o => o.drinkId != drinkId);
+                         saveOrders();
                      }
                  } else {
-                     window.customAlert("此酒譜已失效，請等待 Bartender 處理。");
+                     customAlert("此酒譜已失效，請等待 Bartender 處理。");
                  }
                  return;
              }
  
-             window.updateModalContent(drink);
+             updateModalContent(drink);
  
-             const specificOrders = window.orders.filter(o => o.drinkId == drinkId).sort((a,b) => a.ts - b.ts);
+             const specificOrders = orders.filter(o => o.drinkId == drinkId).sort((a,b) => a.ts - b.ts);
              const remaining = specificOrders.length;
              const footer = document.getElementById('view-modal-footer');
              const orderMgmt = document.getElementById('view-order-management');
              
-             if (window.currentUser.role === 'bartender') {
+             if (currentUser.role === 'bartender') {
                  if (orderMgmt && remaining > 0) {
                      const orderListHtml = specificOrders.map(o => {
                          const userName = o.userName || '匿名';
@@ -1420,15 +1162,15 @@
                  footer.innerHTML = '<div class="w-full text-center text-gray-500 text-sm py-3 bg-white/5 rounded-lg border border-white/5 flex items-center justify-center gap-2"><i class="fas fa-info-circle"></i> 僅 Bartender 可處理訂單與出杯</div>';
              }
  
-             window.closeOrdersList(); 
+             closeOrdersList(); 
              const m = document.getElementById('view-modal');
              m.classList.remove('hidden'); 
              setTimeout(() => m.classList.remove('opacity-0'), 10);
-        };
+        }
 
-        window.updateModalContent = function(drink) { 
+        function updateModalContent(drink) { 
             document.getElementById('view-title').textContent = drink.name; 
-            document.getElementById('view-badge').textContent = window.getBaseEnglish(drink.base); 
+            document.getElementById('view-badge').textContent = getBaseEnglish(drink.base); 
             const header = document.getElementById('view-header'); 
             if (drink.image) { 
                 header.style.backgroundImage = `url('${drink.image}')`; 
@@ -1441,19 +1183,16 @@
             document.getElementById('view-ingredients').innerHTML = ingredientsHtml;
             document.getElementById('view-method').textContent = drink.method || ''; 
             document.getElementById('view-highlight').textContent = drink.highlight || ''; 
-        };
+        }
         
-        window.closeViewModal = function() { 
+        function closeViewModal() { 
             const m = document.getElementById('view-modal'); 
             m.classList.add('opacity-0'); 
             setTimeout(() => m.classList.add('hidden'), 300); 
-        };
+        }
 
-        // ==========================================
-        // 8. 編輯器與圖示管理
-        // ==========================================
-        window.openEditor = function(isEdit = false) { 
-            if(window.isFabOpen) window.toggleFab(); 
+        function openEditor(isEdit = false) { 
+            if(isFabOpen) toggleFab(); 
             const titleEl = document.getElementById('editor-title'); 
             const editIdInput = document.getElementById('edit-id'); 
             const imgPreview = document.getElementById('img-preview'); 
@@ -1465,17 +1204,17 @@
             document.getElementById('inp-highlight').value = ''; 
             document.getElementById('inp-tags').value = ''; 
             document.getElementById('img-upload').value = ''; 
-            window.tempImageBase64 = null; 
+            tempImageBase64 = null; 
             imgPreview.src = ''; 
             imgPreview.classList.add('hidden'); 
             clearBtn.classList.add('hidden'); 
-            window.selectedIcon = 'fa-cocktail'; 
-            window.selectedColor = 'text-white'; 
-            window.renderCategoryEditorList(); 
+            selectedIcon = 'fa-cocktail'; 
+            selectedColor = 'text-white'; 
+            renderCategoryEditorList(); 
             
-            if (isEdit && window.currentViewingId) { 
-                const drink = window.drinks.find(d => d.id === window.currentViewingId); 
-                window.closeViewModal(); 
+            if (isEdit && currentViewingId) { 
+                const drink = drinks.find(d => d.id === currentViewingId); 
+                closeViewModal(); 
                 titleEl.textContent = '編輯調酒'; 
                 editIdInput.value = drink.id; 
                 document.getElementById('inp-name').value = drink.name; 
@@ -1490,10 +1229,10 @@
                     const r = document.querySelector(`input[name="cat"][value="${drink.category}"]`); 
                     if(r) r.checked = true; 
                 }, 100); 
-                window.selectedIcon = drink.icon || 'fa-cocktail'; 
-                window.selectedColor = drink.color || 'text-white'; 
+                selectedIcon = drink.icon || 'fa-cocktail'; 
+                selectedColor = drink.color || 'text-white'; 
                 if (drink.image) { 
-                    window.tempImageBase64 = drink.image; 
+                    tempImageBase64 = drink.image; 
                     imgPreview.src = drink.image; 
                     imgPreview.classList.remove('hidden'); 
                     clearBtn.classList.remove('hidden'); 
@@ -1506,35 +1245,35 @@
                     if(r) r.checked = true; 
                 }, 100); 
             } 
-            window.renderIconSelector(); 
-            window.renderColorSelector(); 
-            window.updatePreviewIcon(); 
+            renderIconSelector(); 
+            renderColorSelector(); 
+            updatePreviewIcon(); 
             const m = document.getElementById('editor-modal'); 
             m.classList.remove('hidden'); 
             setTimeout(() => m.classList.remove('opacity-0'), 10); 
-        };
+        }
 
-        window.closeEditor = function() { 
+        function closeEditor() { 
             const m = document.getElementById('editor-modal'); 
             m.classList.add('opacity-0'); 
             setTimeout(() => m.classList.add('hidden'), 300); 
-        };
+        }
 
-        window.editCurrentDrink = function() { 
-            window.openEditor(true); 
-        };
+        function editCurrentDrink() { 
+            openEditor(true); 
+        }
 
-        window.saveDrink = async function() { 
+        async function saveDrink() { 
             const name = document.getElementById('inp-name').value.trim(); 
-            if(!name) { window.customAlert('請輸入酒名'); return; }
+            if(!name) { customAlert('請輸入酒名'); return; }
             const catEl = document.querySelector('input[name="cat"]:checked'); 
-            if(!catEl) { window.customAlert('請選擇分類'); return; }
+            if(!catEl) { customAlert('請選擇分類'); return; }
             const category = catEl.value; 
             const editId = document.getElementById('edit-id').value; 
             
-            let finalImage = window.tempImageBase64;
+            let finalImage = tempImageBase64;
             if (editId && !finalImage) {
-                const existing = window.drinks.find(d => d.id == editId);
+                const existing = drinks.find(d => d.id == editId);
                 if(existing) finalImage = existing.image;
             }
 
@@ -1549,75 +1288,75 @@
                 method: document.getElementById('inp-method').value, 
                 highlight: document.getElementById('inp-highlight').value, 
                 tags: document.getElementById('inp-tags').value.split(',').map(t=>t.trim()).filter(t=>t), 
-                icon: window.selectedIcon, 
-                color: window.selectedColor, 
+                icon: selectedIcon, 
+                color: selectedColor, 
                 image: finalImage 
             }; 
             
             if(editId) { 
-                const idx = window.drinks.findIndex(d => d.id == editId); 
-                if(idx !== -1) window.drinks[idx] = newDrink; 
+                const idx = drinks.findIndex(d => d.id == editId); 
+                if(idx !== -1) drinks[idx] = newDrink; 
             } else { 
-                window.drinks.push(newDrink); 
+                drinks.push(newDrink); 
             } 
-            window.saveData(); 
+            saveData(); 
             
-            if (window.isCloudConnected) {
+            if (isCloudConnected) {
                 setDoc(doc(db, ...basePath, 'drinks', newDrink.id.toString()), newDrink).catch(e => console.error(e));
             }
-            window.closeEditor(); 
-        };
+            closeEditor(); 
+        }
         
-        window.confirmDelete = async function() { 
-            const pwd = await window.customPrompt('警告：這將永久刪除此調酒！\n請輸入密碼以確認刪除：', '刪除確認', 'password');
+        async function confirmDelete() { 
+            const pwd = await customPrompt('警告：這將永久刪除此調酒！\n請輸入密碼以確認刪除：', '刪除確認', 'password');
             if (pwd === '095219') {
-                if(window.currentViewingId) { 
-                    window.drinks = window.drinks.filter(d => d.id !== window.currentViewingId); 
-                    window.saveData(); 
-                    if(window.isCloudConnected) {
-                        deleteDoc(doc(db, ...basePath, 'drinks', window.currentViewingId.toString())).catch(e => console.error(e));
+                if(currentViewingId) { 
+                    drinks = drinks.filter(d => d.id !== currentViewingId); 
+                    saveData(); 
+                    if(isCloudConnected) {
+                        deleteDoc(doc(db, ...basePath, 'drinks', currentViewingId.toString())).catch(e => console.error(e));
                     }
-                    window.closeViewModal(); 
-                    window.showToast('已成功刪除該調酒！');
+                    closeViewModal(); 
+                    showToast('已成功刪除該調酒！');
                 } 
             } else if (pwd !== null) {
-                window.customAlert('密碼錯誤，已取消刪除操作。', '錯誤');
+                customAlert('密碼錯誤，已取消刪除操作。', '錯誤');
             }
-        };
+        }
 
-        window.addNewCategory = function() { 
+        function addNewCategory() { 
             const val = document.getElementById('new-cat-input').value.trim(); 
             if(!val) return; 
             const newCat = { id: 'cat_' + Date.now(), name: val, order: Date.now() }; 
-            window.categories.push(newCat); 
-            window.saveCategories(); 
-            if(window.isCloudConnected) { 
+            categories.push(newCat); 
+            saveCategories(); 
+            if(isCloudConnected) { 
                 setDoc(doc(db, ...basePath, 'categories', newCat.id.toString()), newCat); 
             } 
             document.getElementById('new-cat-input').value = ''; 
-        };
+        }
 
-        window.deleteCategory = async function(id) { 
-            if(window.categories.length <= 1) { 
-                window.customAlert("請至少保留一個分類"); 
+        async function deleteCategory(id) { 
+            if(categories.length <= 1) { 
+                customAlert("請至少保留一個分類"); 
                 return; 
             }
-            if(await window.customConfirm('確定刪除分類？')) { 
-                window.categories = window.categories.filter(c => c.id !== id); 
-                window.saveCategories(); 
-                if(window.isCloudConnected) { 
+            if(await customConfirm('確定刪除分類？')) { 
+                categories = categories.filter(c => c.id !== id); 
+                saveCategories(); 
+                if(isCloudConnected) { 
                     deleteDoc(doc(db, ...basePath, 'categories', id.toString())); 
                 } 
             } 
-        };
+        }
 
-        window.pickRandom = function() { 
-            const d = window.drinks[Math.floor(Math.random() * window.drinks.length)]; 
-            if(d) window.openMenuDetail(d.id); 
-        };
+        function pickRandom() { 
+            const d = drinks[Math.floor(Math.random() * drinks.length)]; 
+            if(d) openMenuDetail(d.id); 
+        }
 
-        window.renderCategoryEditorList = function() { 
-            const listHtml = window.categories.map(cat => 
+        function renderCategoryEditorList() { 
+            const listHtml = categories.map(cat => 
                 '<div class="flex items-center justify-between bg-white/5 p-2 rounded hover:bg-white/10 group">' +
                     '<label class="flex items-center gap-2 cursor-pointer text-sm text-gray-300 flex-1">' +
                         '<input type="radio" name="cat" value="' + cat.id + '" class="accent-bar-gold"> ' + cat.name + 
@@ -1626,66 +1365,343 @@
                 '</div>'
             ).join('');
             document.getElementById('category-editor-list').innerHTML = listHtml; 
-        };
+        }
 
-        window.renderIconSelector = function() { 
+        function renderIconSelector() { 
             document.getElementById('icon-selector').innerHTML = iconList.map(i => 
-                '<div class="icon-option ' + (i === window.selectedIcon ? 'selected' : '') + '" onclick="window.selectIcon(\'' + i + '\')"><i class="fas ' + i + '"></i></div>'
+                '<div class="icon-option ' + (i === selectedIcon ? 'selected' : '') + '" onclick="window.selectIcon(\'' + i + '\')"><i class="fas ' + i + '"></i></div>'
             ).join(''); 
-        };
+        }
 
-        window.renderColorSelector = function() { 
+        function renderColorSelector() { 
             document.getElementById('color-selector').innerHTML = colorList.map(c => 
-                '<div class="color-option ' + (c.c === window.selectedColor ? 'selected' : '') + '" style="background-color: ' + c.b + '" onclick="window.selectColor(\'' + c.c + '\')"></div>'
+                '<div class="color-option ' + (c.c === selectedColor ? 'selected' : '') + '" style="background-color: ' + c.b + '" onclick="window.selectColor(\'' + c.c + '\')"></div>'
             ).join(''); 
-        };
+        }
 
-        window.selectIcon = function(i) { 
-            window.selectedIcon = i; 
-            window.renderIconSelector(); 
-            window.updatePreviewIcon(); 
-        };
+        function selectIcon(i) { 
+            selectedIcon = i; 
+            renderIconSelector(); 
+            updatePreviewIcon(); 
+        }
 
-        window.selectColor = function(c) { 
-            window.selectedColor = c; 
-            window.renderColorSelector(); 
-            window.updatePreviewIcon(); 
-        };
+        function selectColor(c) { 
+            selectedColor = c; 
+            renderColorSelector(); 
+            updatePreviewIcon(); 
+        }
 
-        window.updatePreviewIcon = function() { 
-            document.getElementById('preview-icon-display').className = 'fas ' + window.selectedIcon + ' text-3xl transition-colors ' + window.selectedColor; 
-        };
+        function updatePreviewIcon() { 
+            document.getElementById('preview-icon-display').className = 'fas ' + selectedIcon + ' text-3xl transition-colors ' + selectedColor; 
+        }
         
-        window.handleImageUpload = function(input) { 
+        function handleImageUpload(input) { 
             if(input.files[0]) { 
                 const file = input.files[0]; 
                 if(file.size > 500 * 1024) { 
-                    window.customAlert("圖片太大囉！請使用小於 500KB 的圖片以免雲端同步失敗。"); 
+                    customAlert("圖片太大囉！請使用小於 500KB 的圖片以免雲端同步失敗。"); 
                     input.value = ''; 
                     return; 
                 } 
                 const reader = new FileReader(); 
                 reader.onload = e => { 
-                    window.tempImageBase64 = e.target.result; 
-                    document.getElementById('img-preview').src = window.tempImageBase64; 
+                    tempImageBase64 = e.target.result; 
+                    document.getElementById('img-preview').src = tempImageBase64; 
                     document.getElementById('img-preview').classList.remove('hidden'); 
                     document.getElementById('clear-img-btn').classList.remove('hidden'); 
                 }; 
                 reader.readAsDataURL(file); 
             } 
-        };
+        }
 
-        window.clearImage = function() { 
-            window.tempImageBase64 = null; 
+        function clearImage() { 
+            tempImageBase64 = null; 
             document.getElementById('img-upload').value=''; 
             document.getElementById('img-preview').classList.add('hidden'); 
             document.getElementById('clear-img-btn').classList.add('hidden'); 
-        };
+        }
 
         // ==========================================
-        // 9. 程式啟動點
+        // 8. 儲存與同步 (Data Persistence)
         // ==========================================
-        window.checkLogin();
+        function exportData() {
+            const backup = {
+                drinks: drinks,
+                categories: categories,
+                madeDrinks: madeDrinks
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            const date = new Date().toISOString().split('T')[0];
+            downloadAnchorNode.setAttribute("download", `binbar_backup_${date}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+            showToast("✅ 匯出成功！");
+            closeBackupModal();
+        }
+
+        async function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.drinks && Array.isArray(imported.drinks)) {
+                        const res = await customConfirm("⚠️ 警告：匯入將會完全覆蓋當前所有的酒單與分類！確定要繼續嗎？");
+                        if (res) {
+                            drinks = imported.drinks;
+                            if (imported.categories) categories = imported.categories;
+                            if (imported.madeDrinks) madeDrinks = imported.madeDrinks;
+                            
+                            saveData();
+                            saveCategories();
+                            saveMadeDrinks();
+                            
+                            if (isCloudConnected) {
+                                showToast("正在覆寫雲端資料...");
+                                for(const d of drinks) await setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d);
+                                for(const c of categories) await setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c);
+                                await setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: madeDrinks });
+                            }
+                            
+                            renderFilters();
+                            renderDrinks();
+                            closeBackupModal();
+                            showToast("✅ 匯入成功！");
+                        }
+                    } else {
+                        customAlert("❌ 檔案格式不正確或損毀！");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    customAlert("❌ 讀取檔案失敗：" + err.message);
+                }
+                event.target.value = ''; 
+            };
+            reader.readAsText(file);
+        }
+
+        async function resetMadeDrinks() {
+            const res = await customConfirm("確定要重置所有調酒的「已調製」狀態嗎？\n這會讓所有酒卡恢復成尚未調製的原本顏色。");
+            if (!res) return;
+
+            madeDrinks = [];
+            saveMadeDrinks();
+
+            if (isCloudConnected) {
+                setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: madeDrinks }, { merge: true }).catch(e => console.error(e));
+            }
+
+            renderDrinks();
+            showToast("✅ 已重置所有調酒狀態！");
+            closeBackupModal();
+        }
+
+        async function initCloudSync() {
+            const iconBase = document.getElementById('cloud-icon-base');
+            const indicator = document.getElementById('cloud-icon-indicator');
+            
+            try {
+                await signInAnonymously(auth);
+                isCloudConnected = true;
+                
+                if (iconBase) {
+                    iconBase.classList.remove('text-gray-400', 'text-red-500');
+                    iconBase.classList.add('text-green-400');
+                }
+                if (indicator) indicator.classList.remove('hidden');
+
+                unsubscribes.push(onSnapshot(collection(db, ...basePath, 'categories'), snap => {
+                    if(!snap.empty) {
+                        const cloudCats = [];
+                        snap.forEach(doc => cloudCats.push(doc.data()));
+                        cloudCats.sort((a,b) => (a.order || 0) - (b.order || 0));
+                        categories = cloudCats;
+                        localStorage.setItem('binbar_categories_v1', JSON.stringify(categories));
+                        renderFilters();
+                        renderCategoryEditorList();
+                    } else {
+                        categories.forEach(c => setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c).catch(e=>console.warn(e)));
+                    }
+                }, err => console.warn("Sync error:", err)));
+
+                unsubscribes.push(onSnapshot(collection(db, ...basePath, 'drinks'), snap => {
+                    if(!snap.empty) {
+                        const cloudDrinks = [];
+                        snap.forEach(doc => cloudDrinks.push(doc.data()));
+                        drinks = cloudDrinks;
+                        localStorage.setItem('binbar_data_v1', JSON.stringify(drinks));
+                        renderDrinks();
+                    } else {
+                        drinks.forEach(d => setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d).catch(e=>console.warn(e)));
+                    }
+                }, err => console.warn("Sync error:", err)));
+
+                unsubscribes.push(onSnapshot(collection(db, ...basePath, 'orders'), snap => {
+                    const cloudOrders = [];
+                    snap.forEach(doc => cloudOrders.push(doc.data()));
+                    cloudOrders.sort((a, b) => a.ts - b.ts);
+                    orders = cloudOrders;
+                    localStorage.setItem('binbar_orders_v1', JSON.stringify(orders));
+                    renderOrdersList();
+                    updateOrderBadges();
+                }, err => console.warn("Sync error:", err)));
+
+                unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
+                    if (docSnap.exists() && docSnap.data().madeDrinks) {
+                        madeDrinks = docSnap.data().madeDrinks;
+                        localStorage.setItem('binbar_made_v1', JSON.stringify(madeDrinks));
+                        renderDrinks();
+                    } else {
+                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: madeDrinks }).catch(e=>console.warn(e));
+                    }
+                }, err => console.warn("Sync error:", err)));
+
+            } catch (e) {
+                console.warn("Cloud Sync disabled or failed:", e);
+                isCloudConnected = false;
+                
+                if (iconBase) {
+                    iconBase.classList.remove('text-gray-400', 'text-green-400');
+                    iconBase.classList.add('text-red-500');
+                }
+                if (indicator) indicator.classList.add('hidden');
+                
+                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed') {
+                    showToast("設定提醒：請至 Firebase 啟用「匿名登入」", 6000);
+                } else {
+                    showToast("雲端連線失敗，目前為單機模式", 4000);
+                }
+            }
+        }
+
+        function initApp() {
+            let storedDrinks = localStorage.getItem('binbar_data_v1');
+            if (!storedDrinks) {
+                const oldKeyData = localStorage.getItem('zongbin_drinks_local');
+                if (oldKeyData) { storedDrinks = oldKeyData; }
+            }
+            if (storedDrinks) {
+                try {
+                    drinks = JSON.parse(storedDrinks);
+                    if (!Array.isArray(drinks)) throw new Error("Format error");
+                } catch(e) { drinks = []; }
+            }
+            if (!drinks || drinks.length === 0) { 
+                drinks = JSON.parse(JSON.stringify(fullDefaultDrinks)); 
+                saveData(); 
+            }
+
+            const storedCats = localStorage.getItem('binbar_categories_v1');
+            if (storedCats) { 
+                categories = JSON.parse(storedCats); 
+            } else { 
+                categories = JSON.parse(JSON.stringify(defaultCategories)); 
+                saveCategories(); 
+            }
+
+            if (!drinks.some(d => d.name === "螺絲起子")) {
+                drinks = drinks.filter(d => d.category !== 'classic');
+                const newClassics = fullDefaultDrinks.filter(d => d.category === 'classic');
+                drinks = [...drinks, ...newClassics];
+                saveData();
+            }
+            
+            if (!categories.some(c => c.id === 'classic')) {
+                categories.splice(1, 0, { id: 'classic', name: '經典調酒' });
+                saveCategories();
+            }
+
+            if (!categories.some(c => c.id === 'idiot')) {
+                categories.push({ id: 'idiot', name: '喝酒吧!笨蛋' });
+                saveCategories();
+                const newIdiotDrinks = fullDefaultDrinks.filter(d => d.category === 'idiot');
+                drinks = [...drinks, ...newIdiotDrinks];
+                saveData();
+            }
+
+            const storedOrders = localStorage.getItem('binbar_orders_v1');
+            if(storedOrders) { orders = JSON.parse(storedOrders); }
+
+            const storedMade = localStorage.getItem('binbar_made_v1');
+            if (storedMade) {
+                try { madeDrinks = JSON.parse(storedMade); } catch(e) { madeDrinks = []; }
+            }
+
+            let dataUpdated = false;
+            drinks.forEach(d => {
+                if (d.name && d.name.includes(' (未解鎖)')) {
+                    d.name = d.name.replace(' (未解鎖)', '');
+                    dataUpdated = true;
+                }
+                if (d.tags && d.tags.includes('未解鎖')) {
+                    d.tags = d.tags.filter(t => t !== '未解鎖');
+                    dataUpdated = true;
+                }
+            });
+            if (dataUpdated) saveData();
+
+            renderFilters();
+            renderDrinks();
+            updateOrderBadges();
+            renderOrdersList();
+
+            initCloudSync();
+        }
+
+        function saveData() {
+            try { 
+                localStorage.setItem('binbar_data_v1', JSON.stringify(drinks)); 
+                renderDrinks(); 
+            } catch(e) { 
+                if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { 
+                    customAlert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); 
+                } else { 
+                    console.error("Save error:", e); 
+                    customAlert('儲存發生錯誤。'); 
+                } 
+            }
+        }
+
+        function saveCategories() { 
+            localStorage.setItem('binbar_categories_v1', JSON.stringify(categories)); 
+            renderFilters(); 
+            renderCategoryEditorList(); 
+        }
+        function saveOrders() { 
+            localStorage.setItem('binbar_orders_v1', JSON.stringify(orders)); 
+            updateOrderBadges(); 
+            renderOrdersList(); 
+        }
+        function saveMadeDrinks() { 
+            localStorage.setItem('binbar_made_v1', JSON.stringify(madeDrinks)); 
+        }
+
+        // ==========================================
+        // 10. 將所有函式開放給 HTML 的 onclick 事件呼叫
+        // ==========================================
+        Object.assign(window, {
+            getBaseEnglish, customAlert, customConfirm, customPrompt, closeCustomDialog, 
+            showToast, toggleFab, openOrdersList, closeOrdersList, openBackupModal, 
+            closeBackupModal, openQRCodeModal, closeQRCodeModal, copyBarUrl, 
+            applyRoleUI, loginAsGuest, loginAsBartender, logout, checkLogin, 
+            renderFilters, renderDrinks, filterDrinks, renderOrdersList, updateOrderBadges, 
+            placeOrder, placeOrderFromModal, finishGroupOrder, cancelGroupOrder, editOrderUser, 
+            clearAllOrders, openMenuDetail, openGroupOrderCheck, updateModalContent, closeViewModal, 
+            openEditor, closeEditor, editCurrentDrink, saveDrink, confirmDelete, addNewCategory, 
+            deleteCategory, pickRandom, renderCategoryEditorList, renderIconSelector, renderColorSelector, 
+            selectIcon, selectColor, updatePreviewIcon, handleImageUpload, clearImage, 
+            exportData, importData, resetMadeDrinks, initCloudSync, initApp, 
+            saveData, saveCategories, saveOrders, saveMadeDrinks
+        });
+
+        // ==========================================
+        // 11. 啟動應用程式
+        // ==========================================
+        checkLogin();
 
     </script>
 </body>
