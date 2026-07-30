@@ -274,8 +274,8 @@
         </button>
     </div>
 
-    <!-- Login Modal (登入/稱號輸入畫面) -->
-    <div id="login-modal" class="fixed inset-0 bg-black/95 z-[300] flex items-center justify-center p-4 backdrop-blur-xl transition-opacity duration-300">
+    <!-- Login Modal (強制登入機制) -->
+    <div id="login-modal" class="fixed inset-0 bg-black/95 z-[300] flex items-center justify-center p-4 backdrop-blur-xl transition-opacity duration-300 hidden">
         <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-white/10 p-8 text-center flex flex-col items-center">
             <div class="w-20 h-20 bg-bar-gold/20 rounded-full flex items-center justify-center mb-4 text-bar-gold text-4xl border border-bar-gold/30 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
                 <i class="fas fa-glass-cheers"></i>
@@ -301,7 +301,7 @@
 
     <!-- 備份設定 Modal -->
     <div id="backup-modal" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md hidden opacity-0 transition-opacity duration-300" onclick="window.closeBackupModal()">
-        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-white/10 p-8 text-center" onclick="event.stopPropagation()">
+        <div class="bg-bar-gray w-full max-w-sm rounded-2xl shadow-2xl border border-gray-500/30 p-8 text-center" onclick="event.stopPropagation()">
             <div class="mb-6">
                 <div class="w-16 h-16 bg-gray-600/20 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-400 text-2xl border border-gray-500/30">
                     <i class="fas fa-save"></i>
@@ -448,7 +448,7 @@
         const basePath = ['artifacts', PROJECT_ID, 'public', 'data'];
 
         // ==========================================
-        // 2. 全域變數定義
+        // 2. 全域變數定義 & 預設資料
         // ==========================================
         window.drinks = []; 
         window.categories = []; 
@@ -505,7 +505,7 @@
             { id: 201, name: "老時髦", engName: "Old Fashioned", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "成熟"], icon: "fa-glass-whiskey", color: "text-amber-600", ingredients: ["波本或黑麥威士忌 60ml", "方糖 1顆 (或糖漿 5ml)", "安格斯特拉苦精 2-3滴", "少許水", "柳橙皮與櫻桃"], method: "在岩石杯中將方糖、苦精與少許水搗碎溶解。加入大冰塊與威士忌，攪拌 20-30 圈。噴灑柳橙皮油。", highlight: "最古老的雞尾酒形式，品味威士忌最優雅的姿態。" }, { id: 202, name: "曼哈頓", engName: "Manhattan", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "酒感重", "甜美"], icon: "fa-martini-glass", color: "text-red-600", ingredients: ["黑麥威士忌 60ml", "甜苦艾酒 30ml", "安格斯特拉苦精 2滴", "酒漬櫻桃"], method: "將威士忌、甜苦艾酒與苦精加入混酒杯，加滿冰塊攪拌均勻。濾入馬丁尼杯，以櫻桃裝飾。", highlight: "雞尾酒之后，甜苦艾酒的草藥甜味與威士忌完美交融。" }, { id: 203, name: "威士忌酸酒", engName: "Whiskey Sour", category: "classic", base: "威士忌", type: "Shake", tags: ["經典", "酸甜", "綿密"], icon: "fa-glass-whiskey", color: "text-yellow-500", ingredients: ["波本威士忌 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆", "安格斯特拉苦精 (裝飾)"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入裝有大冰塊的岩石杯，滴上苦精拉花。", highlight: "酸甜平衡的極致，加入蛋白讓口感如絲綢般滑順。" }, { id: 204, name: "高球", engName: "Highball", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "氣泡", "解渴"], icon: "fa-glass-water", color: "text-amber-400", ingredients: ["威士忌 45ml", "蘇打水 補滿", "檸檬角 (選配)"], method: "高球杯加滿冰塊，倒入威士忌攪拌降溫，緩慢倒入蘇打水，最後輕拉一圈混合。", highlight: "日式酒吧的靈魂，考驗冰塊、溫度與氣泡保存的極簡調酒。" }, { id: 205, name: "薄荷茱莉普", engName: "Mint Julep", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "清涼", "薄荷"], icon: "fa-leaf", color: "text-green-500", ingredients: ["波本威士忌 60ml", "新鮮薄荷葉 8-10片", "糖漿 15ml", "大量碎冰"], method: "在杯底輕輕搗壓薄荷葉與糖漿釋放香氣。加入半杯碎冰，倒入波本攪拌。再加滿碎冰堆成雪錐狀。", highlight: "美國南方經典，炎炎夏日的最佳威士忌解藥。" }, { id: 206, name: "花花公子", engName: "Boulevardier", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "苦甜", "濃郁"], icon: "fa-glass-whiskey", color: "text-red-500", ingredients: ["波本威士忌 45ml", "金巴利 (Campari) 30ml", "甜苦艾酒 30ml", "柳橙皮"], method: "將所有酒類倒入加有大冰塊的岩石杯中，均勻攪拌。最後噴灑柳橙皮油並投入杯中。", highlight: "可以理解為「威士忌版的內格羅尼」，更具溫暖的木質調。" }, { id: 207, name: "教父", engName: "Godfather", category: "classic", base: "威士忌", type: "Stir", tags: ["經典", "甜美", "酒感重"], icon: "fa-glass-whiskey", color: "text-yellow-600", ingredients: ["威士忌 45ml", "杏仁利口酒 (Amaretto) 15ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "充滿濃郁的杏仁與烤堅果香氣，如電影教父般沉穩迷人。" }, { id: 208, name: "紐約", engName: "New York", category: "classic", base: "威士忌", type: "Shake", tags: ["經典", "果香", "酸甜"], icon: "fa-martini-glass", color: "text-rose-500", ingredients: ["波本或黑麥威士忌 45ml", "檸檬汁 15ml", "石榴糖漿 10ml", "糖漿 少許"], method: "所有材料加冰塊搖盪均勻，濾冰倒入馬丁尼杯中。", highlight: "美麗的橘紅色澤，威士忌與石榴糖漿碰撞出的迷人果香。" }, { id: 209, name: "威士忌可樂", engName: "Jack & Coke", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "派驚", "氣泡"], icon: "fa-glass-water", color: "text-amber-900", ingredients: ["威士忌 (通常為 Jack Daniel's) 45ml", "可樂 補滿", "檸檬角 1塊"], method: "高球杯加冰塊，倒入威士忌，補滿可樂，擠入檸檬角。", highlight: "全世界派對上最常見的威士忌飲法，簡單暴力。" }, { id: 210, name: "約翰柯林斯", engName: "John Collins", category: "classic", base: "威士忌", type: "Build", tags: ["經典", "清爽", "解渴"], icon: "fa-glass-water", color: "text-yellow-400", ingredients: ["波本威士忌 45ml", "檸檬汁 30ml", "糖漿 15ml", "蘇打水 補滿"], method: "在高球杯中加入威士忌、檸檬汁與糖漿，加滿冰塊攪拌，最後補滿蘇打水。", highlight: "也就是威士忌版本的 Tom Collins，清爽暢快。" },
             { id: 301, name: "莫西多", engName: "Mojito", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "清爽", "薄荷"], icon: "fa-leaf", color: "text-green-400", ingredients: ["白萊姆酒 60ml", "新鮮薄荷葉 10-12片", "萊姆半顆 (切塊)", "糖 2匙", "蘇打水 補滿"], method: "在杯底將萊姆塊與糖輕輕搗壓出汁，加入薄荷葉輕拍。加入碎冰與萊姆酒攪拌，最後補滿蘇打水。", highlight: "最著名的古巴調酒，充滿薄荷與萊姆的清涼感。" }, { id: 302, name: "黛綺麗", engName: "Daiquiri", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "酸甜", "清爽"], icon: "fa-martini-glass-citrus", color: "text-yellow-300", ingredients: ["白萊姆酒 60ml", "鮮榨萊姆汁 20ml", "糖漿 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入淺碟香檳杯。", highlight: "萊姆酒的終極試金石，最完美的酸甜平衡。" }, { id: 303, name: "邁泰", engName: "Mai Tai", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "熱帶"], icon: "fa-umbrella-beach", color: "text-orange-400", ingredients: ["萊姆酒 (一黑一白佳) 共 60ml", "橙酒 (Cointreau) 15ml", "杏仁糖漿 (Orgeat) 15ml", "萊姆汁 20ml", "薄荷葉裝飾"], method: "所有材料加冰用力搖盪，連同冰塊一起倒入岩石杯或 Tiki 杯中。以大把薄荷與萊姆皮裝飾。", highlight: "Tiki 調酒的王者，濃郁的杏仁與萊姆酒香交織。" }, { id: 304, name: "鳳梨可樂達", engName: "Pina Colada", category: "classic", base: "萊姆酒", type: "Blend", tags: ["經典", "熱帶", "濃郁"], icon: "fa-ice-cream", color: "text-yellow-200", ingredients: ["白萊姆酒 45ml", "椰漿 45ml", "鳳梨汁 90ml"], method: "將所有材料與適量冰塊放入果汁機打成冰沙（或用力搖盪），倒入高球杯，以鳳梨片裝飾。", highlight: "波多黎各的國酒，充滿度假風情的椰香與鳳梨味。" }, { id: 305, name: "自由古巴", engName: "Cuba Libre", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "可樂", "解渴"], icon: "fa-glass-water", color: "text-amber-900", ingredients: ["萊姆酒 45ml", "可樂 補滿", "檸檬角 1-2塊"], method: "高球杯加冰塊，擠入檸檬汁並投入檸檬角，倒入萊姆酒，最後補滿可樂。", highlight: "慶祝古巴獨立的經典飲品，檸檬是不可或缺的靈魂。" }, { id: 306, name: "月黑風高", engName: "Dark 'n' Stormy", category: "classic", base: "萊姆酒", type: "Build", tags: ["經典", "辛辣", "氣泡"], icon: "fa-bolt", color: "text-amber-700", ingredients: ["深色萊姆酒 45ml", "薑汁啤酒 120ml", "萊姆角"], method: "在高球杯中加滿冰塊，先倒入薑汁啤酒，再將深色萊姆酒輕輕浮在最上層，擠入萊姆角。", highlight: "加勒比海的風暴，薑汁的辛辣與深色萊姆酒的糖蜜香絕配。" }, { id: 307, name: "萊姆酒酸酒", engName: "Rum Sour", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "酸甜", "滑順"], icon: "fa-martini-glass", color: "text-yellow-200", ingredients: ["萊姆酒 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆 (選配)"], method: "若加蛋白則先 Dry Shake，再加冰 Hard Shake 濾入杯中。", highlight: "把戴綺麗的萊姆換成檸檬，更能突顯萊姆酒的甘蔗甜味。" }, { id: 308, name: "藍色夏威夷", engName: "Blue Hawaiian", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "視覺系", "椰香"], icon: "fa-umbrella-beach", color: "text-blue-400", ingredients: ["白萊姆酒 30ml", "藍柑橘酒 15ml", "椰子香甜酒 (Malibu或椰漿) 15ml", "鳳梨汁 60ml"], method: "所有材料加冰塊搖盪均勻，倒入裝有冰塊的高球杯中。", highlight: "鮮豔亮眼的湛藍色澤，充滿熱帶海島風情的味道。" }, { id: 309, name: "叢林鳥", engName: "Jungle Bird", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "Tiki", "微苦"], icon: "fa-kiwi-bird", color: "text-red-500", ingredients: ["深色萊姆酒 45ml", "金巴利 (Campari) 20ml", "鳳梨汁 45ml", "萊姆汁 15ml", "糖漿 15ml"], method: "所有材料加冰用力搖盪，過濾倒入加有大冰塊的岩石杯中。", highlight: "少數帶有明顯苦味的 Tiki 調酒，金巴利與鳳梨出乎意料的合拍。" }, { id: 310, name: "殖民者潘趣", engName: "Planter's Punch", category: "classic", base: "萊姆酒", type: "Shake", tags: ["經典", "果香", "重酒感"], icon: "fa-cocktail", color: "text-orange-500", ingredients: ["深色萊姆酒 60ml", "柳橙汁 30ml", "鳳梨汁 30ml", "檸檬汁 15ml", "石榴糖漿 10ml", "安格斯特拉苦精 2滴"], method: "所有材料加冰搖盪，濾入加滿碎冰的颶風杯或高球杯中。", highlight: "加勒比海地區的經典潘趣酒，果汁豐富但酒感意外扎實。" },
             { id: 401, name: "柯夢波丹", engName: "Cosmopolitan", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "都會"], icon: "fa-martini-glass-citrus", color: "text-pink-500", ingredients: ["檸檬或原味伏特加 45ml", "橙酒 (Cointreau) 15ml", "蔓越莓汁 30ml", "鮮榨萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入馬丁尼杯，可稍微火烤橙皮擠出精油。", highlight: "慾望城市帶起的都會粉紅旋風，酸甜莓果香極度討喜。" }, { id: 402, name: "血腥瑪麗", engName: "Bloody Mary", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "鹹鮮", "醒酒"], icon: "fa-pepper-hot", color: "text-red-600", ingredients: ["伏特加 45ml", "番茄汁 120ml", "檸檬汁 15ml", "辣醬 (Tabasco) 數滴", "烏斯特醬 數滴", "胡椒、鹽巴適量", "西芹條裝飾"], method: "在高球杯中加入調味料與檸檬汁拌勻，加入冰塊、伏特加與番茄汁，用西芹條攪拌。", highlight: "傳說中的解宿醉聖品，喝起來像是一碗冷湯的高湯調酒。" }, { id: 403, name: "白色俄羅斯", engName: "White Russian", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "甜美", "奶香"], icon: "fa-glass-whiskey", color: "text-white", ingredients: ["伏特加 45ml", "咖啡利口酒 (Kahlua) 30ml", "鮮奶油或全脂牛奶 30ml"], method: "在岩石杯中加冰，倒入伏特加與咖啡利口酒稍微攪拌。最後將鮮奶油輕輕倒在表面形成漸層。", highlight: "電影《謀殺綠腳趾》主角的最愛，像是微醺的成人版冰拿鐵。" }, { id: 404, name: "黑色俄羅斯", engName: "Black Russian", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "甜烈", "咖啡"], icon: "fa-glass-whiskey", color: "text-amber-900", ingredients: ["伏特加 45ml", "咖啡利口酒 (Kahlua) 20ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "去除了鮮奶油的掩護，更直接、強烈的咖啡酒香衝擊。" }, { id: 405, name: "濃縮咖啡馬丁尼", engName: "Espresso Martini", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "提神", "濃郁"], icon: "fa-coffee", color: "text-amber-900", ingredients: ["伏特加 45ml", "咖啡利口酒 15ml", "Espresso (放涼) 30ml", "糖漿 (選配)"], method: "所有材料加冰用力搖盪 (需搖久一點打出泡沫)，濾冰倒入馬丁尼杯，以三顆咖啡豆裝飾。", highlight: "「Wake me up, and then f**k me up.」最受歡迎的派對提神神飲。" }, { id: 406, name: "莫斯科驢子", engName: "Moscow Mule", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "薑味", "清爽"], icon: "fa-horse", color: "text-amber-300", ingredients: ["伏特加 45ml", "薑汁汽水或啤酒 120ml", "萊姆汁 15ml"], method: "在銅杯或高球杯中加滿冰塊，倒入伏特加與萊姆汁，最後補滿薑汁汽水。", highlight: "帶有清爽薑味與萊姆酸香的經典，傳統上必須使用銅杯裝盛。" }, { id: 407, name: "神風特攻隊", engName: "Kamikaze", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "俐落"], icon: "fa-plane", color: "text-yellow-300", ingredients: ["伏特加 30ml", "橙酒 (Cointreau) 30ml", "萊姆汁 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入岩石杯或 Shot 杯。", highlight: "伏特加版的瑪格麗特，清爽俐落卻能讓人迅速醉倒。" }, { id: 408, name: "檸檬滴", engName: "Lemon Drop", category: "classic", base: "伏特加", type: "Shake", tags: ["經典", "酸甜", "順口"], icon: "fa-lemon", color: "text-yellow-400", ingredients: ["伏特加 45ml", "橙酒 15ml", "檸檬汁 20ml", "糖漿 10ml", "杯口沾一圈砂糖"], method: "準備糖口杯。將所有材料加冰搖盪，濾冰倒入馬丁尼杯。", highlight: "喝起來就像是融化的檸檬糖，酸甜討喜極易入口。" }, { id: 409, name: "螺絲起子", engName: "Screwdriver", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "果香", "極簡"], icon: "fa-glass-water", color: "text-orange-400", ingredients: ["伏特加 45ml", "柳橙汁 補滿"], method: "高球杯加滿冰塊，倒入伏特加，補滿柳橙汁，攪拌均勻即可。", highlight: "最純粹的伏特加調酒，傳說中工人們用螺絲起子攪拌而得名。" }, { id: 410, name: "鹹狗", engName: "Salty Dog", category: "classic", base: "伏特加", type: "Build", tags: ["經典", "果香", "鹽口"], icon: "fa-dog", color: "text-rose-300", ingredients: ["伏特加 45ml", "葡萄柚汁 補滿", "杯口半圈鹽巴"], method: "準備鹽口杯，加冰塊。倒入伏特加，補滿葡萄柚汁並輕輕攪拌。", highlight: "葡萄柚的微苦與杯緣的鹹味，讓伏特加變得無比順口。" },
-            { id: 501, name: "瑪格麗特", engName: "Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "鹽口"], icon: "fa-martini-glass-citrus", color: "text-green-300", ingredients: ["龍舌蘭 (Tequila) 45ml", "橙酒 (Cointreau) 15ml", "萊姆汁 20ml", "半圈鹽口杯"], method: "用萊姆抹過杯緣沾上鹽巴。其餘材料加冰搖盪均勻，濾入杯中。", highlight: "無人不知的龍舌蘭經典，鹽巴帶出了酒液的甜與柑橘的香。" }, { id: 502, name: "帕洛瑪", engName: "Paloma", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "氣泡", "微苦"], icon: "fa-glass-water", color: "text-pink-300", ingredients: ["龍舌蘭 45ml", "鮮榨萊姆汁 15ml", "少許鹽巴", "葡萄柚苏打 補滿"], method: "在高球杯加冰，倒入龍舌蘭、萊姆汁與一小撮鹽巴，最後補滿葡萄柚蘇打輕拌。", highlight: "在墨西哥當地甚至比瑪格麗特更受歡迎的國民調酒。" }, { id: 503, name: "龍舌蘭日出", engName: "Tequila Sunrise", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "果香", "漸層"], icon: "fa-sun", color: "text-orange-500", ingredients: ["龍舌蘭 45ml", "柳橙汁 120ml", "石榴糖漿 10ml"], method: "在高球杯加冰，倒入龍舌蘭與柳橙汁拌勻。最後緩慢倒入石榴糖漿使其沉底形成漸層。", highlight: "搖滾樂團滾石的最愛，杯中的美麗日出漸層是其標誌。" }, { id: 504, name: "湯米瑪格麗特", engName: "Tommy's Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "現代", "純粹"], icon: "fa-glass-whiskey", color: "text-yellow-300", ingredients: ["100% 藍龍舌蘭 60ml", "鮮榨萊姆汁 30ml", "龍舌蘭糖漿 (Agave Nectar) 15ml"], method: "將所有材料加冰搖盪，濾入加有大冰塊的岩石杯中。(通常不沾鹽)", highlight: "捨棄了橙酒，完全展現出優質龍舌蘭酒原始風味的現代經典。" }, { id: 505, name: "龍舌蘭酸酒", engName: "Tequila Sour", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "綿密"], icon: "fa-martini-glass-citrus", color: "text-yellow-200", ingredients: ["龍舌蘭 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆", "苦精裝飾"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入杯中。", highlight: "將威士忌換成龍舌蘭，帶來截然不同的草本與土壤氣息。" }, { id: 506, name: "巴坦加", engName: "Batanga", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "可樂", "墨西哥"], icon: "fa-glass-water", color: "text-amber-900", ingredients: ["龍舌蘭 45ml", "萊姆汁 15ml", "可樂 補滿", "鹽口杯"], method: "準備鹽口杯，加滿冰塊。倒入龍舌蘭與萊姆汁，補滿可樂。傳統上需用切萊姆的那把刀來攪拌。", highlight: "墨西哥版的自由古巴，杯緣的鹽巴是不可或缺的靈魂。" }, { id: 507, name: "鬥牛士", engName: "Matador", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "熱帶", "果香"], icon: "fa-wine-glass", color: "text-yellow-400", ingredients: ["龍舌蘭 45ml", "鳳梨汁 60ml", "萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入香檳杯或高球杯。", highlight: "鳳梨的甜味完美中和了龍舌蘭的嗆辣，非常適合夏天。" }, { id: 508, name: "藍色瑪格麗特", engName: "Blue Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "視覺系", "酸甜"], icon: "fa-martini-glass", color: "text-blue-400", ingredients: ["龍舌蘭 45ml", "藍柑橘酒 15ml", "萊姆汁 20ml", "鹽口杯"], method: "準備鹽口杯。所有材料加冰搖盪均勻，濾入馬丁尼杯中。", highlight: "把一般的橙酒換成藍柑橘酒，創造出迷人的湛藍海洋色。" }, { id: 509, name: "勇敢公牛", engName: "Brave Bull", category: "classic", base: "龍舌蘭", type: "Stir", tags: ["經典", "咖啡", "強烈"], icon: "fa-glass-whiskey", color: "text-stone-600", ingredients: ["龍舌蘭 45ml", "咖啡利口酒 (Kahlua) 20ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "龍舌蘭版本的黑色俄羅斯，草本味與咖啡交織的獨特強烈口感。" }, { id: 510, name: "龍舌蘭通寧", engName: "T&T", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "氣泡", "清爽"], icon: "fa-glass-water", color: "text-blue-200", ingredients: ["龍舌蘭 45ml", "通寧水 補滿", "檸檬或萊姆角"], method: "高球杯加滿冰塊，倒入龍舌蘭，補滿通寧水並輕輕攪拌，擠入檸檬汁。", highlight: "快速且極度清爽的選擇，通寧水的微苦能很好的修飾龍舌蘭。" },
+            { id: 501, name: "瑪格麗特", engName: "Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "鹽口"], icon: "fa-martini-glass-citrus", color: "text-green-300", ingredients: ["龍舌蘭 (Tequila) 45ml", "橙酒 (Cointreau) 15ml", "萊姆汁 20ml", "半圈鹽口杯"], method: "用萊姆抹過杯緣沾上鹽巴。其餘材料加冰搖盪均勻，濾入杯中。", highlight: "無人不知的龍舌蘭經典，鹽巴帶出了酒液的甜與柑橘的香。" }, { id: 502, name: "帕洛瑪", engName: "Paloma", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "氣泡", "微苦"], icon: "fa-glass-water", color: "text-pink-300", ingredients: ["龍舌蘭 45ml", "鮮榨萊姆汁 15ml", "少許鹽巴", "葡萄柚蘇打 補滿"], method: "在高球杯加冰，倒入龍舌蘭、萊姆汁與一小撮鹽巴，最後補滿葡萄柚蘇打輕拌。", highlight: "在墨西哥當地甚至比瑪格麗特更受歡迎的國民調酒。" }, { id: 503, name: "龍舌蘭日出", engName: "Tequila Sunrise", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "果香", "漸層"], icon: "fa-sun", color: "text-orange-500", ingredients: ["龍舌蘭 45ml", "柳橙汁 120ml", "石榴糖漿 10ml"], method: "在高球杯加冰，倒入龍舌蘭與柳橙汁拌勻。最後緩慢倒入石榴糖漿使其沉底形成漸層。", highlight: "搖滾樂團滾石的最愛，杯中的美麗日出漸層是其標誌。" }, { id: 504, name: "湯米瑪格麗特", engName: "Tommy's Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "現代", "純粹"], icon: "fa-glass-whiskey", color: "text-yellow-300", ingredients: ["100% 藍龍舌蘭 60ml", "鮮榨萊姆汁 30ml", "龍舌蘭糖漿 (Agave Nectar) 15ml"], method: "將所有材料加冰搖盪，濾入加有大冰塊的岩石杯中。(通常不沾鹽)", highlight: "捨棄了橙酒，完全展現出優質龍舌蘭酒原始風味的現代經典。" }, { id: 505, name: "龍舌蘭酸酒", engName: "Tequila Sour", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "酸甜", "綿密"], icon: "fa-martini-glass-citrus", color: "text-yellow-200", ingredients: ["龍舌蘭 60ml", "檸檬汁 30ml", "糖漿 15ml", "蛋白 1顆", "苦精裝飾"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入杯中。", highlight: "將威士忌換成龍舌蘭，帶來截然不同的草本與土壤氣息。" }, { id: 506, name: "巴坦加", engName: "Batanga", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "可樂", "墨西哥"], icon: "fa-glass-water", color: "text-amber-900", ingredients: ["龍舌蘭 45ml", "萊姆汁 15ml", "可樂 補滿", "鹽口杯"], method: "準備鹽口杯，加滿冰塊。倒入龍舌蘭與萊姆汁，補滿可樂。傳統上需用切萊姆的那把刀來攪拌。", highlight: "墨西哥版的自由古巴，杯緣的鹽巴是不可或缺的靈魂。" }, { id: 507, name: "鬥牛士", engName: "Matador", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "熱帶", "果香"], icon: "fa-wine-glass", color: "text-yellow-400", ingredients: ["龍舌蘭 45ml", "鳳梨汁 60ml", "萊姆汁 15ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾冰倒入香檳杯或高球杯。", highlight: "鳳梨的甜味完美中和了龍舌蘭的嗆辣，非常適合夏天。" }, { id: 508, name: "藍色瑪格麗特", engName: "Blue Margarita", category: "classic", base: "龍舌蘭", type: "Shake", tags: ["經典", "視覺系", "酸甜"], icon: "fa-martini-glass", color: "text-blue-400", ingredients: ["龍舌蘭 45ml", "藍柑橘酒 15ml", "萊姆汁 20ml", "鹽口杯"], method: "準備鹽口杯。所有材料加冰搖盪均勻，濾入馬丁尼杯中。", highlight: "把一般的橙酒換成藍柑橘酒，創造出迷人的湛藍海洋色。" }, { id: 509, name: "勇敢公牛", engName: "Brave Bull", category: "classic", base: "龍舌蘭", type: "Stir", tags: ["經典", "咖啡", "強烈"], icon: "fa-glass-whiskey", color: "text-stone-600", ingredients: ["龍舌蘭 45ml", "咖啡利口酒 (Kahlua) 20ml"], method: "在岩石杯中加入大冰塊，倒入兩種酒液，攪拌均勻即可。", highlight: "龍舌蘭版本的黑色俄羅斯，草本味與咖啡交織的獨特強烈口感。" }, { id: 510, name: "龍舌蘭通寧", engName: "T&T", category: "classic", base: "龍舌蘭", type: "Build", tags: ["經典", "氣泡", "清爽"], icon: "fa-glass-water", color: "text-blue-200", ingredients: ["龍舌蘭 45ml", "通寧水 補滿", "檸檬或萊姆角"], method: "高球杯加滿冰塊，倒入龍舌蘭，補滿通寧水並輕輕攪拌，擠入檸檬汁。", highlight: "快速且極度清爽的選擇，通寧水的微苦能很好的修飾龍舌蘭。" },
             { id: 601, name: "杏仁酸酒", engName: "Amaretto Sour", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "堅果", "甜點"], icon: "fa-glass-whiskey", color: "text-yellow-600", ingredients: ["杏仁利口酒 (Amaretto) 45ml", "波本威士忌 (選配, 增添酒感) 15ml", "檸檬汁 30ml", "糖漿 5ml", "蛋白 1顆"], method: "所有材料 Dry Shake 起泡後，加冰塊 Hard Shake。濾入岩石杯中。", highlight: "充滿杏仁蛋白霜與櫻桃香氣，像是在吃液態的義大利甜點。" }, { id: 602, name: "卡魯哇牛奶", engName: "Kahlua Milk", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "奶香", "咖啡"], icon: "fa-glass-whiskey", color: "text-stone-300", ingredients: ["咖啡利口酒 (Kahlua) 45ml", "鮮奶 補滿"], method: "在岩石杯中加滿冰塊，倒入卡魯哇，緩慢倒入鮮奶形成漸層，飲用前攪拌。", highlight: "酒吧裡最平易近人的入門款，香濃的咖啡牛奶感。" }, { id: 603, name: "貝禮詩牛奶", engName: "Baileys Milk", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "奶香", "甜美"], icon: "fa-glass-whiskey", color: "text-amber-100", ingredients: ["貝禮詩奶酒 (Baileys) 45ml", "鮮奶 補滿"], method: "在岩石杯中加滿冰塊，倒入奶酒，補滿鮮奶，攪拌均勻。", highlight: "帶有愛爾蘭威士忌與可可香氣的終極甜點奶酒。" }, { id: 604, name: "綠石蜢", engName: "Grasshopper", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "甜點", "薄荷巧克力"], icon: "fa-martini-glass", color: "text-green-300", ingredients: ["綠薄荷利口酒 30ml", "白可可利口酒 30ml", "鮮奶油 30ml"], method: "將所有材料與冰塊放入搖酒器中，用力搖盪均勻後，濾入馬丁尼杯。", highlight: "翠綠討喜的顏色，喝起來完全就是「薄荷巧克力冰淇淋」。" }, { id: 605, name: "B-52轟炸機", engName: "B-52", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "Shot", "視覺系"], icon: "fa-vial", color: "text-amber-800", ingredients: ["咖啡利口酒 (Kahlua) 15ml", "愛爾蘭奶酒 (Baileys) 15ml", "柑橘利口酒 (Grand Marnier / 橙酒) 15ml"], method: "在 Shot 杯中，利用吧匙背緩慢引流，依序倒入咖啡酒、奶酒、柑橘酒，形成完美的三層漸層。", highlight: "最著名的分層 Shot，一口喝下感受三種香甜風味的衝擊。" }, { id: 606, name: "金巴利柳橙", engName: "Campari Orange", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "微苦", "果香"], icon: "fa-glass-water", color: "text-red-500", ingredients: ["金巴利 (Campari) 45ml", "柳橙汁 補滿", "柳橙片裝飾"], method: "在高球杯中加冰，倒入金巴利與柳橙汁，輕輕攪拌即可。", highlight: "義大利常見的餐前飲品，柳橙的甜味能稍微中和金巴利的苦味。" }, { id: 607, name: "蜜桃女孩", engName: "Fuzzy Navel", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "甜美", "果香"], icon: "fa-glass-water", color: "text-orange-300", ingredients: ["蜜桃利口酒 (Peach Schnapps) 45ml", "柳橙汁 補滿"], method: "在高球杯中加冰，倒入蜜桃利口酒，補滿柳橙汁並攪拌均勻。", highlight: "80年代紅極一時的迪斯可調酒，滿滿的水蜜桃與柳橙香甜。" }, { id: 608, name: "荔枝葡萄柚", engName: "China Blue", category: "classic", base: "利口酒", type: "Build", tags: ["經典", "視覺系", "清爽"], icon: "fa-glass-water", color: "text-blue-300", ingredients: ["荔枝利口酒 (Dita等) 30ml", "藍柑橘酒 10ml", "葡萄柚汁 補滿"], method: "在高球杯中加冰，倒入所有材料攪拌均勻。也可先倒果汁再將藍柑橘沉底作漸層。", highlight: "極美的天藍色澤，荔枝的甜香完美平衡了葡萄柚的微苦。" }, { id: 609, name: "蜜多麗酸酒", engName: "Midori Sour", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "哈密瓜", "酸甜"], icon: "fa-glass-water", color: "text-green-500", ingredients: ["哈密瓜利口酒 (Midori) 45ml", "檸檬汁 20ml", "蘇打水 些許"], method: "將哈密瓜酒與檸檬汁加冰搖盪，濾入加冰的岩石或高球杯中，補上少許蘇打水。", highlight: "亮綠色的搶眼外觀，喝起來有著濃郁哈密瓜氣息與清爽酸度。" }, { id: 610, name: "絕對誘惑", engName: "Orgasm", category: "classic", base: "利口酒", type: "Shake", tags: ["經典", "甜烈", "奶香"], icon: "fa-glass-whiskey", color: "text-stone-400", ingredients: ["咖啡利口酒 20ml", "杏仁利口酒 20ml", "愛爾蘭奶酒 20ml", "鮮奶油 20ml"], method: "所有材料加冰用力搖盪，濾冰倒入岩石杯中。", highlight: "如同其名，四種濃郁香甜的材料混合出令人難以抗拒的罪惡感。" },
             
             { id: 701, name: "梅子綠茶", engName: "Plum Green Tea", category: "idiot", base: "利口酒", type: "Shake", tags: ["茶香"], icon: "fa-leaf", color: "text-green-500", ingredients: ["梅酒 1份", "綠茶 1份"], method: "1. Shake", highlight: "" },
@@ -517,6 +517,432 @@
             { id: 707, name: "改變的勇氣", engName: "Courage to Change", category: "idiot", base: "琴酒", type: "Shake", tags: [], icon: "fa-flask", color: "text-gray-500", ingredients: ["龐貝琴酒 45ml", "檸檬汁 30ml", "蜂蜜(糖漿)", "深色萊姆純酒"], method: "1. Shake\n2. high ball杯放9成滿冰\n3. 倒入調酒，碎冰放滿上層\n4. 深色萊姆純酒stir後，倒上層\n5. 碎冰用榨汁器壓出一個小冰碗，放置最上層\n6. 冰碗內放淹櫻桃(或其他水果)", highlight: "" }
         ];
 
+        // ==========================================
+        // 3. UI 互動與共用功能
+        // ==========================================
+        window.getBaseEnglish = function(base) {
+            return window.baseSpiritMap[base] || base || 'Special';
+        };
+
+        window.customAlert = (message, title = "提示") => {
+            return new Promise(resolve => {
+                const m = document.getElementById('custom-dialog-modal');
+                document.getElementById('dialog-title').textContent = title;
+                document.getElementById('dialog-message').textContent = message;
+                const input = document.getElementById('dialog-input');
+                input.classList.add('hidden');
+                
+                const cancelBtn = document.getElementById('dialog-cancel-btn');
+                const confirmBtn = document.getElementById('dialog-confirm-btn');
+                
+                cancelBtn.classList.add('hidden');
+                
+                confirmBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(true);
+                };
+                
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+            });
+        };
+
+        window.customConfirm = (message, title = "確認") => {
+            return new Promise(resolve => {
+                const m = document.getElementById('custom-dialog-modal');
+                document.getElementById('dialog-title').textContent = title;
+                document.getElementById('dialog-message').textContent = message;
+                const input = document.getElementById('dialog-input');
+                input.classList.add('hidden');
+                
+                const cancelBtn = document.getElementById('dialog-cancel-btn');
+                const confirmBtn = document.getElementById('dialog-confirm-btn');
+                
+                cancelBtn.classList.remove('hidden');
+                
+                cancelBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(false);
+                };
+                confirmBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(true);
+                };
+                
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+            });
+        };
+
+        window.customPrompt = (message, title = "輸入", type = "text", defaultValue = "") => {
+            return new Promise(resolve => {
+                const m = document.getElementById('custom-dialog-modal');
+                document.getElementById('dialog-title').textContent = title;
+                document.getElementById('dialog-message').textContent = message;
+                const input = document.getElementById('dialog-input');
+                input.type = type;
+                input.value = defaultValue;
+                input.classList.remove('hidden');
+                
+                const cancelBtn = document.getElementById('dialog-cancel-btn');
+                const confirmBtn = document.getElementById('dialog-confirm-btn');
+                
+                cancelBtn.classList.remove('hidden');
+                
+                cancelBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(null);
+                };
+                confirmBtn.onclick = () => {
+                    window.closeCustomDialog();
+                    resolve(input.value);
+                };
+                
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+                setTimeout(() => input.focus(), 100);
+            });
+        };
+
+        window.closeCustomDialog = () => {
+            const m = document.getElementById('custom-dialog-modal');
+            m.classList.add('opacity-0');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
+        window.showToast = function(msg, timeout = 3000) { 
+            const t = document.getElementById('toast'); 
+            t.textContent = msg; 
+            t.className = 'show'; 
+            setTimeout(() => t.className = '', timeout); 
+        };
+
+        window.toggleFab = function() { 
+            const menu = document.getElementById('fab-menu'); 
+            const mainBtn = document.getElementById('fab-main-btn'); 
+            const icon = document.getElementById('fab-icon'); 
+            window.isFabOpen = !window.isFabOpen; 
+            if (window.isFabOpen) { 
+                menu.classList.add('fab-menu-open'); 
+                mainBtn.classList.add('active'); 
+                icon.classList.remove('fa-plus'); 
+                icon.classList.add('fa-times'); 
+            } else { 
+                menu.classList.remove('fab-menu-open'); 
+                mainBtn.classList.remove('active'); 
+                icon.classList.remove('fa-times'); 
+                icon.classList.add('fa-plus'); 
+            } 
+        };
+
+        window.openOrdersList = function() { 
+            if(window.isFabOpen) window.toggleFab(); 
+            const m = document.getElementById('orders-modal');
+            m.classList.remove('hidden'); 
+            setTimeout(() => m.classList.remove('opacity-0'), 10); 
+            window.renderOrdersList(); 
+        };
+
+        window.closeOrdersList = function() { 
+            const m = document.getElementById('orders-modal'); 
+            m.classList.add('opacity-0'); 
+            setTimeout(() => m.classList.add('hidden'), 300); 
+        };
+
+        window.openBackupModal = () => {
+            const m = document.getElementById('backup-modal');
+            m.classList.remove('hidden');
+            setTimeout(() => m.classList.remove('opacity-0'), 10);
+        };
+
+        window.closeBackupModal = () => {
+            const m = document.getElementById('backup-modal');
+            m.classList.add('opacity-0');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
+        window.openQRCodeModal = () => {
+            const m = document.getElementById('qrcode-modal');
+            const img = document.getElementById('qrcode-img');
+            const currentUrl = encodeURIComponent(window.location.href.split('#')[0]);
+            img.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=1&data=${currentUrl}`;
+            
+            m.classList.remove('hidden');
+            setTimeout(() => m.classList.remove('opacity-0'), 10);
+        };
+
+        window.closeQRCodeModal = () => {
+            const m = document.getElementById('qrcode-modal');
+            m.classList.add('opacity-0');
+            setTimeout(() => m.classList.add('hidden'), 300);
+        };
+
+        window.copyBarUrl = () => {
+            const url = window.location.href.split('#')[0];
+            const tempInput = document.createElement("input");
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            window.showToast("✅ 網址已複製到剪貼簿！");
+        };
+
+        // ==========================================
+        // 4. 身分驗證系統
+        // ==========================================
+        window.applyRoleUI = function() {
+            const isBartender = window.currentUser.role === 'bartender';
+            
+            document.getElementById('nav-user-role').textContent = isBartender ? 'BARTENDER' : 'GUEST';
+            document.getElementById('nav-user-name').textContent = window.currentUser.name;
+            document.getElementById('welcome-msg').textContent = isBartender ? 'Bartender 管理模式' : `歡迎光臨，${window.currentUser.name}`;
+            
+            const gearBtn = document.getElementById('nav-gear-btn');
+            if(gearBtn) gearBtn.style.display = isBartender ? 'flex' : 'none';
+            
+            const addDrinkFab = document.getElementById('fab-add-drink');
+            if(addDrinkFab) addDrinkFab.style.display = isBartender ? 'flex' : 'none';
+            
+            const clearOrdersBtn = document.getElementById('btn-clear-orders');
+            if(clearOrdersBtn) clearOrdersBtn.style.display = isBartender ? 'flex' : 'none';
+        };
+
+        window.loginAsGuest = function() {
+            const name = document.getElementById('login-name-input').value.trim();
+            if (!name) {
+                window.customAlert('請輸入一個專屬的稱號！');
+                return;
+            }
+            window.currentUser = { name: name, role: 'guest' };
+            
+            document.getElementById('login-modal').classList.add('opacity-0');
+            setTimeout(() => {
+                document.getElementById('login-modal').classList.add('hidden');
+                window.applyRoleUI();
+                window.initApp();
+            }, 300);
+        };
+
+        window.loginAsBartender = async function() {
+            const pwd = await window.customPrompt('請輸入 Bartender 密碼：', '身分驗證', 'password');
+            if (pwd === '095219') {
+                window.currentUser = { name: 'Bartender', role: 'bartender' };
+                
+                document.getElementById('login-modal').classList.add('opacity-0');
+                setTimeout(() => {
+                    document.getElementById('login-modal').classList.add('hidden');
+                    window.applyRoleUI();
+                    window.initApp();
+                }, 300);
+                window.showToast('歡迎回來，Bartender！');
+            } else if (pwd !== null) {
+                window.customAlert('密碼錯誤，請重新確認！');
+            }
+        };
+
+        window.logout = async function() {
+            const res = await window.customConfirm("確定要登出並切換使用者嗎？");
+            if (res) {
+                location.reload();
+            }
+        };
+
+        window.checkLogin = function() {
+            // 強制每次重新載入時都要登入驗證
+            document.getElementById('login-modal').classList.remove('hidden');
+        };
+
+        // ==========================================
+        // 5. 儲存與同步相關函數 (Data Persistence)
+        // ==========================================
+        window.saveData = function() {
+            try { 
+                localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks)); 
+                window.renderDrinks(); 
+            } catch(e) { 
+                if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { 
+                    window.customAlert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); 
+                } else { 
+                    console.error("Save error:", e); 
+                    window.customAlert('儲存發生錯誤。'); 
+                } 
+            }
+        };
+
+        window.saveCategories = function() { 
+            localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories)); 
+            window.renderFilters(); 
+            window.renderCategoryEditorList(); 
+        };
+
+        window.saveOrders = function() { 
+            localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders)); 
+            window.updateOrderBadges(); 
+            window.renderOrdersList(); 
+        };
+
+        window.saveMadeDrinks = function() { 
+            localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks)); 
+        };
+
+        window.exportData = () => {
+            const backup = {
+                drinks: window.drinks,
+                categories: window.categories,
+                madeDrinks: window.madeDrinks
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            const date = new Date().toISOString().split('T')[0];
+            downloadAnchorNode.setAttribute("download", `binbar_backup_${date}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+            window.showToast("✅ 匯出成功！");
+            window.closeBackupModal();
+        };
+
+        window.importData = async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.drinks && Array.isArray(imported.drinks)) {
+                        const res = await window.customConfirm("⚠️ 警告：匯入將會完全覆蓋當前所有的酒單與分類！確定要繼續嗎？");
+                        if (res) {
+                            window.drinks = imported.drinks;
+                            if (imported.categories) window.categories = imported.categories;
+                            if (imported.madeDrinks) window.madeDrinks = imported.madeDrinks;
+                            
+                            window.saveData();
+                            window.saveCategories();
+                            window.saveMadeDrinks();
+                            
+                            if (window.isCloudConnected) {
+                                window.showToast("正在覆寫雲端資料...");
+                                for(const d of window.drinks) await setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d);
+                                for(const c of window.categories) await setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c);
+                                await setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks });
+                            }
+                            
+                            window.renderFilters();
+                            window.renderDrinks();
+                            window.closeBackupModal();
+                            window.showToast("✅ 匯入成功！");
+                        }
+                    } else {
+                        window.customAlert("❌ 檔案格式不正確或損毀！");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    window.customAlert("❌ 讀取檔案失敗：" + err.message);
+                }
+                event.target.value = ''; 
+            };
+            reader.readAsText(file);
+        };
+
+        window.resetMadeDrinks = async function() {
+            const res = await window.customConfirm("確定要重置所有調酒的「已調製」狀態嗎？\n這會讓所有酒卡恢復成尚未調製的原本顏色。");
+            if (!res) return;
+
+            window.madeDrinks = [];
+            window.saveMadeDrinks();
+
+            if (window.isCloudConnected) {
+                setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }, { merge: true }).catch(e => console.error(e));
+            }
+
+            window.renderDrinks();
+            window.showToast("✅ 已重置所有調酒狀態！");
+            window.closeBackupModal();
+        };
+
+        window.initCloudSync = async () => {
+            const iconBase = document.getElementById('cloud-icon-base');
+            const indicator = document.getElementById('cloud-icon-indicator');
+            
+            try {
+                await signInAnonymously(auth);
+                window.isCloudConnected = true;
+                
+                if (iconBase) {
+                    iconBase.classList.remove('text-gray-400', 'text-red-500');
+                    iconBase.classList.add('text-green-400');
+                }
+                if (indicator) indicator.classList.remove('hidden');
+
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'categories'), snap => {
+                    if(!snap.empty) {
+                        const cloudCats = [];
+                        snap.forEach(doc => cloudCats.push(doc.data()));
+                        cloudCats.sort((a,b) => (a.order || 0) - (b.order || 0));
+                        window.categories = cloudCats;
+                        localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories));
+                        window.renderFilters();
+                        window.renderCategoryEditorList();
+                    } else {
+                        window.categories.forEach(c => setDoc(doc(db, ...basePath, 'categories', c.id.toString()), c).catch(e=>console.warn(e)));
+                    }
+                }, err => console.warn("Sync error:", err)));
+
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'drinks'), snap => {
+                    if(!snap.empty) {
+                        const cloudDrinks = [];
+                        snap.forEach(doc => cloudDrinks.push(doc.data()));
+                        window.drinks = cloudDrinks;
+                        localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks));
+                        window.renderDrinks();
+                    } else {
+                        window.drinks.forEach(d => setDoc(doc(db, ...basePath, 'drinks', d.id.toString()), d).catch(e=>console.warn(e)));
+                    }
+                }, err => console.warn("Sync error:", err)));
+
+                window.unsubscribes.push(onSnapshot(collection(db, ...basePath, 'orders'), snap => {
+                    const cloudOrders = [];
+                    snap.forEach(doc => cloudOrders.push(doc.data()));
+                    cloudOrders.sort((a, b) => a.ts - b.ts);
+                    window.orders = cloudOrders;
+                    localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders));
+                    window.renderOrdersList();
+                    window.updateOrderBadges();
+                }, err => console.warn("Sync error:", err)));
+
+                window.unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
+                    if (docSnap.exists() && docSnap.data().madeDrinks) {
+                        window.madeDrinks = docSnap.data().madeDrinks;
+                        localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks));
+                        window.renderDrinks();
+                    } else {
+                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }).catch(e=>console.warn(e));
+                    }
+                }, err => console.warn("Sync error:", err)));
+
+            } catch (e) {
+                console.warn("Cloud Sync disabled or failed:", e);
+                window.isCloudConnected = false;
+                
+                if (iconBase) {
+                    iconBase.classList.remove('text-gray-400', 'text-green-400');
+                    iconBase.classList.add('text-red-500');
+                }
+                if (indicator) indicator.classList.add('hidden');
+                
+                if (e.code === 'auth/configuration-not-found' || e.code === 'auth/operation-not-allowed') {
+                    window.showToast("設定提醒：請至 Firebase 啟用「匿名登入」", 6000);
+                } else {
+                    window.showToast("雲端連線失敗，目前為單機模式", 4000);
+                }
+            }
+        };
+
+        // ==========================================
+        // 6. 初始化系統 (initApp)
+        // ==========================================
         window.initApp = function() {
             let storedDrinks = localStorage.getItem('binbar_data_v1');
             if (!storedDrinks) {
@@ -591,34 +1017,9 @@
             window.initCloudSync();
         };
 
-        window.saveData = function() {
-            try { 
-                localStorage.setItem('binbar_data_v1', JSON.stringify(window.drinks)); 
-                window.renderDrinks(); 
-            } catch(e) { 
-                if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') { 
-                    window.customAlert('⚠️ 儲存失敗：空間不足！請刪除部分圖片。'); 
-                } else { 
-                    console.error("Save error:", e); 
-                    window.customAlert('儲存發生錯誤。'); 
-                } 
-            }
-        };
-
-        window.saveCategories = function() { 
-            localStorage.setItem('binbar_categories_v1', JSON.stringify(window.categories)); 
-            window.renderFilters(); 
-            window.renderCategoryEditorList(); 
-        };
-        window.saveOrders = function() { 
-            localStorage.setItem('binbar_orders_v1', JSON.stringify(window.orders)); 
-            window.updateOrderBadges(); 
-            window.renderOrdersList(); 
-        };
-        window.saveMadeDrinks = function() { 
-            localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks)); 
-        };
-
+        // ==========================================
+        // 7. 畫面渲染與 UI 操作功能
+        // ==========================================
         window.renderFilters = function() {
             const container = document.getElementById('filter-container');
             if(!container) return;
@@ -734,7 +1135,78 @@
             window.renderFilters(); 
             window.renderDrinks(); 
         };
-        
+
+        window.renderOrdersList = function() {
+            const container = document.getElementById('orders-list-container');
+            const emptyState = document.getElementById('orders-empty-state');
+            container.innerHTML = '';
+            
+            if(window.orders.length === 0) {
+                emptyState.classList.remove('hidden'); 
+                emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden'); 
+                emptyState.classList.remove('flex');
+                
+                const grouped = {};
+                window.orders.forEach(o => {
+                    if (!grouped[o.drinkId]) {
+                        grouped[o.drinkId] = { drinkId: o.drinkId, drinkName: o.drinkName, count: 0, ids: [], displayTime: o.displayTime, users: [] };
+                    }
+                    grouped[o.drinkId].count++;
+                    grouped[o.drinkId].ids.push(o.orderId);
+                    if (o.userName) grouped[o.drinkId].users.push(o.userName);
+                });
+
+                Object.values(grouped).forEach(group => {
+                    const item = document.createElement('div');
+                    item.className = 'flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5 hover:bg-white/10 cursor-pointer group transition-all mb-2';
+                    item.onclick = () => window.openGroupOrderCheck(group.drinkId); 
+                    
+                    const usersStr = group.users.length > 0 ? group.users.join(', ') : '匿名';
+
+                    item.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-bar-gray border border-white/10 flex items-center justify-center text-xl shadow-inner font-bold text-bar-gold">
+                                x${group.count}
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold flex items-center gap-2">
+                                    ${group.drinkName} 
+                                </h4>
+                                <p class="text-[0.7rem] text-bar-gold mt-0.5 truncate max-w-[180px]">點單者: ${usersStr}</p>
+                            </div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full border border-gray-600 flex items-center justify-center group-hover:bg-green-500/20 group-hover:border-green-500 transition-all text-gray-500 group-hover:text-green-500">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
+        };
+
+        window.updateOrderBadges = function() { 
+            const count = window.orders.length; 
+            const mainBadge = document.getElementById('order-count-badge-main'); 
+            const menuBadge = document.getElementById('order-count-badge-menu'); 
+            [mainBadge, menuBadge].forEach(b => { 
+                if (b) {
+                    b.textContent = count; 
+                    if(count > 0) { 
+                        b.classList.remove('hidden'); 
+                        b.classList.add('animate-bounce'); 
+                        setTimeout(()=>b.classList.remove('animate-bounce'), 1000); 
+                    } else { 
+                        b.classList.add('hidden'); 
+                    }
+                }
+            }); 
+        };
+
+        // ==========================================
+        // 8. 點單系統與模態框操作
+        // ==========================================
         window.placeOrder = function(drinkId, drinkName) {
             const order = {
                 orderId: Date.now() + Math.floor(Math.random() * 1000), 
@@ -851,6 +1323,28 @@
                 window.openGroupOrderCheck(drinkId); 
                 window.showToast('稱號修改成功！');
             }
+        };
+
+        window.clearAllOrders = async function() {
+            if (window.orders.length === 0) return;
+            const res = await window.customConfirm("確定要清空所有排隊中的酒單嗎？這無法復原！");
+            if (!res) return;
+            
+            const ordersToDelete = [...window.orders];
+            window.orders = [];
+            window.saveOrders();
+            window.renderOrdersList();
+            window.updateOrderBadges();
+            
+            if (window.isCloudConnected) {
+                ordersToDelete.forEach(o => {
+                    if (o.orderId) {
+                        deleteDoc(doc(db, ...basePath, 'orders', o.orderId.toString())).catch(e => console.warn(e));
+                    }
+                });
+            }
+            window.showToast("已清空所有點單！");
+            window.closeOrdersList();
         };
 
         window.toggleAvailability = function(id) {
@@ -986,6 +1480,9 @@
             setTimeout(() => m.classList.add('hidden'), 300); 
         };
 
+        // ==========================================
+        // 9. 編輯器與圖示管理
+        // ==========================================
         window.openEditor = function(isEdit = false) { 
             if(window.isFabOpen) window.toggleFab(); 
             const titleEl = document.getElementById('editor-title'); 
@@ -1221,6 +1718,9 @@
             document.getElementById('clear-img-btn').classList.add('hidden'); 
         };
 
+        // ==========================================
+        // 10. 程式啟動點
+        // ==========================================
         window.checkLogin();
 
     </script>
