@@ -313,6 +313,10 @@
                     <i class="fas fa-undo-alt"></i> 重置所有調酒狀態
                 </button>
 
+                <button onclick="window.changePassword()" class="w-full bg-blue-600/20 text-blue-400 font-bold py-3 rounded-lg shadow-lg hover:bg-blue-600/40 border border-blue-500/30 transition-transform active:scale-95 flex items-center justify-center gap-2 mt-4">
+                    <i class="fas fa-key"></i> 更改密碼
+                </button>
+
                 <div class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-left text-xs text-red-200">
                     <i class="fas fa-exclamation-triangle mr-1"></i> 注意：匯入備份將會完全覆蓋當前的酒單資料。
                 </div>
@@ -452,6 +456,7 @@
         window.isCloudConnected = false;
         window.unsubscribes = [];
         window.currentUser = { name: '', role: 'guest' };
+        window.bartenderPassword = localStorage.getItem('binbar_pwd') || '095219';
 
         window.baseSpiritMap = {
             "威士忌": "Whiskey",
@@ -634,7 +639,7 @@
 
         window.loginAsBartender = async function() {
             const pwd = await window.customPrompt('請輸入 Bartender 密碼：', '身分驗證', 'password');
-            if (pwd === '095219') {
+            if (pwd === window.bartenderPassword) {
                 window.currentUser = { name: 'Bartender', role: 'bartender' };
                 
                 document.getElementById('login-modal').classList.add('opacity-0');
@@ -801,12 +806,19 @@
                 }, err => console.warn("Sync error:", err)));
 
                 window.unsubscribes.push(onSnapshot(doc(db, ...basePath, 'meta', 'info'), docSnap => {
-                    if (docSnap.exists() && docSnap.data().madeDrinks) {
-                        window.madeDrinks = docSnap.data().madeDrinks;
-                        localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks));
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        if (data.madeDrinks) {
+                            window.madeDrinks = data.madeDrinks;
+                            localStorage.setItem('binbar_made_v1', JSON.stringify(window.madeDrinks));
+                        }
+                        if (data.adminKey) {
+                            window.bartenderPassword = data.adminKey;
+                            localStorage.setItem('binbar_pwd', window.bartenderPassword);
+                        }
                         window.renderDrinks();
                     } else {
-                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks }).catch(e=>console.warn(e));
+                        setDoc(doc(db, ...basePath, 'meta', 'info'), { madeDrinks: window.madeDrinks, adminKey: window.bartenderPassword }).catch(e=>console.warn(e));
                     }
                 }, err => console.warn("Sync error:", err)));
 
@@ -901,6 +913,39 @@
 
             window.renderDrinks();
             window.showToast("✅ 已重置所有調酒狀態！");
+            window.closeBackupModal();
+        };
+
+        window.changePassword = async function() {
+            const oldPwd = await window.customPrompt('請輸入目前的密碼：', '更改密碼', 'password');
+            if (oldPwd === null) return;
+            if (oldPwd !== window.bartenderPassword) {
+                window.customAlert('舊密碼錯誤！');
+                return;
+            }
+            
+            const newPwd = await window.customPrompt('請輸入新密碼：', '更改密碼', 'password');
+            if (newPwd === null) return;
+            if (newPwd.trim() === '') {
+                window.customAlert('新密碼不能為空！');
+                return;
+            }
+            
+            const confirmPwd = await window.customPrompt('請再次輸入新密碼以確認：', '更改密碼', 'password');
+            if (confirmPwd === null) return;
+            if (newPwd !== confirmPwd) {
+                window.customAlert('兩次輸入的新密碼不一致！');
+                return;
+            }
+            
+            window.bartenderPassword = newPwd;
+            localStorage.setItem('binbar_pwd', window.bartenderPassword);
+            
+            if (window.isCloudConnected) {
+                setDoc(doc(db, ...basePath, 'meta', 'info'), { adminKey: window.bartenderPassword }, { merge: true }).catch(e => console.error(e));
+            }
+            
+            window.showToast('✅ 密碼更改成功！');
             window.closeBackupModal();
         };
 
@@ -1523,7 +1568,7 @@
         
         window.confirmDelete = async function() { 
             const pwd = await window.customPrompt('警告：這將永久刪除此調酒！\n請輸入密碼以確認刪除：', '刪除確認', 'password');
-            if (pwd === '095219') {
+            if (pwd === window.bartenderPassword) {
                 if(window.currentViewingId) { 
                     window.drinks = window.drinks.filter(d => d.id !== window.currentViewingId); 
                     window.saveData(); 
